@@ -556,14 +556,15 @@ shape.addEventListener("mousedown", mousedown);
 shape.addEventListener("wheel", wheel);
 
 document.querySelectorAll("svg circle").forEach((siege)=>{
-    console.log("here");
     siege.addEventListener("click",function(){
         this.style.fill = 'red';
     })
 })
 
 function pcdNavWLValiderSiegesRpr(param){
+    alert(param);
 }
+
 function mousedown(e) {
   mouseStartPosition.x = e.pageX;
   mouseStartPosition.y = e.pageY;
