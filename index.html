@@ -574,7 +574,7 @@ let milieu ;
 const svg = document.querySelector("svg");
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
-    e.preventDefault(); 
+    // e.preventDefault(); 
     document.querySelector(".information").innerHTML = "touche1 { X:"+e.touches[0].clientX+", Y:"+e.touches[0].clientY+"}<br>touche2 { X:"+e.touches[1].clientX+", Y:"+e.touches[1].clientY+"}<br>touche3 : { X:"+e.touches[2].clientX+", Y:"+e.touches[2].clientY+"}";
 
     milieu = {
@@ -639,7 +639,7 @@ svg.addEventListener("touchmove",function(e){
     //     Y: moveTouche3.YMilieu - milieu.Y
     // }
     e.stopPropagation();
-    e.preventDefault(); 
+    // e.preventDefault(); 
     document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3> 
                                                         Déplacement touche 1 <br>{ X : ${moveTouche1.XMilieu}, Y : ${moveTouche1.YMilieu} }<br>
                                                         Déplacement touche 2 <br>{ X : ${moveTouche2.XMilieu}, Y : ${moveTouche2.YMilieu} }<br>
