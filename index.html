@@ -599,7 +599,7 @@ svg.addEventListener("touchstart",function(e){
         XMilieu : e.touches[2].clientX - milieu.X,
         YMilieu : e.touches[2].clientY - milieu.Y
     }
-    document.querySelector(".information").innerHTML += "<h3>Milieu</h3> { X : "+milieu.X+", Y : "+milieu.Y+" }";
+    document.querySelector(".milieu").innerHTML = "<h3>Milieu</h3> { X : "+milieu.X+", Y : "+milieu.Y+" }";
 
 })
 svg.addEventListener("touchmove",function(e){
@@ -636,7 +636,7 @@ svg.addEventListener("touchmove",function(e){
     }
     e.stopPropagation();
     e.preventDefault(); 
-    document.querySelector(".information").innerHTML += `<h3>Déplacements</h3> 
+    document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3> 
                                                         Déplacement touche 1{ X : ${deltaTouche1.X}, Y : ${deltaTouche1.Y} }
                                                         Déplacement touche 2{ X : ${deltaTouche2.X}, Y : ${deltaTouche2.Y} }
                                                         Déplacement touche 3{ X : ${deltaTouche3.X}, Y : ${deltaTouche3.Y} }`;
@@ -726,6 +726,12 @@ function wheel(e) {
 
 <h2>Touches :</h2>
 <div class="information">
+
+</div>
+<div class="milieu">
+    
+</div>
+<div class="deplacement">
 
 </div>
 </body>
