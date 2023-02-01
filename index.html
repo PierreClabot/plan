@@ -607,32 +607,32 @@ svg.addEventListener("touchmove",function(e){
     let moveTouche1 = {
         X: e.touches[0].clientX,
         Y: e.touches[0].clientY,
-        XMilieu : e.touches[0].clientX - milieu.X,
-        YMilieu : e.touches[0].clientY - milieu.Y
+        XMilieu : e.touches[0].clientX - touche1.X,
+        YMilieu : e.touches[0].clientY - touche1.Y
     }
     let moveTouche2 = {
         X: e.touches[1].clientX,
         Y: e.touches[1].clientY,
-        XMilieu : e.touches[1].clientX - milieu.X,
-        YMilieu : e.touches[1].clientY - milieu.Y
+        XMilieu : e.touches[1].clientX - touche2.X,
+        YMilieu : e.touches[1].clientY - touche2.Y
     }
     let moveTouche3 = {
         X: e.touches[2].clientX,
         Y: e.touches[2].clientY,
-        XMilieu : e.touches[2].clientX - milieu.X,
-        YMilieu : e.touches[2].clientY - milieu.Y
+        XMilieu : e.touches[2].clientX - touche3.X,
+        YMilieu : e.touches[2].clientY - touche3.Y
     }
     let deltaTouche1 = {
-        X: moveTouche1.XMilieu - touche1.X,
-        Y: moveTouche1.YMilieu - touche1.Y
+        X: moveTouche1.XMilieu - milieu.X,
+        Y: moveTouche1.YMilieu - milieu.Y
     }
     let deltaTouche2 = {
-        X: moveTouche2.XMilieu - touche2.X,
-        Y: moveTouche2.YMilieu - touche2.Y
+        X: moveTouche2.XMilieu - milieu.X,
+        Y: moveTouche2.YMilieu - milieu.Y
     }
     let deltaTouche3 = {
-        X: moveTouche3.XMilieu - touche3.X,
-        Y: moveTouche3.YMilieu - touche3.Y
+        X: moveTouche3.XMilieu - milieu.X,
+        Y: moveTouche3.YMilieu - milieu.Y
     }
     e.stopPropagation();
     e.preventDefault(); 
