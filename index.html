@@ -623,16 +623,16 @@ svg.addEventListener("touchmove",function(e){
         YMilieu : e.touches[2].clientY - milieu.Y
     }
     let deltaTouche1 = {
-        X: moveTouche1.XMilieu - milieu.X,
-        Y: moveTouche1.YMilieu - milieu.Y
+        X: moveTouche1.XMilieu - touche1.X,
+        Y: moveTouche1.YMilieu - touche1.Y
     }
     let deltaTouche2 = {
-        X: moveTouche2.XMilieu - milieu.X,
-        Y: moveTouche2.YMilieu - milieu.Y
+        X: moveTouche2.XMilieu - touche2.X,
+        Y: moveTouche2.YMilieu - touche2.Y
     }
     let deltaTouche3 = {
-        X: moveTouche3.XMilieu - milieu.X,
-        Y: moveTouche3.YMilieu - milieu.Y
+        X: moveTouche3.XMilieu - touche3.X,
+        Y: moveTouche3.YMilieu - touche3.Y
     }
     e.stopPropagation();
     e.preventDefault(); 
