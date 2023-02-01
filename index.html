@@ -572,8 +572,8 @@ svg.addEventListener("touchstart",function(e){
     e.preventDefault(); 
     document.querySelector(".information").innerHTML = "touche1 { X:"+e.touches[0].clientX+", Y:"+e.touches[0].clientY+"}<br>touche2 { X:"+e.touches[1].clientX+", Y:"+e.touches[1].clientY+"}<br>touche3 : { X:"+e.touches[2].clientX+", Y:"+e.touches[2].clientY+"}";
     let milieu = {
-        X : ((e.touches[0].clientX - e.touches[1].clientX - e.touches[2].clientX)/3),
-        Y : ((e.touches[0].clientY - e.touches[1].clientY - e.touches[2].clientY)/3)
+        X : ((e.touches[0].clientX + e.touches[1].clientX + e.touches[2].clientX)/3),
+        Y : ((e.touches[0].clientY + e.touches[1].clientY + e.touches[2].clientY)/3)
     }
     document.querySelector(".information").innerHTML += "<h3>Milieu</h3> { X : "+milieu.X+", Y : "+milieu.Y+" }";
 })
