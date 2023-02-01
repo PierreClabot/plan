@@ -616,16 +616,16 @@ svg.addEventListener("touchmove",function(e){
         XMilieu : e.touches[1].clientX - touche2.X,
         YMilieu : e.touches[1].clientY - touche2.Y
     }
-    let moveTouche3 = {
-        X: e.touches[2].clientX,
-        Y: e.touches[2].clientY,
-        XMilieu : e.touches[2].clientX - touche3.X,
-        YMilieu : e.touches[2].clientY - touche3.Y
-    }
-    let moyenneDeplacement = {
-        X: ((Math.abs(moveTouche1.XMilieu)+Math.abs(moveTouche2.XMilieu)+Math.abs(moveTouche3.XMilieu))/3),
-        Y: ((Math.abs(moveTouche1.YMilieu)+Math.abs(moveTouche2.YMilieu)+Math.abs(moveTouche3.YMilieu))/3)
-    }
+    // let moveTouche3 = {
+    //     X: e.touches[2].clientX,
+    //     Y: e.touches[2].clientY,
+    //     XMilieu : e.touches[2].clientX - touche3.X,
+    //     YMilieu : e.touches[2].clientY - touche3.Y
+    // }
+    // let moyenneDeplacement = {
+    //     X: ((Math.abs(moveTouche1.XMilieu)+Math.abs(moveTouche2.XMilieu)+Math.abs(moveTouche3.XMilieu))/3),
+    //     Y: ((Math.abs(moveTouche1.YMilieu)+Math.abs(moveTouche2.YMilieu)+Math.abs(moveTouche3.YMilieu))/3)
+    // }
     // let deltaTouche1 = {
     //     X: moveTouche1.XMilieu - milieu.X,
     //     Y: moveTouche1.YMilieu - milieu.Y
