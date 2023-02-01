@@ -566,6 +566,19 @@ document.querySelectorAll("svg circle").forEach((siege)=>{
         this.style.fill = 'red';
     })
 })
+const svg = document.querySelector("svg");
+svg.addEventListener("touchstart",function(e){
+    e.stopPropagation();
+    e.preventDefault(); 
+})
+svg.addEventListener("touchmove",function(e){
+    e.stopPropagation();
+    e.preventDefault(); 
+})
+svg.addEventListener("touchend",function(e){
+    e.stopPropagation();
+    e.preventDefault(); 
+})
 
 function pcdNavWLValiderSiegesRpr(param){
     alert(param);
