@@ -577,7 +577,7 @@ svg.addEventListener("touchstart",function(e){
     e.preventDefault(); 
     document.querySelector(".information").innerHTML = "touche1 { X:"+e.touches[0].clientX+", Y:"+e.touches[0].clientY+"}<br>touche2 { X:"+e.touches[1].clientX+", Y:"+e.touches[1].clientY+"}<br>touche3 : { X:"+e.touches[2].clientX+", Y:"+e.touches[2].clientY+"}";
 
-    let milieu = {
+    milieu = {
         X : ((e.touches[0].clientX + e.touches[1].clientX + e.touches[2].clientX)/3),
         Y : ((e.touches[0].clientY + e.touches[1].clientY + e.touches[2].clientY)/3)
     }
@@ -603,7 +603,7 @@ svg.addEventListener("touchstart",function(e){
 
 })
 svg.addEventListener("touchmove",function(e){
-
+    console.log(e);
     let moveTouche1 = {
         X: e.touches[0].clientX,
         Y: e.touches[0].clientY,
@@ -634,13 +634,14 @@ svg.addEventListener("touchmove",function(e){
         X: moveTouche3.XMilieu - milieu.X,
         Y: moveTouche3.YMilieu - milieu.Y
     }
-    document.querySelector(".information").innerHTML = e.touches;
+    // document.querySelector(".information").innerHTML = e.touches;
+    // document.querySelector(".information").innerHTML = "Je me déplace";
     e.stopPropagation();
     e.preventDefault(); 
-    // document.querySelector(".information").innerHTML = `<h3>Déplacements</h3> 
-    //                                                     Déplacement touche 1{ X : ${deltaTouche1.X}, Y : ${deltaTouche1.Y} }
-    //                                                     Déplacement touche 2{ X : ${deltaTouche2.X}, Y : ${deltaTouche2.Y} }
-    //                                                     Déplacement touche 3{ X : ${deltaTouche3.X}, Y : ${deltaTouche3.Y} }`;
+    document.querySelector(".information").innerHTML = `<h3>Déplacements</h3> 
+                                                        Déplacement touche 1{ X : ${deltaTouche1.X}, Y : ${deltaTouche1.Y} }
+                                                        Déplacement touche 2{ X : ${deltaTouche2.X}, Y : ${deltaTouche2.Y} }
+                                                        Déplacement touche 3{ X : ${deltaTouche3.X}, Y : ${deltaTouche3.Y} }`;
 })
 svg.addEventListener("touchend",function(e){
     e.stopPropagation();
