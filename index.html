@@ -605,41 +605,41 @@ svg.addEventListener("touchstart",function(e){
 svg.addEventListener("touchmove",function(e){
     e.stopPropagation();
     e.preventDefault(); 
-    let moveTouche1 = {
-        X: e.touche[0].clientX,
-        Y: e.touche[0].clientY,
-        XMilieu : e.touche[0].clientX - milieu.X,
-        YMilieu : e.touche[0].clientY - milieu.Y
-    }
-    let moveTouche2 = {
-        X: e.touche[1].clientX,
-        Y: e.touche[1].clientY,
-        XMilieu : e.touche[1].clientX - milieu.X,
-        YMilieu : e.touche[1].clientY - milieu.Y
-    }
-    let moveTouche3 = {
-        X: e.touche[2].clientX,
-        Y: e.touche[2].clientY,
-        XMilieu : e.touche[2].clientX - milieu.X,
-        YMilieu : e.touche[2].clientY - milieu.Y
-    }
-    let deltaTouche1 = {
-        X: moveTouche1.XMilieu - milieu.X,
-        Y: moveTouche1.YMilieu - milieu.Y
-    }
-    let deltaTouche2 = {
-        X: moveTouche2.XMilieu - milieu.X,
-        Y: moveTouche2.YMilieu - milieu.Y
-    }
-    let deltaTouche3 = {
-        X: moveTouche3.XMilieu - milieu.X,
-        Y: moveTouche3.YMilieu - milieu.Y
-    }
-
-    document.querySelector(".information").innerHTML = `<h3>Déplacements</h3> 
-                                                        Déplacement touche 1{ X : ${deltaTouche1.X}, Y : ${deltaTouche1.Y} }
-                                                        Déplacement touche 2{ X : ${deltaTouche2.X}, Y : ${deltaTouche2.Y} }
-                                                        Déplacement touche 3{ X : ${deltaTouche3.X}, Y : ${deltaTouche3.Y} }`;
+    // let moveTouche1 = {
+    //     X: e.touche[0].clientX,
+    //     Y: e.touche[0].clientY,
+    //     XMilieu : e.touche[0].clientX - milieu.X,
+    //     YMilieu : e.touche[0].clientY - milieu.Y
+    // }
+    // let moveTouche2 = {
+    //     X: e.touche[1].clientX,
+    //     Y: e.touche[1].clientY,
+    //     XMilieu : e.touche[1].clientX - milieu.X,
+    //     YMilieu : e.touche[1].clientY - milieu.Y
+    // }
+    // let moveTouche3 = {
+    //     X: e.touche[2].clientX,
+    //     Y: e.touche[2].clientY,
+    //     XMilieu : e.touche[2].clientX - milieu.X,
+    //     YMilieu : e.touche[2].clientY - milieu.Y
+    // }
+    // let deltaTouche1 = {
+    //     X: moveTouche1.XMilieu - milieu.X,
+    //     Y: moveTouche1.YMilieu - milieu.Y
+    // }
+    // let deltaTouche2 = {
+    //     X: moveTouche2.XMilieu - milieu.X,
+    //     Y: moveTouche2.YMilieu - milieu.Y
+    // }
+    // let deltaTouche3 = {
+    //     X: moveTouche3.XMilieu - milieu.X,
+    //     Y: moveTouche3.YMilieu - milieu.Y
+    // }
+    document.querySelector(".information").innerHTML = "Je me déplace";
+    // document.querySelector(".information").innerHTML = `<h3>Déplacements</h3> 
+    //                                                     Déplacement touche 1{ X : ${deltaTouche1.X}, Y : ${deltaTouche1.Y} }
+    //                                                     Déplacement touche 2{ X : ${deltaTouche2.X}, Y : ${deltaTouche2.Y} }
+    //                                                     Déplacement touche 3{ X : ${deltaTouche3.X}, Y : ${deltaTouche3.Y} }`;
 })
 svg.addEventListener("touchend",function(e){
     e.stopPropagation();
