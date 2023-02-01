@@ -623,8 +623,8 @@ svg.addEventListener("touchmove",function(e){
         YMilieu : e.touches[2].clientY - touche3.Y
     }
     let moyenneDeplacement = {
-        X: ((moveTouche1.XMilieu+moveTouche2.XMilieu+moveTouche3.XMilieu)/3),
-        Y: ((moveTouche1.YMilieu+moveTouche2.YMilieu+moveTouche3.YMilieu)/3)
+        X: ((Math.abs(moveTouche1.XMilieu)+Math.abs(moveTouche2.XMilieu)+Math.abs(moveTouche3.XMilieu))/3),
+        Y: ((Math.abs(moveTouche1.YMilieu)+Math.abs(moveTouche2.YMilieu)+Math.abs(moveTouche3.YMilieu))/3)
     }
     // let deltaTouche1 = {
     //     X: moveTouche1.XMilieu - milieu.X,
