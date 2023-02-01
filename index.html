@@ -603,8 +603,7 @@ svg.addEventListener("touchstart",function(e){
 
 })
 svg.addEventListener("touchmove",function(e){
-    e.stopPropagation();
-    e.preventDefault(); 
+
     let moveTouche1 = {
         X: e.touches[0].clientX,
         Y: e.touches[0].clientY,
@@ -636,6 +635,8 @@ svg.addEventListener("touchmove",function(e){
         Y: moveTouche3.YMilieu - milieu.Y
     }
     document.querySelector(".information").innerHTML = e.touches;
+    e.stopPropagation();
+    e.preventDefault(); 
     // document.querySelector(".information").innerHTML = `<h3>Déplacements</h3> 
     //                                                     Déplacement touche 1{ X : ${deltaTouche1.X}, Y : ${deltaTouche1.Y} }
     //                                                     Déplacement touche 2{ X : ${deltaTouche2.X}, Y : ${deltaTouche2.Y} }
