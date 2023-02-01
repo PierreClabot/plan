@@ -637,9 +637,9 @@ svg.addEventListener("touchmove",function(e){
     e.stopPropagation();
     e.preventDefault(); 
     document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3> 
-                                                        Déplacement touche 1 <br>{ X : ${deltaTouche1.XMilieu}, Y : ${deltaTouche1.YMilieu} }<br>
-                                                        Déplacement touche 2 <br>{ X : ${deltaTouche2.XMilieu}, Y : ${deltaTouche2.YMilieu} }<br>
-                                                        Déplacement touche 3 <br>{ X : ${deltaTouche3.XMilieu}, Y : ${deltaTouche3.YMilieu} }<br>`;
+                                                        Déplacement touche 1 <br>{ X : ${moveTouche1.XMilieu}, Y : ${moveTouche1.YMilieu} }<br>
+                                                        Déplacement touche 2 <br>{ X : ${moveTouche2.XMilieu}, Y : ${moveTouche2.YMilieu} }<br>
+                                                        Déplacement touche 3 <br>{ X : ${moveTouche3.XMilieu}, Y : ${moveTouche3.YMilieu} }<br>`;
 })
 svg.addEventListener("touchend",function(e){
     e.stopPropagation();
