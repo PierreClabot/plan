@@ -575,6 +575,7 @@ svg.addEventListener("touchstart",function(e){
         X : e.touches[0].clientX - e.touches[1].clientX - e.touches[2].clientX,
         Y : e.touches[0].clientY - e.touches[1].clientY - e.touches[2].clientY
     }
+    document.querySelector(".information").innerHTML += "<h3>Milieu</h3> { X : "+milieu.X+", Y : "+milieu.Y+" }";
 })
 svg.addEventListener("touchmove",function(e){
     e.stopPropagation();
