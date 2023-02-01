@@ -622,24 +622,29 @@ svg.addEventListener("touchmove",function(e){
         XMilieu : e.touches[2].clientX - touche3.X,
         YMilieu : e.touches[2].clientY - touche3.Y
     }
-    let deltaTouche1 = {
-        X: moveTouche1.XMilieu - milieu.X,
-        Y: moveTouche1.YMilieu - milieu.Y
+    let moyenneDeplacement = {
+        X: ((moveTouche1.XMilieu+moveTouche2.XMilieu+moveTouche3.XMilieu)/3),
+        Y: ((moveTouche1.YMilieu+moveTouche2.YMilieu+moveTouche3.YMilieu)/3)
     }
-    let deltaTouche2 = {
-        X: moveTouche2.XMilieu - milieu.X,
-        Y: moveTouche2.YMilieu - milieu.Y
-    }
-    let deltaTouche3 = {
-        X: moveTouche3.XMilieu - milieu.X,
-        Y: moveTouche3.YMilieu - milieu.Y
-    }
+    // let deltaTouche1 = {
+    //     X: moveTouche1.XMilieu - milieu.X,
+    //     Y: moveTouche1.YMilieu - milieu.Y
+    // }
+    // let deltaTouche2 = {
+    //     X: moveTouche2.XMilieu - milieu.X,
+    //     Y: moveTouche2.YMilieu - milieu.Y
+    // }
+    // let deltaTouche3 = {
+    //     X: moveTouche3.XMilieu - milieu.X,
+    //     Y: moveTouche3.YMilieu - milieu.Y
+    // }
     e.stopPropagation();
     e.preventDefault(); 
     document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3> 
                                                         Déplacement touche 1 <br>{ X : ${moveTouche1.XMilieu}, Y : ${moveTouche1.YMilieu} }<br>
                                                         Déplacement touche 2 <br>{ X : ${moveTouche2.XMilieu}, Y : ${moveTouche2.YMilieu} }<br>
-                                                        Déplacement touche 3 <br>{ X : ${moveTouche3.XMilieu}, Y : ${moveTouche3.YMilieu} }<br>`;
+                                                        Déplacement touche 3 <br>{ X : ${moveTouche3.XMilieu}, Y : ${moveTouche3.YMilieu} }<br>
+                                                        Déplacement moyen { X : ${moyenneDeplacement.X} , Y : ${moyenneDeplacement} }`;
 })
 svg.addEventListener("touchend",function(e){
     e.stopPropagation();
