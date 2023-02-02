@@ -662,7 +662,7 @@ svg.addEventListener("touchmove",function(e){
 
       positionSVG = {
         X : (dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
-        Y : (dernierePositionSVG.X+(e.touches[0].clientY - premierAppui.Y))
+        Y : (dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
       }
 
     }
@@ -674,6 +674,7 @@ svg.addEventListener("touchend",function(e){
     boolZoom = true;
     lastScale = 1;
     dernierePositionSVG = positionSVG;
+    console.log("dernierPositionSVG",dernierePositionSVG);
 })
 
 function pcdNavWLValiderSiegesRpr(param){
