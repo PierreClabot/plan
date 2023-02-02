@@ -684,6 +684,12 @@ svg.addEventListener("touchend",function(e){
     dernierePositionSVG = positionSVG;
     document.querySelector(".deplacement").innerHTML += "touchend";
 })
+svg.addEventListener("touchcancel",function(e)
+{
+  e.stopPropagation();
+  e.preventDefault(); 
+  alert("Cancel");
+})
 
 function pcdNavWLValiderSiegesRpr(param){
     alert(param);
