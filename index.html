@@ -591,9 +591,11 @@ let dernierePositionSVG = {
   Y : 0
 };
 const svg = document.querySelector("svg");
+var tabTouches = [];
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
     e.preventDefault(); 
+    tabTouches.push(e);
     if(e.touches.length == 1)
     {
       premierAppui = {
@@ -611,6 +613,7 @@ svg.addEventListener("touchstart",function(e){
     {
       document.querySelector("svg").style.transform = `scale(${scale})`;
     }
+    document.querySelector(".tabTouches").innerHTML = `Touche 1 : { X ${tabTouches[0].clientX}, Y : ${tabTouches[0].clientX} }`;
 })
 svg.addEventListener("touchmove",function(e){
 
@@ -768,6 +771,9 @@ function wheel(e) {
     
 </div>
 <div class="deplacement">
+
+</div>
+<div class="tabTouches">
 
 </div>
 </body>
