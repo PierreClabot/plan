@@ -637,7 +637,7 @@ svg.addEventListener("touchmove",function(e){
     if(e.touches.length == 1)
     {
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, psition doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
-      svg.style.transform=`translate(-${(premierAppui.X - e.touches[0].clientX)}px,${(premierAppui.Y- e.touches[0].clientY)*-1}px) scale(${scale})`;
+      svg.style.transform=`translate(-${(premierAppui.X - e.touches[0].clientX)*-1}px,${(premierAppui.Y- e.touches[0].clientY)*-1}px) scale(${scale})`;
     }
     
 })
