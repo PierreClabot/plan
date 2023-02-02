@@ -578,6 +578,7 @@ let touche2 = '';
 let touche3 = '';
 let milieu ;
 let scale = 1;
+let boolZoom = false;
 const svg = document.querySelector("svg");
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
@@ -634,7 +635,7 @@ svg.addEventListener("touchmove",function(e){
       scale = e.scale;
     }
 
-    if (e.scale>lastScale)
+    if (e.scale>=lastScale)
     {
       scale = e.scale;
       zoom = "zoom";
