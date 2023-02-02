@@ -598,9 +598,11 @@ svg.addEventListener("touchstart",function(e){
       }
     }
     else{
-      premierAppui = "";
+      premierAppui = {
+        X : 0,
+        Y : 0
+      };
     }
-    console.log(premierAppui);
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
     if(positionSVG)
     {
@@ -622,12 +624,12 @@ svg.addEventListener("touchmove",function(e){
         scale = e.scale;
       }
 
-      if (e.scale>=lastScale)
+      if (e.scale>=lastScale) // Zoom
       {
         scale += (e.scale-lastScale);
       }
-      else{
-        scale -= (lastScale- e.scale);
+      else{ // Dezoom
+        scale -= (lastScale-e.scale);
       }
       if(scale>4) // Limiter l'échelle de zoom/dezoom
       {
