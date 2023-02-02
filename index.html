@@ -635,9 +635,12 @@ svg.addEventListener("touchmove",function(e){
     {
       scale = e.scale;
     }
-    else
+    else if (scale>1)
     {
       scale += (e.scale-1);
+    }
+    else{
+      scale -= (1-e.scale);
     }
     
     document.querySelector("svg").style.transform = `scale(${scale})`;
