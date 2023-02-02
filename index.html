@@ -637,7 +637,7 @@ svg.addEventListener("touchmove",function(e){
 
       if (e.scale>=lastScale)
       {
-        scale = (e.scale-lastScale);
+        scale += (e.scale-lastScale);
         zoom = "zoom";
       }
       else{
