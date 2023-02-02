@@ -631,7 +631,15 @@ svg.addEventListener("touchmove",function(e){
                                                         Nombre de doigts : ${e.touches.length} <br>
                                                         e.scale : ${e.scale}
                                                         `;
-    scale += e.scale;
+    if(scale == 1)
+    {
+      scale = e.scale;
+    }
+    else
+    {
+      scale += e.scale;
+    }
+    
     document.querySelector("svg").style.transform = `scale(${scale})`;
 })
 svg.addEventListener("touchend",function(e){
