@@ -624,20 +624,19 @@ svg.addEventListener("touchmove",function(e){
 
       if (e.scale>=lastScale)
       {
-        scale = scale + (e.scale-lastScale);
+        scale += (e.scale-lastScale);
       }
       else{
         scale -= (lastScale- e.scale);
-        
       }
-      if(scale>4) // Limiter l'échelle de zoom/dezoom
-      {
-        scale = 4
-      }
-      if(scale <0.8)
-      {
-        scale = 0.8;
-      }
+      // if(scale>4) // Limiter l'échelle de zoom/dezoom
+      // {
+      //   scale = 4
+      // }
+      // if(scale <0.8)
+      // {
+      //   scale = 0.8;
+      // }
       document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
                                                           Nombre de doigts : ${e.touches.length} <br>
                                                           Scale : ${scale}<br>
