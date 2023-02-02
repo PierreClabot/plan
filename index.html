@@ -639,7 +639,7 @@ svg.addEventListener("touchmove",function(e){
 
     if (e.scale>lastScale)
     {
-      scale += (e.scale-1);
+      scale = e.scale;
     }
     else{
       scale -= (1-e.scale);
