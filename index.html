@@ -580,34 +580,21 @@ let milieu ;
 let scale = 1;
 let boolZoom = false;
 let lastScale = 1;
+let premierAppui ;
 const svg = document.querySelector("svg");
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
     e.preventDefault(); 
-    // document.querySelector(".information").innerHTML = "touche1 { X:"+e.touches[0].clientX+", Y:"+e.touches[0].clientY+"}<br>touche2 { X:"+e.touches[1].clientX+", Y:"+e.touches[1].clientY+"}<br>touche3 : { X:"+e.touches[2].clientX+", Y:"+e.touches[2].clientY+"}";
-
-    // milieu = {
-    //     X : ((e.touches[0].clientX + e.touches[1].clientX + e.touches[2].clientX)/3),
-    //     Y : ((e.touches[0].clientY + e.touches[1].clientY + e.touches[2].clientY)/3)
-    // }
-    // touche1 = {
-    //     X: e.touches[0].clientX,
-    //     Y: e.touches[0].clientY,
-    //     XMilieu : e.touches[0].clientX - milieu.X,
-    //     YMilieu : e.touches[0].clientY - milieu.Y
-    // }
-    // touche2 = {
-    //     X: e.touches[1].clientX,
-    //     Y: e.touches[1].clientY,
-    //     XMilieu : e.touches[1].clientX - milieu.X,
-    //     YMilieu : e.touches[1].clientY - milieu.Y
-    // }
-    // touche3 = {
-    //     X: e.touches[2].clientX,
-    //     Y: e.touches[2].clientY,
-    //     XMilieu : e.touches[2].clientX - milieu.X,
-    //     YMilieu : e.touches[2].clientY - milieu.Y
-    // }
+    if(e.touches.length == 1)
+    {
+      premierAppui = {
+        X : e.touches[0].clientX,
+        Y : e.touches[0].clientY
+      }
+    }
+    else{
+      premierAppui = "";
+    }
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
     document.querySelector("svg").style.transform = `scale(${scale})`;
 })
@@ -649,7 +636,8 @@ svg.addEventListener("touchmove",function(e){
     if(e.touches.length == 1)
     {
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, psition doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
-      svg.style.transform=`translate(${e.touches[0].clientX},${e.touches[0].clientY})`
+      svg.style.transform=`translate(${(premierAppui.X - e.touches[0].clientX)*-1 }px,-${(premierAppui.Y- e.touches[0].clientY)*-1}px)`;
+      // svg.style.transform = `translate(300px,100px)`;
     }
     
 })
