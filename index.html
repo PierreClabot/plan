@@ -638,10 +638,12 @@ svg.addEventListener("touchmove",function(e){
     if (e.scale>=(lastScale+0.1))
     {
       scale = scale + (e.scale-lastScale);
+      lastScale=e.scale;
       zoom = "zoom";
     }
     else if (e.scale < (lastScale-0.1)){
       scale -= (lastScale- e.scale);
+      lastScale=e.scale;
       zoom = "dezoom";
     }
     if(scale>4) // Limiter l'échelle de zoom/dezoom
@@ -663,7 +665,7 @@ svg.addEventListener("touchmove",function(e){
                                                         lastScale : ${lastScale}<br>
                                                         Zoom : ${zoom}
                                                         `;
-    lastScale=e.scale;
+    
     document.querySelector("svg").style.transform = `scale(${scale})`;
 })
 svg.addEventListener("touchend",function(e){
