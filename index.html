@@ -645,7 +645,7 @@ svg.addEventListener("touchmove",function(e){
                                                         <br>Déplacement touche 1 <br>{ X : ${moveTouche1.XMilieu}, Y : ${moveTouche1.YMilieu} }<br>
                                                         Déplacement touche 2 <br>{ X : ${moveTouche2.XMilieu}, Y : ${moveTouche2.YMilieu} }<br>
                                                         `;
-    document.querySelector("svg")
+    document.querySelector("svg").style.transform = `scale(${e.scale})`;
 })
 svg.addEventListener("touchend",function(e){
     e.stopPropagation();
