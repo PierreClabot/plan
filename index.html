@@ -597,7 +597,14 @@ svg.addEventListener("touchstart",function(e){
       premierAppui = "";
     }
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
-    document.querySelector("svg").style.transform = `scale(${scale})`;
+    if(dernierAppui)
+    {
+      document.querySelector("svg").style.transform = `translate(${dernierAppui.X}px,${dernierAppui.Y}px) scale(${scale})`;
+    }
+    else
+    {
+      document.querySelector("svg").style.transform = `scale(${scale})`;
+    }
 })
 svg.addEventListener("touchmove",function(e){
 
@@ -637,7 +644,11 @@ svg.addEventListener("touchmove",function(e){
     if(e.touches.length == 1)
     {
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, psition doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
-      svg.style.transform=`translate(${(premierAppui.X - e.touches[0].clientX)*-1}px,${(premierAppui.Y- e.touches[0].clientY)*-1}px) scale(${scale})`;
+      dernierAppui = {
+        X : (premierAppui.X - e.touches[0].clientX)*-1,
+        Y : (premierAppui.Y- e.touches[0].clientY)*-1
+      }
+      svg.style.transform=`translate(${dernierAppui.X}px,${dernierAppui.Y}px) scale(${scale})`;
     }
     
 })
