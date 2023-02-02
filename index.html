@@ -610,26 +610,24 @@ svg.addEventListener("touchstart",function(e){
 })
 svg.addEventListener("touchmove",function(e){
     console.log(e);
-    let moveTouche1 = {
-        X: e.touches[0].clientX,
-        Y: e.touches[0].clientY,
-        XMilieu : e.touches[0].clientX - touche1.X,
-        YMilieu : e.touches[0].clientY - touche1.Y
-    }
-    let moveTouche2 = {
-        X: e.touches[1].clientX,
-        Y: e.touches[1].clientY,
-        XMilieu : e.touches[1].clientX - touche2.X,
-        YMilieu : e.touches[1].clientY - touche2.Y
-    }
+    // let moveTouche1 = {
+    //     X: e.touches[0].clientX,
+    //     Y: e.touches[0].clientY,
+    //     XMilieu : e.touches[0].clientX - touche1.X,
+    //     YMilieu : e.touches[0].clientY - touche1.Y
+    // }
+    // let moveTouche2 = {
+    //     X: e.touches[1].clientX,
+    //     Y: e.touches[1].clientY,
+    //     XMilieu : e.touches[1].clientX - touche2.X,
+    //     YMilieu : e.touches[1].clientY - touche2.Y
+    // }
 
     e.stopPropagation();
     e.preventDefault(); 
     document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
-                                                        Nombre de doigts : ${e.touches.length} 
+                                                        Nombre de doigts : ${e.touches.length} <br>
                                                         e.scale : ${e.scale}
-                                                        <br>Déplacement touche 1 <br>{ X : ${moveTouche1.XMilieu}, Y : ${moveTouche1.YMilieu} }<br>
-                                                        Déplacement touche 2 <br>{ X : ${moveTouche2.XMilieu}, Y : ${moveTouche2.YMilieu} }<br>
                                                         `;
     document.querySelector("svg").style.transform = `scale(${e.scale})`;
 })
