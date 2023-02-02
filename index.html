@@ -595,7 +595,7 @@ var tabTouches = [];
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
     e.preventDefault(); 
-    tabTouches.push(e);
+    tabTouches.push(e.touches[0]);
     if(e.touches.length == 1)
     {
       premierAppui = {
