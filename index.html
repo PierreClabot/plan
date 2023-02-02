@@ -625,11 +625,10 @@ svg.addEventListener("touchmove",function(e){
       if (e.scale>=lastScale)
       {
         scale = scale + (e.scale-lastScale);
-        lastScale=e.scale;
       }
       else{
         scale -= (lastScale- e.scale);
-        lastScale=e.scale;
+        
       }
       if(scale>4) // Limiter l'échelle de zoom/dezoom
       {
@@ -646,7 +645,7 @@ svg.addEventListener("touchmove",function(e){
                                                           lastScale : ${lastScale}<br>
                                                           Zoom : ${zoom}
                                                           `;
-      
+      lastScale=e.scale;
       document.querySelector("svg").style.transform = `scale(${scale})`;
     // }
     // if(e.touches.length == 1)
