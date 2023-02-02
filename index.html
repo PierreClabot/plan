@@ -635,16 +635,16 @@ svg.addEventListener("touchmove",function(e){
       scale = e.scale;
     }
 
-    if (e.scale>=lastScale)
+    if (e.scale>=(lastScale+0.1))
     {
       scale = scale + (e.scale-lastScale);
       zoom = "zoom";
     }
-    else{
+    else if (e.scale < (lastScale-0.1)){
       scale -= (lastScale- e.scale);
       zoom = "dezoom";
     }
-    if(scale>4)
+    if(scale>4) // Limiter l'échelle de zoom/dezoom
     {
       scale = 4
     }
