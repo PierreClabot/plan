@@ -612,61 +612,48 @@ svg.addEventListener("touchstart",function(e){
     document.querySelector("svg").style.transform = `scale(${scale})`;
 })
 svg.addEventListener("touchmove",function(e){
-    console.log(e);
-    // let moveTouche1 = {
-    //     X: e.touches[0].clientX,
-    //     Y: e.touches[0].clientY,
-    //     XMilieu : e.touches[0].clientX - touche1.X,
-    //     YMilieu : e.touches[0].clientY - touche1.Y
-    // }
-    // let moveTouche2 = {
-    //     X: e.touches[1].clientX,
-    //     Y: e.touches[1].clientY,
-    //     XMilieu : e.touches[1].clientX - touche2.X,
-    //     YMilieu : e.touches[1].clientY - touche2.Y
-    // }
-    let zoom ; 
 
     e.stopPropagation();
     e.preventDefault(); 
+    if(e.touches.length > 1) // Plusieurs doigts simultanés
+    {
+      if(scale == 1)
+      {
+        scale = e.scale;
+      }
 
-    if(scale == 1)
+      if (e.scale>=(lastScale+0.1))
+      {
+        scale = scale + (e.scale-lastScale);
+        lastScale=e.scale;
+      }
+      else if (e.scale < (lastScale-0.1)){
+        scale -= (lastScale- e.scale);
+        lastScale=e.scale;
+      }
+      if(scale>4) // Limiter l'échelle de zoom/dezoom
+      {
+        scale = 4
+      }
+      if(scale <0.8)
+      {
+        scale = 0.8;
+      }
+      document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
+                                                          Nombre de doigts : ${e.touches.length} <br>
+                                                          Scale : ${scale}<br>
+                                                          e.scale : ${e.scale}<br>
+                                                          lastScale : ${lastScale}<br>
+                                                          Zoom : ${zoom}
+                                                          `;
+      
+      document.querySelector("svg").style.transform = `scale(${scale})`;
+    }
+    if(e.touches.length == 1)
     {
-      scale = e.scale;
+      document.querySelector(".deplacement").innerHTML = "Je veux scroll";
     }
-
-    if (e.scale>=(lastScale+0.1))
-    {
-      scale = scale + (e.scale-lastScale);
-      lastScale=e.scale;
-      zoom = "zoom";
-    }
-    else if (e.scale < (lastScale-0.1)){
-      scale -= (lastScale- e.scale);
-      lastScale=e.scale;
-      zoom = "dezoom";
-    }
-    if(scale>4) // Limiter l'échelle de zoom/dezoom
-    {
-      scale = 4
-    }
-    if(scale <0.8)
-    {
-      scale = 0.8;
-    }
-  
     
-
-
-    document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
-                                                        Nombre de doigts : ${e.touches.length} <br>
-                                                        Scale : ${scale}<br>
-                                                        e.scale : ${e.scale}<br>
-                                                        lastScale : ${lastScale}<br>
-                                                        Zoom : ${zoom}
-                                                        `;
-    
-    document.querySelector("svg").style.transform = `scale(${scale})`;
 })
 svg.addEventListener("touchend",function(e){
     e.stopPropagation();
