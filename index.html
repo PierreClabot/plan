@@ -640,7 +640,7 @@ svg.addEventListener("touchmove",function(e){
       zoom = "zoom";
     }
     else{
-      scale -= e.scale;
+      scale -= (lastScale- e.scale);
       zoom = "dezoom";
     }
 
