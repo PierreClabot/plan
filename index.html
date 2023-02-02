@@ -634,16 +634,19 @@ svg.addEventListener("touchmove",function(e){
     {
       scale = e.scale;
     }
-
-    if (e.scale>=lastScale)
+    if(e.scale != 1)
     {
-      scale = e.scale;
-      zoom = "zoom";
+      if (e.scale>=lastScale)
+      {
+        scale = e.scale;
+        zoom = "zoom";
+      }
+      else{
+        scale -= (lastScale- e.scale);
+        zoom = "dezoom";
+      }
     }
-    else{
-      scale -= (lastScale- e.scale);
-      zoom = "dezoom";
-    }
+
 
     document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
                                                         Nombre de doigts : ${e.touches.length} <br>
