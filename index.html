@@ -658,7 +658,7 @@ svg.addEventListener("touchmove",function(e){
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, psition doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
 
       svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
-      
+      // 
       positionSVG = {
         X : (dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
         Y : (dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
