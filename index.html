@@ -637,7 +637,7 @@ svg.addEventListener("touchmove",function(e){
 
       if (e.scale>=lastScale)
       {
-        scale += (e.scale-lastScale);
+        scale = e.scale;
         zoom = "zoom";
       }
       else{
@@ -645,10 +645,6 @@ svg.addEventListener("touchmove",function(e){
         zoom = "dezoom";
       }
   
-    // else{
-    //   // On a déjà fait un zoom
-    // }
-
     
 
 
