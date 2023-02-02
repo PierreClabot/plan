@@ -629,7 +629,8 @@ svg.addEventListener("touchmove",function(e){
     e.preventDefault(); 
     document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
                                                         Nombre de doigts : ${e.touches.length} <br>
-                                                        e.scale : ${e.scale}
+                                                        e.scale : ${e.scale}<br>
+                                                        lastScale : ${lastScale}
                                                         `;
     if(scale == 1)
     {
