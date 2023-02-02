@@ -656,7 +656,7 @@ svg.addEventListener("touchmove",function(e){
     if(e.touches.length == 1)
     {
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, psition doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
-      // dernierePositionSVG = positionSVG;
+      
       svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
       
       positionSVG = {
@@ -665,12 +665,7 @@ svg.addEventListener("touchmove",function(e){
       }
 
     }
-    document.querySelector(".deplacement").innerHTML += `Nombre d'appui : ${e.touches.length}<br>
-                                                         changedTouches : ${e.touches.changedTouches[0]}`;
-    e.forEach((evt)=>{
-      let cpt=1;
-      document.querySelector(".deplacement").innerHTML +=`Appui ${cpt} : { X : ${evt.clientX}, Y : ${evt.clientY} } <br>`
-    })
+
     
 })
 svg.addEventListener("touchend",function(e){
