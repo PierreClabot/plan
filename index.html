@@ -665,9 +665,11 @@ svg.addEventListener("touchmove",function(e){
       }
 
     }
-    document.querySelector(".deplacement").innerHTML += `Nombre d'appui : ${e.touches.length}<br>
-                                                        Appui 1 : { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} } <br>
-                                                        Appui 2 : { X : ${e.touches[1].clientX}, Y : ${e.touches[1].clientY} } <br>`;
+    document.querySelector(".deplacement").innerHTML += `Nombre d'appui : ${e.touches.length}<br>`;
+    e.forEach((evt)=>{
+      let cpt=1;
+      document.querySelector(".deplacement").innerHTML +=`Appui ${cpt} : { X : ${evt.clientX}, Y : ${evt.clientY} } <br>`
+    })
     
 })
 svg.addEventListener("touchend",function(e){
