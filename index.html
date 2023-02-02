@@ -665,8 +665,12 @@ svg.addEventListener("touchmove",function(e){
       }
 
     }
-
-
+    document.querySelector(".deplacement").innerHTML += `Nombre d'appui : ${e.touches.length}<br>
+                                                         changedTouches : ${e.touches.changedTouches[0]}`;
+    e.forEach((evt)=>{
+      let cpt=1;
+      document.querySelector(".deplacement").innerHTML +=`Appui ${cpt} : { X : ${evt.clientX}, Y : ${evt.clientY} } <br>`
+    })
     
 })
 svg.addEventListener("touchend",function(e){
@@ -674,7 +678,7 @@ svg.addEventListener("touchend",function(e){
     e.preventDefault(); 
     boolZoom = true;
     lastScale = 1;
-    // dernierePositionSVG = positionSVG;
+    dernierePositionSVG = positionSVG;
     document.querySelector(".deplacement").innerHTML += "touchend";
 })
 svg.addEventListener("touchcancel",function(e)
