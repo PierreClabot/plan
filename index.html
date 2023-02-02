@@ -665,9 +665,9 @@ svg.addEventListener("touchmove",function(e){
       }
 
     }
-    document.querySelector(".deplacement").innerHTML += `Nombre d'appui : ${e.touches.length}<br<
-                                                        Appui 1 : ${e.touches[0]}<br>
-                                                        Appui 2 : ${e.touches[1]}<br>`;
+    document.querySelector(".deplacement").innerHTML += `Nombre d'appui : ${e.touches.length}<br>
+                                                        Appui 1 : { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} } <br>
+                                                        Appui 2 : { X : ${e.touches[1].clientX}, Y : ${e.touches[1].clientY} } <br>`;
     
 })
 svg.addEventListener("touchend",function(e){
