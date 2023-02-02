@@ -656,16 +656,15 @@ svg.addEventListener("touchmove",function(e){
           Y : 0
         };
       }
-      console.log("positionSVG",positionSVG);
       svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
-      console.log("Je me déplace");
-
+      
       positionSVG = {
         X : (dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
         Y : (dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
       }
 
     }
+    document.querySelector(".deplacement").innerHTML = `Nombre d'appui : ${e.touches.length}`;
     
 })
 svg.addEventListener("touchend",function(e){
@@ -674,7 +673,6 @@ svg.addEventListener("touchend",function(e){
     boolZoom = true;
     lastScale = 1;
     dernierePositionSVG = positionSVG;
-    console.log("dernierPositionSVG",dernierePositionSVG);
 })
 
 function pcdNavWLValiderSiegesRpr(param){
