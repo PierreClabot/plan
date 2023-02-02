@@ -609,7 +609,7 @@ svg.addEventListener("touchstart",function(e){
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
     document.querySelector("svg").style.transform = `scale(${scale})`;
 })
-
+var lastScale ;
 svg.addEventListener("touchmove",function(e){
     console.log(e);
     // let moveTouche1 = {
@@ -635,8 +635,8 @@ svg.addEventListener("touchmove",function(e){
     {
       scale = e.scale;
     }
-    
-    if (e.scale>1)
+
+    if (e.scale>lastScale)
     {
       scale += (e.scale-1);
     }
@@ -644,6 +644,7 @@ svg.addEventListener("touchmove",function(e){
       scale -= (1-e.scale);
     }
     
+    lastScale=e.scale;
     document.querySelector("svg").style.transform = `scale(${scale})`;
 })
 svg.addEventListener("touchend",function(e){
