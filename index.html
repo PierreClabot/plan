@@ -579,6 +579,7 @@ let touche3 = '';
 let milieu ;
 let scale = 1;
 let boolZoom = false;
+let lastScale = 1;
 const svg = document.querySelector("svg");
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
@@ -610,7 +611,6 @@ svg.addEventListener("touchstart",function(e){
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
     document.querySelector("svg").style.transform = `scale(${scale})`;
 })
-var lastScale ;
 svg.addEventListener("touchmove",function(e){
     console.log(e);
     // let moveTouche1 = {
