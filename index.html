@@ -644,7 +644,7 @@ svg.addEventListener("touchmove",function(e){
                                                           lastScale : ${lastScale}<br>
                                                           `;
       lastScale=e.scale;
-      document.querySelector("svg").style.transform = `scale(${scale})`;
+      document.querySelector("svg").style.transform = `translate(${dernierePositionSVG.X}px,${dernierePositionSVG.Y}px) scale(${scale})`;
     }
     if(e.touches.length == 1)
     {
