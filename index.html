@@ -652,11 +652,12 @@ svg.addEventListener("touchmove",function(e){
                                                           `;
       lastScale=e.scale;
       document.querySelector("svg").style.transform = `translate(${dernierePositionSVG.X}px,${dernierePositionSVG.Y}px) scale(${scale})`;
+      return; // xxxxxxxxxxxxxxx
     }
     if(e.touches.length == 1)
     {
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, psition doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
-      
+
       svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
       
       positionSVG = {
