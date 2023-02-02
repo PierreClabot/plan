@@ -622,31 +622,11 @@ svg.addEventListener("touchmove",function(e){
         XMilieu : e.touches[1].clientX - touche2.X,
         YMilieu : e.touches[1].clientY - touche2.Y
     }
-    // let moveTouche3 = {
-    //     X: e.touches[2].clientX,
-    //     Y: e.touches[2].clientY,
-    //     XMilieu : e.touches[2].clientX - touche3.X,
-    //     YMilieu : e.touches[2].clientY - touche3.Y
-    // }
-    // let moyenneDeplacement = {
-    //     X: ((Math.abs(moveTouche1.XMilieu)+Math.abs(moveTouche2.XMilieu)+Math.abs(moveTouche3.XMilieu))/3),
-    //     Y: ((Math.abs(moveTouche1.YMilieu)+Math.abs(moveTouche2.YMilieu)+Math.abs(moveTouche3.YMilieu))/3)
-    // }
-    // let deltaTouche1 = {
-    //     X: moveTouche1.XMilieu - milieu.X,
-    //     Y: moveTouche1.YMilieu - milieu.Y
-    // }
-    // let deltaTouche2 = {
-    //     X: moveTouche2.XMilieu - milieu.X,
-    //     Y: moveTouche2.YMilieu - milieu.Y
-    // }
-    // let deltaTouche3 = {
-    //     X: moveTouche3.XMilieu - milieu.X,
-    //     Y: moveTouche3.YMilieu - milieu.Y
-    // }
+
     e.stopPropagation();
     e.preventDefault(); 
-    document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3> 
+    document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
+                                                        Nombre de doigts : ${e.touches.length} 
                                                         e.scale : ${e.scale}
                                                         <br>Déplacement touche 1 <br>{ X : ${moveTouche1.XMilieu}, Y : ${moveTouche1.YMilieu} }<br>
                                                         Déplacement touche 2 <br>{ X : ${moveTouche2.XMilieu}, Y : ${moveTouche2.YMilieu} }<br>
