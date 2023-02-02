@@ -577,37 +577,39 @@ let touche1 = '';
 let touche2 = '';
 let touche3 = '';
 let milieu ;
+let scale = 1;
 const svg = document.querySelector("svg");
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
     e.preventDefault(); 
-    document.querySelector(".information").innerHTML = "touche1 { X:"+e.touches[0].clientX+", Y:"+e.touches[0].clientY+"}<br>touche2 { X:"+e.touches[1].clientX+", Y:"+e.touches[1].clientY+"}<br>touche3 : { X:"+e.touches[2].clientX+", Y:"+e.touches[2].clientY+"}";
+    // document.querySelector(".information").innerHTML = "touche1 { X:"+e.touches[0].clientX+", Y:"+e.touches[0].clientY+"}<br>touche2 { X:"+e.touches[1].clientX+", Y:"+e.touches[1].clientY+"}<br>touche3 : { X:"+e.touches[2].clientX+", Y:"+e.touches[2].clientY+"}";
 
-    milieu = {
-        X : ((e.touches[0].clientX + e.touches[1].clientX + e.touches[2].clientX)/3),
-        Y : ((e.touches[0].clientY + e.touches[1].clientY + e.touches[2].clientY)/3)
-    }
-    touche1 = {
-        X: e.touches[0].clientX,
-        Y: e.touches[0].clientY,
-        XMilieu : e.touches[0].clientX - milieu.X,
-        YMilieu : e.touches[0].clientY - milieu.Y
-    }
-    touche2 = {
-        X: e.touches[1].clientX,
-        Y: e.touches[1].clientY,
-        XMilieu : e.touches[1].clientX - milieu.X,
-        YMilieu : e.touches[1].clientY - milieu.Y
-    }
-    touche3 = {
-        X: e.touches[2].clientX,
-        Y: e.touches[2].clientY,
-        XMilieu : e.touches[2].clientX - milieu.X,
-        YMilieu : e.touches[2].clientY - milieu.Y
-    }
-    document.querySelector(".milieu").innerHTML = "<h3>Milieu</h3> { X : "+milieu.X+", Y : "+milieu.Y+" }";
-
+    // milieu = {
+    //     X : ((e.touches[0].clientX + e.touches[1].clientX + e.touches[2].clientX)/3),
+    //     Y : ((e.touches[0].clientY + e.touches[1].clientY + e.touches[2].clientY)/3)
+    // }
+    // touche1 = {
+    //     X: e.touches[0].clientX,
+    //     Y: e.touches[0].clientY,
+    //     XMilieu : e.touches[0].clientX - milieu.X,
+    //     YMilieu : e.touches[0].clientY - milieu.Y
+    // }
+    // touche2 = {
+    //     X: e.touches[1].clientX,
+    //     Y: e.touches[1].clientY,
+    //     XMilieu : e.touches[1].clientX - milieu.X,
+    //     YMilieu : e.touches[1].clientY - milieu.Y
+    // }
+    // touche3 = {
+    //     X: e.touches[2].clientX,
+    //     Y: e.touches[2].clientY,
+    //     XMilieu : e.touches[2].clientX - milieu.X,
+    //     YMilieu : e.touches[2].clientY - milieu.Y
+    // }
+    document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
+    document.querySelector("svg").style.transform = `scale(${scale})`;
 })
+
 svg.addEventListener("touchmove",function(e){
     console.log(e);
     // let moveTouche1 = {
@@ -629,7 +631,8 @@ svg.addEventListener("touchmove",function(e){
                                                         Nombre de doigts : ${e.touches.length} <br>
                                                         e.scale : ${e.scale}
                                                         `;
-    document.querySelector("svg").style.transform = `scale(${e.scale})`;
+    scale += e.scale;
+    document.querySelector("svg").style.transform = `scale(${scale})`;
 })
 svg.addEventListener("touchend",function(e){
     e.stopPropagation();
