@@ -634,7 +634,7 @@ svg.addEventListener("touchmove",function(e){
     {
       scale = e.scale;
     }
-    if(e.scale != 1)
+    if(!boolZoom)
     {
       if (e.scale>=lastScale)
       {
@@ -646,6 +646,11 @@ svg.addEventListener("touchmove",function(e){
         zoom = "dezoom";
       }
     }
+    else{
+      // On a déjà fait un zoom
+    }
+
+    
 
 
     document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
@@ -660,6 +665,7 @@ svg.addEventListener("touchmove",function(e){
 svg.addEventListener("touchend",function(e){
     e.stopPropagation();
     e.preventDefault(); 
+    boolZoom = true;
 })
 
 function pcdNavWLValiderSiegesRpr(param){
