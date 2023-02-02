@@ -581,7 +581,11 @@ let scale = 1;
 let boolZoom = false;
 let lastScale = 1;
 let premierAppui ;
-let dernierAppui ;
+let positionSVG ;
+let dernierePositionSVG = {
+  X : 0,
+  Y : 0
+};
 const svg = document.querySelector("svg");
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
@@ -596,10 +600,11 @@ svg.addEventListener("touchstart",function(e){
     else{
       premierAppui = "";
     }
+    console.log(premierAppui);
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
-    if(dernierAppui)
+    if(positionSVG)
     {
-      document.querySelector("svg").style.transform = `translate(${dernierAppui.X}px,${dernierAppui.Y}px) scale(${scale})`;
+      document.querySelector("svg").style.transform = `translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
     }
     else
     {
@@ -644,11 +649,22 @@ svg.addEventListener("touchmove",function(e){
     if(e.touches.length == 1)
     {
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, psition doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
-      dernierAppui = {
-        X : (premierAppui.X - e.touches[0].clientX)*-1,
-        Y : (premierAppui.Y- e.touches[0].clientY)*-1
+      if(!positionSVG)
+      {
+        positionSVG = {
+          X : 0,
+          Y : 0
+        };
       }
-      svg.style.transform=`translate(${dernierAppui.X}px,${dernierAppui.Y}px) scale(${scale})`;
+      console.log("positionSVG",positionSVG);
+      svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
+      console.log("Je me déplace");
+
+      positionSVG = {
+        X : (dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
+        Y : (dernierePositionSVG.X+(e.touches[0].clientY - premierAppui.Y))
+      }
+
     }
     
 })
@@ -657,6 +673,7 @@ svg.addEventListener("touchend",function(e){
     e.preventDefault(); 
     boolZoom = true;
     lastScale = 1;
+    dernierePositionSVG = positionSVG;
 })
 
 function pcdNavWLValiderSiegesRpr(param){
