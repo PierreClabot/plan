@@ -648,7 +648,8 @@ svg.addEventListener("touchmove",function(e){
     }
     if(e.touches.length == 1)
     {
-      document.querySelector(".deplacement").innerHTML = `Je veux scroll, position doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
+      document.querySelector(".deplacement").innerHTML = `Je veux scroll, psition doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
+      svg.style.transform=`translate(${e.touches[0].clientX},${e.touches[0].clientY})`
     }
     
 })
