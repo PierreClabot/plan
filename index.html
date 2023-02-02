@@ -615,8 +615,8 @@ svg.addEventListener("touchmove",function(e){
 
     e.stopPropagation();
     e.preventDefault(); 
-    if(e.touches.length > 1) // Plusieurs doigts simultanés
-    {
+    // if(e.touches.length > 1) // Plusieurs doigts simultanés
+    // {
       if(scale == 1)
       {
         scale = e.scale;
@@ -648,11 +648,11 @@ svg.addEventListener("touchmove",function(e){
                                                           `;
       
       document.querySelector("svg").style.transform = `scale(${scale})`;
-    }
-    if(e.touches.length == 1)
-    {
-      document.querySelector(".deplacement").innerHTML = "Je veux scroll";
-    }
+    // }
+    // if(e.touches.length == 1)
+    // {
+    //   document.querySelector(".deplacement").innerHTML = "Je veux scroll";
+    // }
     
 })
 svg.addEventListener("touchend",function(e){
