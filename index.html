@@ -624,14 +624,11 @@ svg.addEventListener("touchmove",function(e){
     //     XMilieu : e.touches[1].clientX - touche2.X,
     //     YMilieu : e.touches[1].clientY - touche2.Y
     // }
+    let zoom ; 
 
     e.stopPropagation();
     e.preventDefault(); 
-    document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
-                                                        Nombre de doigts : ${e.touches.length} <br>
-                                                        e.scale : ${e.scale}<br>
-                                                        lastScale : ${lastScale}
-                                                        `;
+
     if(scale == 1)
     {
       scale = e.scale;
@@ -640,11 +637,19 @@ svg.addEventListener("touchmove",function(e){
     if (e.scale>lastScale)
     {
       scale = e.scale;
+      zoom = "zoom";
     }
     else{
       scale -= e.scale;
+      zoom = "dezoom";
     }
-    
+
+    document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
+                                                        Nombre de doigts : ${e.touches.length} <br>
+                                                        e.scale : ${e.scale}<br>
+                                                        lastScale : ${lastScale}<br>
+                                                        Zoom : ${zoom}
+                                                        `;
     lastScale=e.scale;
     document.querySelector("svg").style.transform = `scale(${scale})`;
 })
