@@ -580,7 +580,10 @@ let milieu ;
 let scale = 1;
 let boolZoom = false;
 let lastScale = 1;
-let premierAppui ;
+let premierAppui = {
+        X : 0,
+        Y : 0
+      };
 let positionSVG ;
 let dernierePositionSVG = {
   X : 0,
@@ -597,12 +600,7 @@ svg.addEventListener("touchstart",function(e){
         Y : e.touches[0].clientY
       }
     }
-    else{
-      premierAppui = {
-        X : 0,
-        Y : 0
-      };
-    }
+
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
     if(positionSVG)
     {
@@ -666,7 +664,7 @@ svg.addEventListener("touchmove",function(e){
       }
 
     }
-    document.querySelector(".deplacement").innerHTML = `Nombre d'appui : ${e.touches.length}`;
+    document.querySelector(".deplacement").innerHTML += `Nombre d'appui : ${e.touches.length}`;
     
 })
 svg.addEventListener("touchend",function(e){
