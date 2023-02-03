@@ -37,7 +37,18 @@ opacity:1;
 div[data-name="PLAN-SALLE"]{
   border: 2px solid blue;
   overflow: scroll;
-  height: 500px;
+  position: relative;
+}
+.btn-centrer{
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  transform: translateX(50%);
+  z-index: 2;
+  background-color: #f1f1f1;
+  padding : 0.1rem 0.5rem;
+  border-radius: 10px 10px 0 0;
+  border : solid 1px black
 }
 </style>
 <div data-name="PLAN-SALLE" style="text-align:center">
@@ -547,6 +558,7 @@ div[data-name="PLAN-SALLE"]{
 
 </svg>
 
+<div class="btn-centrer">Centrer</div>
 
 
 <script>
@@ -593,18 +605,16 @@ let dernierePositionSVG = {
   X : 0,
   Y : 0
 };
+
 let boolPremierAppui = true;
 const svg = document.querySelector("svg");
+document.querySelector(".btn-centrer").addEventListener("click",function(){
+  svg.style.transform = "translate(0,0) scale(1)";
+})
+
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
     e.preventDefault(); 
-    // if(e.touches.length == 1) ***************
-    // {
-    //   premierAppui = {
-    //     X : e.touches[0].clientX,
-    //     Y : e.touches[0].clientY
-    //   }
-    // }
 
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
     if(positionSVG)
@@ -615,7 +625,6 @@ svg.addEventListener("touchstart",function(e){
     {
       document.querySelector("svg").style.transform = `scale(${scale})`;
     }
-    document.querySelector(".tabTouches").innerHTML = `Touche 1 : { X ${tabTouches[0].clientX}, Y : ${tabTouches[0].clientX} }`;
 })
 svg.addEventListener("touchmove",function(e){
 
