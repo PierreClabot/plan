@@ -614,21 +614,26 @@ class PlanDeSalle{
       }
       dernierePositionSVG = positionSVG;
       scale = 1
+      
+    })
+
+    container.addEventListener("touchstart",function(e){
       AppuiA = {
         X : e.touches[0].clientX,
-        Y : e.touches[0].clientX
+        Y : e.touches[0].clientY
       }
       AppuiB = AppuiA;
     })
 
     container.addEventListener("touchmove",function(e){
-
-        e.stopPropagation();
-        e.preventDefault(); 
+        AppuiA = AppuiB;
         AppuiB = {
           X : e.touches[0].clientX,
-          Y : e.touches[0].clientX
+          Y : e.touches[0].clientY
         }
+        e.stopPropagation();
+        e.preventDefault(); 
+
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
           boolPremierAppui = true;
@@ -683,11 +688,13 @@ class PlanDeSalle{
         lastScale = 1;
         boolPremierAppui =  true;
         dernierePositionSVG = positionSVG;
+        console.log("AppuiA",AppuiA);
+        console.log("AppuiB",AppuiB);
         let vecteur = {
           X : AppuiB.X - AppuiA.X,
-          Y : AppuiB.Y - AppuiA.X
+          Y : AppuiB.Y - AppuiA.Y
         }
-        document.querySelector(".vecteur").innerHTML = `{ X : ${vecteur.X}, Y : ${vecteur.X}}`
+        document.querySelector(".vecteur").innerHTML = `{ X : ${vecteur.X}, Y : ${vecteur.Y}}`
     })
 
     shape.addEventListener("mousemove", ()=>{this.mousemove});
