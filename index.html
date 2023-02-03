@@ -25,7 +25,7 @@ alert('Clic '+elem);
 <style>
 svg{
       display: inline-block;
-      transition: transform 0.2s;
+      
 }
 .place{
 opacity:0.5;
@@ -698,13 +698,14 @@ class PlanDeSalle{
         boolZoom = true;
         lastScale = 1;
         boolPremierAppui =  true;
+        document.querySelector("svg").style.transition = "";
         document.querySelector(".vecteur").innerHTML = `{ X : ${vecteur.X}, Y : ${vecteur.Y}}`
         
     })
 
     shape.addEventListener("mousemove", ()=>{this.mousemove});
     shape.addEventListener("mousedown", ()=>{this.mousedown});
-    shape.addEventListener("wheel", this.wheel);
+    shape.addEventListener("wheel", ()=>{this.wheel});
 
   }
 
@@ -722,6 +723,7 @@ class PlanDeSalle{
 
 defilementScroll(vecteur,positionSVG,scale)
 {
+  document.querySelector("svg").style.transition = "all 2s";
   let SVG = positionSVG;
   let nouveauVecteur = {
     X : vecteur.X * 0.95,
