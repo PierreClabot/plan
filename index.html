@@ -610,6 +610,11 @@ let boolPremierAppui = true;
 const svg = document.querySelector("svg");
 document.querySelector(".btn-centrer").addEventListener("click",function(){
   svg.style.transform = "translate(0,0) scale(1)";
+  positionSVG = {
+    X : 0,
+    Y : 0
+  }
+  dernierePositionSVG = positionSVG;
 })
 
 svg.addEventListener("touchstart",function(e){
