@@ -579,56 +579,61 @@ class PlanDeSalle{
 
     var mouseDown = false;
 
-    var scale = 1;
+    this.scale = 1;
     var boolZoom = false;
-    var lastScale = 1;
-    var positionSVG = {
+    this.lastScale = 1;
+    this.positionSVG = {
       X : 0,
       Y : 0,
     };
-    var AppuiA = {
+    this.AppuiA = {
       X:0,
       Y:0
     };
-    var AppuiB = AppuiA;
-    var premierAppui = positionSVG;
-    var dernierePositionSVG = positionSVG;
+    this.AppuiB = this.AppuiA;
+    var premierAppui = this.positionSVG;
     var boolPremierAppui = true;
+    this.myInterval = 0 ;
+    this.dernierePositionSVG = {
+      X:0,
+      Y:0
+    };
     const svg = document.querySelector("svg");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
     const btnCentrer = document.querySelector(".btn-centrer");
 
     btnCentrer.addEventListener("touchstart",function(e){
       svg.style.transform = "translate(0,0) scale(1)";
-      positionSVG = {
+      this.positionSVG = {
         X : 0,
         Y : 0
       }
-      dernierePositionSVG = positionSVG;
-      scale = 1
+      this.dernierePositionSVG = this.positionSVG;
+      this.scale = 1
     })
     btnCentrer.addEventListener("click",function(e){
       svg.style.transform = "translate(0,0) scale(1)";
-      positionSVG = {
+      this.positionSVG = {
         X : 0,
         Y : 0
       }
-      dernierePositionSVG = positionSVG;
-      scale = 1
+      this.dernierePositionSVG = this.positionSVG;
+      this.scale = 1
       
     })
 
     container.addEventListener("touchstart",function(e){
-      AppuiA = {
+      this.AppuiA = {
         X : e.touches[0].clientX,
         Y : e.touches[0].clientY
       }
-      AppuiB = AppuiA;
+      this.AppuiB = this.AppuiA;
+      
     })
 
-    container.addEventListener("touchmove",function(e){
-        AppuiA = AppuiB;
-        AppuiB = {
+    container.addEventListener("touchmove",(e)=>{
+        this.AppuiA = this.AppuiB;
+        this.AppuiB = {
           X : e.touches[0].clientX,
           Y : e.touches[0].clientY
         }
@@ -638,28 +643,28 @@ class PlanDeSalle{
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
           boolPremierAppui = true;
-          if(scale == 1)
+          if(this.scale == 1)
           {
-            scale = e.scale;
+            this.scale = e.scale;
           }
 
-          if (e.scale>=lastScale) // Zoom
+          if (e.scale>=this.lastScale) // Zoom
           {
-            scale += (e.scale-lastScale);
+            this.scale += (e.scale-this.lastScale);
           }
           else{ // Dezoom
-            scale -= (lastScale-e.scale);
+            this.scale -= (this.lastScale-e.scale);
           }
-          if(scale>4) // Limiter l'échelle de zoom / dezoom
+          if(this.scale>4) // Limiter l'échelle de zoom / dezoom
           {
-            scale = 4
+            this.scale = 4
           }
-          if(scale <0.8)
+          if(this.scale <0.8)
           {
-            scale = 0.8;
+            this.scale = 0.8;
           }
-          lastScale=e.scale;
-          document.querySelector("svg").style.transform = `translate(${dernierePositionSVG.X}px,${dernierePositionSVG.Y}px) scale(${scale})`;
+          this.lastScale=e.scale;
+          document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
         }
         if(e.touches.length == 1)
         {
@@ -671,12 +676,12 @@ class PlanDeSalle{
           }
           boolPremierAppui = false;
           }
-
-          svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
+          console.log(this);
+          svg.style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
           // 
-          positionSVG = {
-            X : (dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
-            Y : (dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
+          this.positionSVG = {
+            X : (this.dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
+            Y : (this.dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
           }
 
         }
@@ -686,20 +691,20 @@ class PlanDeSalle{
         e.stopPropagation();
         e.preventDefault(); 
 
-        dernierePositionSVG = positionSVG;
-        console.log("AppuiA",AppuiA);
-        console.log("AppuiB",AppuiB);
-        let vecteur = {
-          X : AppuiB.X - AppuiA.X,
-          Y : AppuiB.Y - AppuiA.Y
+        this.dernierePositionSVG = this.positionSVG;
+        this.vecteur = {
+          X : this.AppuiB.X - this.AppuiA.X,
+          Y : this.AppuiB.Y - this.AppuiA.Y
         }
-        this.defilementScroll(vecteur,dernierePositionSVG,scale);
+        // Calculer le vecteur vitesse
+        // mémoriser la position du svg
+        this.myInterval = setInterval(this.defilementScroll(),100);
 
         boolZoom = true;
-        lastScale = 1;
+        this.lastScale = 1;
         boolPremierAppui =  true;
         document.querySelector("svg").style.transition = "";
-        document.querySelector(".vecteur").innerHTML = `{ X : ${vecteur.X}, Y : ${vecteur.Y}}`
+        document.querySelector(".vecteur").innerHTML = `{ X : ${this.vecteur.X}, Y : ${this.vecteur.Y}}`
         
     })
 
@@ -721,28 +726,36 @@ class PlanDeSalle{
   mouseDown = true;
 }
 
-defilementScroll(vecteur,positionSVG,scale)
+defilementScroll()
 {
+  // Bouger le SVG avec le vecteur vitesse
+  // Diminuer le vecteur vitesse
+  // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
   document.querySelector("svg").style.transition = "all 2s";
-  let SVG = positionSVG;
+  let SVG = this.dernierePositionSVG;
   let nouveauVecteur = {
-    X : vecteur.X * 0.95,
-    Y : vecteur.Y * 0.95
+    X : this.vecteur.X * 0.95,
+    Y : this.vecteur.Y * 0.95
   }
+  
+
   let difference = {
-    X : nouveauVecteur.X - vecteur.X,
-    Y : nouveauVecteur.Y - vecteur.Y
+    X : nouveauVecteur.X - this.vecteur.X,
+    Y : nouveauVecteur.Y - this.vecteur.Y
   }
+
+  this.vecteur = nouveauVecteur;
+
   let nouvellePositionSVG = {
-    X : positionSVG.X - difference.X,
-    Y : positionSVG.Y - difference.Y
+    X : this.positionSVG.X - difference.X,
+    Y : this.positionSVG.Y - difference.Y
   }
-  console.log(nouvellePositionSVG);
-  document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${scale})`
+  this.dernierePositionSVG = nouvellePositionSVG;
+  document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${this.scale})`
   // document.querySelector("svg").style.background = "red";
   if((nouveauVecteur.X>1) || (nouveauVecteur.Y>1))
   {
-    this.defilementScroll(nouveauVecteur,nouvellePositionSVG,scale)
+    clearInterval(this.myInterval)
   }
 }
 
