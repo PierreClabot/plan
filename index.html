@@ -25,6 +25,7 @@ alert('Clic '+elem);
 <style>
 svg{
       display: inline-block;
+      transition: all 0.2s;
 }
 .place{
 opacity:0.5;
@@ -723,8 +724,8 @@ defilementScroll(vecteur,positionSVG,scale)
 {
   let SVG = positionSVG;
   let nouveauVecteur = {
-    X : vecteur.X * 0.8,
-    Y : vecteur.Y * 0.8
+    X : vecteur.X * 0.95,
+    Y : vecteur.Y * 0.95
   }
   let difference = {
     X : nouveauVecteur.X - vecteur.X,
