@@ -588,7 +588,8 @@ class PlanDeSalle{
     var dernierePositionSVG = positionSVG;
     var boolPremierAppui = true;
     const svg = document.querySelector("svg");
-
+    const container = document.querySelector("div[data-name=PLAN-SALLE]");
+    
     document.querySelector(".btn-centrer").addEventListener("click",function(){
       svg.style.transform = "translate(0,0) scale(1)";
       positionSVG = {
@@ -599,7 +600,7 @@ class PlanDeSalle{
       scale = 1
     })
 
-    svg.addEventListener("touchmove",function(e){
+    container.addEventListener("touchmove",function(e){
 
         e.stopPropagation();
         e.preventDefault(); 
@@ -650,7 +651,7 @@ class PlanDeSalle{
         }
       
     })
-    svg.addEventListener("touchend",function(e){
+    container.addEventListener("touchend",function(e){
         e.stopPropagation();
         e.preventDefault(); 
         boolZoom = true;
