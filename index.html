@@ -48,6 +48,10 @@ div[data-name="PLAN-SALLE"]{
   border : solid 1px black
 }
 </style>
+<div>
+  <h3>vecteur</h3>
+  <div class="vecteur"></div>
+</div>
 <div data-name="PLAN-SALLE" style="text-align:center">
 
 <svg class="img-fluid" height="670" width="1010" viewBox="0 0 1010 670" version="1.1">
@@ -581,6 +585,11 @@ class PlanDeSalle{
       X : 0,
       Y : 0,
     };
+    var AppuiA = {
+      X:0,
+      Y:0
+    };
+    var AppuiB = AppuiA;
     var premierAppui = positionSVG;
     var dernierePositionSVG = positionSVG;
     var boolPremierAppui = true;
@@ -605,12 +614,21 @@ class PlanDeSalle{
       }
       dernierePositionSVG = positionSVG;
       scale = 1
+      AppuiA = {
+        X : e.touches[0].clientX,
+        Y : e.touches[0].clientX
+      }
+      AppuiB = AppuiA;
     })
 
     container.addEventListener("touchmove",function(e){
 
         e.stopPropagation();
         e.preventDefault(); 
+        AppuiB = {
+          X : e.touches[0].clientX,
+          Y : e.touches[0].clientX
+        }
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
           boolPremierAppui = true;
@@ -656,11 +674,7 @@ class PlanDeSalle{
           }
 
         }
-      let touchMove = {
-        X : e.clientX,
-        Y : e.clientY
-      }
-      document.querySelector(".touchMouve").innerHTML = `{X : ${touchMove.X}, Y : ${touchMove.Y}}`
+
     })
     container.addEventListener("touchend",function(e){
         e.stopPropagation();
@@ -669,11 +683,11 @@ class PlanDeSalle{
         lastScale = 1;
         boolPremierAppui =  true;
         dernierePositionSVG = positionSVG;
-        let touchEnd = {
-        X : e.clientX,
-        Y : e.clientY
+        let vecteur = {
+          X : AppuiB.X - AppuiA.X,
+          Y : AppuiB.Y - AppuiA.X
         }
-        document.querySelector(".touchMouve").innerHTML = `{X : ${touchEnd.X}, Y : ${touchEnd.Y}}`
+        document.querySelector(".vecteur").innerHTML = `{ X : ${vecteur.X}, Y : ${vecteur.X}}`
     })
 
     shape.addEventListener("mousemove", ()=>{this.mousemove});
@@ -760,9 +774,6 @@ const planDeSalle = new PlanDeSalle();
   </div>
 </div>
 </div>
-<div>
-  <div class="touchMove"></div>
-  <div class="touchEnd"></div>
-</div>
+
 </body>
 </html>
