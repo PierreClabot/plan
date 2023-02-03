@@ -562,11 +562,8 @@ div[data-name="PLAN-SALLE"]{
 
 
 <script>
-shape = document.getElementsByTagName("svg")[0];
-//shape.setAttribute("viewBox", "-250 -250 500 750"); 
 
-//shape = document.getElementsByTagName("h1")[0];
-//shape.innerHTML = "testing jscript";
+shape = document.getElementsByTagName("svg")[0];
 
 var mouseStartPosition = {x: 0, y: 0};
 var mousePosition = {x: 0, y: 0};
@@ -586,9 +583,7 @@ document.querySelectorAll("svg circle").forEach((siege)=>{
         this.style.fill = 'red';
     })
 })
-let touche1 = '';
-let touche2 = '';
-let touche3 = '';
+
 let milieu ;
 let scale = 1;
 let boolZoom = false;
@@ -621,16 +616,14 @@ document.querySelector(".btn-centrer").addEventListener("click",function(){
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
     e.preventDefault(); 
-
-    document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
-    if(positionSVG)
-    {
-      document.querySelector("svg").style.transform = `translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
-    }
-    else
-    {
-      document.querySelector("svg").style.transform = `scale(${scale})`;
-    }
+    // if(positionSVG)
+    // {
+    //   document.querySelector("svg").style.transform = `translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
+    // }
+    // else
+    // {
+    //   document.querySelector("svg").style.transform = `scale(${scale})`;
+    // }
 })
 svg.addEventListener("touchmove",function(e){
 
