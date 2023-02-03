@@ -734,7 +734,9 @@ defilementScroll(vecteur,positionSVG,scale)
     X : positionSVG.X - difference.X,
     Y : positionSVG.Y - difference.Y
   }
-  document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X},${nouvellePositionSVG.Y}) scale(${scale})`
+  console.log(nouvellePositionSVG);
+  document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${scale})`
+  // document.querySelector("svg").style.background = "red";
   if((nouveauVecteur.X>1) || (nouveauVecteur.Y>1))
   {
     this.defilementScroll(nouveauVecteur,nouvellePositionSVG,scale)
