@@ -589,8 +589,18 @@ class PlanDeSalle{
     var boolPremierAppui = true;
     const svg = document.querySelector("svg");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
-    
-    document.querySelector(".btn-centrer").addEventListener("click",function(){
+    const btnCentrer = document.querySelector(".btn-centrer");
+
+    btnCentrer.addEventListener("touchstart",function(e){
+      svg.style.transform = "translate(0,0) scale(1)";
+      positionSVG = {
+        X : 0,
+        Y : 0
+      }
+      dernierePositionSVG = positionSVG;
+      scale = 1
+    })
+    btnCentrer.addEventListener("click",function(e){
       svg.style.transform = "translate(0,0) scale(1)";
       positionSVG = {
         X : 0,
@@ -660,8 +670,8 @@ class PlanDeSalle{
         dernierePositionSVG = positionSVG;
     })
 
-    shape.addEventListener("mousemove", this.mousemove);
-    shape.addEventListener("mousedown", this.mousedown);
+    shape.addEventListener("mousemove", ()=>{this.mousemove});
+    shape.addEventListener("mousedown", ()=>{this.mousedown});
     shape.addEventListener("wheel", this.wheel);
 
   }
@@ -696,6 +706,7 @@ setviewbox()
 
 mousemove(e)
 {
+  console.log(this);
   mousePosition.x = e.offsetX;
   mousePosition.y = e.offsetY;
   
