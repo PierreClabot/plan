@@ -681,12 +681,10 @@ class PlanDeSalle{
         }
 
     })
-    container.addEventListener("touchend",function(e){
+    container.addEventListener("touchend",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
-        boolZoom = true;
-        lastScale = 1;
-        boolPremierAppui =  true;
+
         dernierePositionSVG = positionSVG;
         console.log("AppuiA",AppuiA);
         console.log("AppuiB",AppuiB);
@@ -694,7 +692,13 @@ class PlanDeSalle{
           X : AppuiB.X - AppuiA.X,
           Y : AppuiB.Y - AppuiA.Y
         }
+        this.defilementScroll(vecteur,dernierePositionSVG,scale);
+
+        boolZoom = true;
+        lastScale = 1;
+        boolPremierAppui =  true;
         document.querySelector(".vecteur").innerHTML = `{ X : ${vecteur.X}, Y : ${vecteur.Y}}`
+        
     })
 
     shape.addEventListener("mousemove", ()=>{this.mousemove});
@@ -713,6 +717,28 @@ class PlanDeSalle{
   window.addEventListener("mouseup", this.mouseup);
 
   mouseDown = true;
+}
+
+defilementScroll(vecteur,positionSVG,scale)
+{
+  let SVG = positionSVG;
+  let nouveauVecteur = {
+    X : vecteur.X * 0.8,
+    Y : vecteur.Y * 0.8
+  }
+  let difference = {
+    X : nouveauVecteur.X - vecteur.X,
+    Y : nouveauVecteur.Y - vecteur.Y
+  }
+  let nouvellePositionSVG = {
+    X : positionSVG.X - difference.X,
+    Y : positionSVG.Y - difference.Y
+  }
+  document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X},${nouvellePositionSVG.Y}) scale(${scale})`
+  if((nouveauVecteur.X>1) || (nouveauVecteur.Y>1))
+  {
+    this.defilementScroll(nouveauVecteur,nouvellePositionSVG,scale)
+  }
 }
 
 setviewbox()
