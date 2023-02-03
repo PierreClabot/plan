@@ -622,7 +622,7 @@ svg.addEventListener("touchmove",function(e){
     e.preventDefault(); 
     if(e.touches.length > 1) // Plusieurs doigts simultanés
     {
-      boolPremierAppui = false;
+      boolPremierAppui = true;
       if(scale == 1)
       {
         scale = e.scale;
@@ -660,6 +660,7 @@ svg.addEventListener("touchmove",function(e){
          X : e.touches[0].clientX,
          Y : e.touches[0].clientY
        }
+       boolPremierAppui = false;
       }
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, position doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
 
@@ -679,7 +680,7 @@ svg.addEventListener("touchend",function(e){
     e.preventDefault(); 
     boolZoom = true;
     lastScale = 1;
-    boolPremierAppui =  false;
+    boolPremierAppui =  true;
     dernierePositionSVG = positionSVG;
     document.querySelector(".deplacement").innerHTML += "touchend";
 })
