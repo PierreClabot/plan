@@ -563,155 +563,127 @@ div[data-name="PLAN-SALLE"]{
 
 <script>
 
-shape = document.getElementsByTagName("svg")[0];
+class PlanDeSalle{
+  constructor()
+  {
+    const shape = document.getElementsByTagName("svg")[0];
 
-var mouseStartPosition = {x: 0, y: 0};
-var mousePosition = {x: 0, y: 0};
-var viewboxStartPosition = {x: 0, y: 0};
-var viewboxPosition = {x: 0, y: 0};
-var viewboxSize = {x: 670, y: 1010};
-var viewboxScale = 1.0;
+    var mouseStartPosition = {x: 0, y: 0};
+    var mousePosition = {x: 0, y: 0};
+    var viewboxStartPosition = {x: 0, y: 0};
+    var viewboxPosition = {x: 0, y: 0};
+    var viewboxSize = {x: 670, y: 1010};
+    var viewboxScale = 1.0;
 
-var mouseDown = false;
+    var mouseDown = false;
 
-shape.addEventListener("mousemove", mousemove);
-shape.addEventListener("mousedown", mousedown);
-shape.addEventListener("wheel", wheel);
+    var scale = 1;
+    var boolZoom = false;
+    var lastScale = 1;
+    var positionSVG = {
+      X : 0,
+      Y : 0,
+    };
+    var premierAppui = positionSVG;
+    var dernierePositionSVG = positionSVG;
+    var boolPremierAppui = true;
+    const svg = document.querySelector("svg");
 
-document.querySelectorAll("svg circle").forEach((siege)=>{
-    siege.addEventListener("click",function(){
-        this.style.fill = 'red';
-    })
-})
-
-let milieu ;
-let scale = 1;
-let boolZoom = false;
-let lastScale = 1;
-let premierAppui = {
+    document.querySelector(".btn-centrer").addEventListener("click",function(){
+      svg.style.transform = "translate(0,0) scale(1)";
+      positionSVG = {
         X : 0,
         Y : 0
-      };
-let positionSVG = {
-  X : 0,
-  Y : 0,
-};
-let dernierePositionSVG = {
-  X : 0,
-  Y : 0
-};
+      }
+      dernierePositionSVG = positionSVG;
+      scale = 1
+    })
 
-let boolPremierAppui = true;
-const svg = document.querySelector("svg");
-document.querySelector(".btn-centrer").addEventListener("click",function(){
-  svg.style.transform = "translate(0,0) scale(1)";
-  positionSVG = {
-    X : 0,
-    Y : 0
+    svg.addEventListener("touchmove",function(e){
+
+        e.stopPropagation();
+        e.preventDefault(); 
+        if(e.touches.length > 1) // Plusieurs doigts simultanés
+        {
+          boolPremierAppui = true;
+          if(scale == 1)
+          {
+            scale = e.scale;
+          }
+
+          if (e.scale>=lastScale) // Zoom
+          {
+            scale += (e.scale-lastScale);
+          }
+          else{ // Dezoom
+            scale -= (lastScale-e.scale);
+          }
+          if(scale>4) // Limiter l'échelle de zoom / dezoom
+          {
+            scale = 4
+          }
+          if(scale <0.8)
+          {
+            scale = 0.8;
+          }
+          document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
+                                                              Nombre de doigts : ${e.touches.length} <br>
+                                                              Scale : ${scale}<br>
+                                                              e.scale : ${e.scale}<br>
+                                                              lastScale : ${lastScale}<br>
+                                                              `;
+          lastScale=e.scale;
+          document.querySelector("svg").style.transform = `translate(${dernierePositionSVG.X}px,${dernierePositionSVG.Y}px) scale(${scale})`;
+        }
+        if(e.touches.length == 1)
+        {
+          if(boolPremierAppui)
+          {
+            premierAppui = {
+            X : e.touches[0].clientX,
+            Y : e.touches[0].clientY
+          }
+          boolPremierAppui = false;
+          }
+
+          svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
+          // 
+          positionSVG = {
+            X : (dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
+            Y : (dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
+          }
+
+        }
+      
+    })
+    svg.addEventListener("touchend",function(e){
+        e.stopPropagation();
+        e.preventDefault(); 
+        boolZoom = true;
+        lastScale = 1;
+        boolPremierAppui =  true;
+        dernierePositionSVG = positionSVG;
+    })
+
+    shape.addEventListener("mousemove", this.mousemove);
+    shape.addEventListener("mousedown", this.mousedown);
+    shape.addEventListener("wheel", this.wheel);
+
   }
-  dernierePositionSVG = positionSVG;
-  scale = 1
-})
 
-svg.addEventListener("touchstart",function(e){
-    e.stopPropagation();
-    e.preventDefault(); 
-    // if(positionSVG)
-    // {
-    //   document.querySelector("svg").style.transform = `translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
-    // }
-    // else
-    // {
-    //   document.querySelector("svg").style.transform = `scale(${scale})`;
-    // }
-})
-svg.addEventListener("touchmove",function(e){
-
-    e.stopPropagation();
-    e.preventDefault(); 
-    if(e.touches.length > 1) // Plusieurs doigts simultanés
-    {
-      boolPremierAppui = true;
-      if(scale == 1)
-      {
-        scale = e.scale;
-      }
-
-      if (e.scale>=lastScale) // Zoom
-      {
-        scale += (e.scale-lastScale);
-      }
-      else{ // Dezoom
-        scale -= (lastScale-e.scale);
-      }
-      if(scale>4) // Limiter l'échelle de zoom / dezoom
-      {
-        scale = 4
-      }
-      if(scale <0.8)
-      {
-        scale = 0.8;
-      }
-      document.querySelector(".deplacement").innerHTML = `<h3>Déplacements</h3>
-                                                          Nombre de doigts : ${e.touches.length} <br>
-                                                          Scale : ${scale}<br>
-                                                          e.scale : ${e.scale}<br>
-                                                          lastScale : ${lastScale}<br>
-                                                          `;
-      lastScale=e.scale;
-      document.querySelector("svg").style.transform = `translate(${dernierePositionSVG.X}px,${dernierePositionSVG.Y}px) scale(${scale})`;
-    }
-    if(e.touches.length == 1)
-    {
-      if(boolPremierAppui)
-      {
-        premierAppui = {
-         X : e.touches[0].clientX,
-         Y : e.touches[0].clientY
-       }
-       boolPremierAppui = false;
-      }
-      document.querySelector(".deplacement").innerHTML = `Je veux scroll, position doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
-
-      svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
-      // 
-      positionSVG = {
-        X : (dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
-        Y : (dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
-      }
-
-    }
-
-    
-})
-svg.addEventListener("touchend",function(e){
-    e.stopPropagation();
-    e.preventDefault(); 
-    boolZoom = true;
-    lastScale = 1;
-    boolPremierAppui =  true;
-    dernierePositionSVG = positionSVG;
-    document.querySelector(".deplacement").innerHTML += "touchend";
-})
-
-
-function pcdNavWLValiderSiegesRpr(param){
-    alert(param);
-}
-
-function mousedown(e) {
+  mousedown(e) {
   mouseStartPosition.x = e.pageX;
   mouseStartPosition.y = e.pageY;
 
   viewboxStartPosition.x = viewboxPosition.x;
   viewboxStartPosition.y = viewboxPosition.y;
 
-  window.addEventListener("mouseup", mouseup);
+  window.addEventListener("mouseup", this.mouseup);
 
   mouseDown = true;
 }
 
-function setviewbox()
+setviewbox()
 {
   var vp = {x: 0, y: 0};
   var vs = {x: 0, y: 0};
@@ -727,7 +699,7 @@ function setviewbox()
   
 }
 
-function mousemove(e)
+mousemove(e)
 {
   mousePosition.x = e.offsetX;
   mousePosition.y = e.offsetY;
@@ -737,7 +709,7 @@ function mousemove(e)
     viewboxPosition.x = viewboxStartPosition.x + (mouseStartPosition.x - e.pageX) * viewboxScale;
     viewboxPosition.y = viewboxStartPosition.y + (mouseStartPosition.y - e.pageY) * viewboxScale;
 
-    setviewbox();
+    this.setviewbox();
   }
   
   var mpos = {x: mousePosition.x * viewboxScale, y: mousePosition.y * viewboxScale};
@@ -745,13 +717,13 @@ function mousemove(e)
   var cpos = {x: mpos.x + vpos.x, y: mpos.y + vpos.y}
 }
 
-function mouseup(e) {
-  window.removeEventListener("mouseup", mouseup);
+mouseup(e) {
+  window.removeEventListener("mouseup", this.mouseup);
   
   mouseDown = false;
 }
 
-function wheel(e) {
+wheel(e) {
   var scale = (e.deltaY < 0) ? 0.8 : 1.2;
   
   if ((viewboxScale * scale < 8.) && (viewboxScale * scale > 1./256.))
@@ -764,9 +736,13 @@ function wheel(e) {
     viewboxPosition.y = (viewboxPosition.y - cpos.y) * scale + cpos.y;
     viewboxScale *= scale;
   
-    setviewbox();
+    this.setviewbox();
   }
 }
+
+}
+
+const planDeSalle = new PlanDeSalle();
 </script>
  </div>
   </div>
