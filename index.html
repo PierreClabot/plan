@@ -594,11 +594,9 @@ let dernierePositionSVG = {
 };
 let boolPremierAppui = true;
 const svg = document.querySelector("svg");
-var tabTouches = [];
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
     e.preventDefault(); 
-    tabTouches.push(e.touches[0]);
     // if(e.touches.length == 1) ***************
     // {
     //   premierAppui = {
@@ -624,6 +622,7 @@ svg.addEventListener("touchmove",function(e){
     e.preventDefault(); 
     if(e.touches.length > 1) // Plusieurs doigts simultanés
     {
+      boolPremierAppui = false;
       if(scale == 1)
       {
         scale = e.scale;
