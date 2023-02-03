@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>V1.0</h1>
+    <h1>V1.1</h1>
     <div class="container-fluid">
         <div class="row">
             
@@ -592,19 +592,20 @@ let dernierePositionSVG = {
   X : 0,
   Y : 0
 };
+let boolPremierAppui = true;
 const svg = document.querySelector("svg");
 var tabTouches = [];
 svg.addEventListener("touchstart",function(e){
     e.stopPropagation();
     e.preventDefault(); 
     tabTouches.push(e.touches[0]);
-    if(e.touches.length == 1)
-    {
-      premierAppui = {
-        X : e.touches[0].clientX,
-        Y : e.touches[0].clientY
-      }
-    }
+    // if(e.touches.length == 1) ***************
+    // {
+    //   premierAppui = {
+    //     X : e.touches[0].clientX,
+    //     Y : e.touches[0].clientY
+    //   }
+    // }
 
     document.querySelector(".milieu").innerHTML = `Touch Start, scale : ${scale}`;
     if(positionSVG)
@@ -654,6 +655,13 @@ svg.addEventListener("touchmove",function(e){
     }
     if(e.touches.length == 1)
     {
+      if(boolPremierAppui)
+      {
+        premierAppui = {
+         X : e.touches[0].clientX,
+         Y : e.touches[0].clientY
+       }
+      }
       document.querySelector(".deplacement").innerHTML = `Je veux scroll, position doigt { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`;
 
       svg.style.transform=`translate(${positionSVG.X}px,${positionSVG.Y}px) scale(${scale})`;
@@ -672,6 +680,7 @@ svg.addEventListener("touchend",function(e){
     e.preventDefault(); 
     boolZoom = true;
     lastScale = 1;
+    boolPremierAppui =  false;
     dernierePositionSVG = positionSVG;
     document.querySelector(".deplacement").innerHTML += "touchend";
 })
