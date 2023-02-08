@@ -758,7 +758,8 @@ bougerEn(x,y)
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
   }
-  document.querySelector(".event").innerHTML = `Je me déplace`;
+  document.querySelector(".event").innerHTML = `Je me déplace<br>
+                                                Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`;
 
 }
 zoom(scale)
