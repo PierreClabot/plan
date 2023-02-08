@@ -605,7 +605,10 @@ class PlanDeSalle{
     const btnCentrer = document.querySelector(".btn-centrer");
 
     btnCentrer.addEventListener("touchstart",function(e){
-      clearInterval(this.myInterval);
+      if(this.myInterval)
+      {
+        clearInterval(this.myInterval);
+      }
       svg.style.transform = "translate(0,0) scale(1)";
       this.positionSVG = {
         X : 0,
@@ -699,6 +702,10 @@ class PlanDeSalle{
         }
         // Calculer le vecteur vitesse
         // mémoriser la position du svg
+        if(this.myInterval)
+        {
+          clearInterval(myInterval)
+        }
         this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
 
         boolZoom = true;
@@ -757,11 +764,13 @@ defilementScroll()
   {
     nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
     clearInterval(this.myInterval);
+    
   }
   if(Math.abs(nouvellePositionSVG.Y)>(this.maxY * this.scale))
   {
     nouvellePositionSVG.Y = this.maxY * this.scale *(nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
     clearInterval(this.myInterval);
+
   }
 
   this.positionSVG = nouvellePositionSVG;
@@ -769,7 +778,10 @@ defilementScroll()
   {
     console.log("je sors");
     document.querySelector("svg").style.transition = "";
-    clearInterval(this.myInterval);
+    if(this.myInterval)
+      {
+        clearInterval(this.myInterval);
+      }
     return;
   }
 
