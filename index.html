@@ -842,7 +842,7 @@ defilementScroll()
     X : this.positionSVG.X - difference.X,
     Y : this.positionSVG.Y - difference.Y
   }
-  document.querySelector(".details-event").innerHTML = `Je me déplace de : <br>
+  document.querySelector(".details-event").innerHTML = `Je scroll: <br>
                                                   vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }<br>
                                                   Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`;
   // if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
