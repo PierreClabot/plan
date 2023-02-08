@@ -735,14 +735,14 @@ defilementScroll()
   document.querySelector("svg").style.transition = "transform 0.1s";
   let SVG = this.dernierePositionSVG;
   let nouveauVecteur = {
-    X : this.vecteur.X * 0.8, // 0.95
-    Y : this.vecteur.Y * 0.8  // 0.95
+    X : this.vecteur.X * 0.9, // 0.95
+    Y : this.vecteur.Y * 0.9  // 0.95
   }
   
 
   let difference = {
-    X : (nouveauVecteur.X - this.vecteur.X)*15, // 100
-    Y : (nouveauVecteur.Y - this.vecteur.Y)*15 // 100
+    X : (nouveauVecteur.X - this.vecteur.X)*5, // 100
+    Y : (nouveauVecteur.Y - this.vecteur.Y)*5 // 100
   }
   console.log("positionSVG",this.positionSVG);
 
