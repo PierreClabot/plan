@@ -699,7 +699,7 @@ class PlanDeSalle{
         }
         // Calculer le vecteur vitesse
         // mémoriser la position du svg
-        this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),500);
+        this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),300);
 
         boolZoom = true;
         this.lastScale = 1;
@@ -732,11 +732,11 @@ defilementScroll()
   // Bouger le SVG avec le vecteur vitesse
   // Diminuer le vecteur vitesse
   // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
-  document.querySelector("svg").style.transition = "transform 0.5s";
+  document.querySelector("svg").style.transition = "transform 0.3s";
   let SVG = this.dernierePositionSVG;
   let nouveauVecteur = {
-    X : this.vecteur.X * 0.6, // 0.95
-    Y : this.vecteur.Y * 0.6  // 0.95
+    X : this.vecteur.X * 0.7, // 0.95
+    Y : this.vecteur.Y * 0.7  // 0.95
   }
   
 
