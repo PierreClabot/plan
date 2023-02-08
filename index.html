@@ -604,6 +604,7 @@ class PlanDeSalle{
     const svg = document.querySelector("svg");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
     const btnCentrer = document.querySelector(".btn-centrer");
+    var scaleWheelDeltaY = 1;
 
     btnCentrer.addEventListener("touchstart",function(e){
       if(this.myInterval)
@@ -648,21 +649,21 @@ class PlanDeSalle{
         }
 
     })
-    var deltaY = 0
     container.addEventListener("wheel", e=>{
-      console.log(e);
+      console.log("e wheel",e);
+      console.log("wheelDeltaY",e.wheelDeltaY);
       e.stopPropagation();
       e.preventDefault();
       
-      if(e.deltaY < 0) // ZOOM
+      if(e.wheelDeltaY < 0) // DZZOOM
       {
-        this.scale += 0.1;
-        this.zoom(this.scale);
+        scaleWheelDeltaY -= 0.1;
+        this.zoom(scaleWheelDeltaY);
       }
-      else // DEZOOM
+      else // ZOOM
       {
-        this.scale -= 0.1;
-        this.zoom(this.scale);
+        scaleWheelDeltaY += 0.1;
+        this.zoom(scaleWheelDeltaY);
       }
     })
     container.addEventListener("mousemove",(e)=>{
