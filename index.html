@@ -55,7 +55,8 @@ div[data-name="PLAN-SALLE"]{
 </div>
 <div data-name="PLAN-SALLE" style="text-align:center">
 
-  <svg class="img-fluid" height="670" width="1010" viewBox="0 0 1010 670" version="1.1">    <rect x="30" y="573" width="950" height="67" stroke="black" stroke-width="2" fill="#ff7d7d" onclick="" onmouseover="" onmouseout=""></rect>
+  <svg class="img-fluid" height="670" width="1010" viewBox="0 0 1010 670" version="1.1">    
+    <!-- <rect x="30" y="573" width="950" height="67" stroke="black" stroke-width="2" fill="#ff7d7d" onclick="" onmouseover="" onmouseout=""></rect>
     <circle class="place" cx="31" cy="349" r="8" stroke="black" stroke-width="1" fill="#ff7d7d" fill-opacity="0.5"></circle>
     <circle class="place" cx="56" cy="374" r="8" stroke="black" stroke-width="1" fill="#ff7d7d" fill-opacity="0.5"></circle>
     <circle class="place" cx="57" cy="191" r="8" stroke="black" stroke-width="2" fill="#00ff00" onclick="pcdNavWLValiderSiegesRpr('M32');" onmouseover="pcdNavJSSurvoleSiegesRpr('M32');" onmouseout="" cursor="pointer" opacity="0.8"></circle>
@@ -555,8 +556,8 @@ div[data-name="PLAN-SALLE"]{
     <circle class="place" cx="928" cy="321" r="8" stroke="black" stroke-width="1" fill="#ff7d7d" fill-opacity="0.5"></circle>
     <circle class="place" cx="928" cy="347" r="8" stroke="black" stroke-width="1" fill="#ff7d7d" fill-opacity="0.5"></circle>
     <circle class="place" cx="928" cy="373" r="8" stroke="black" stroke-width="1" fill="#ff7d7d" fill-opacity="0.5"></circle>
-    <circle class="place" cx="954" cy="348" r="8" stroke="black" stroke-width="1" fill="#ff7d7d" fill-opacity="0.5"></circle>
-    
+    <circle class="place" cx="954" cy="348" r="8" stroke="black" stroke-width="1" fill="#ff7d7d" fill-opacity="0.5"></circle> -->
+    <image href="image.jpg"/>
   </svg>
 
 <div class="btn-centrer">Centrer</div>
@@ -778,7 +779,7 @@ lever()
   {
     clearInterval(this.myInterval)
   }
-  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
+  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
   this.boolZoom = true;
   this.lastScale = 1;
@@ -792,7 +793,7 @@ defilementScroll()
   // Bouger le SVG avec le vecteur vitesse
   // Diminuer le vecteur vitesse
   // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
-  document.querySelector("svg").style.transition = "transform 0.2s";
+  // document.querySelector("svg").style.transition = "transform 0.2s";
   let SVG = this.dernierePositionSVG;
   let nouveauVecteur = {
     X : this.vecteur.X * 0.95, // 0.95
@@ -813,17 +814,17 @@ defilementScroll()
     Y : this.positionSVG.Y - difference.Y
   }
 
-  if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
-  {
-    nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
-    clearInterval(this.myInterval);
+  // if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
+  // {
+  //   nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
+  //   clearInterval(this.myInterval);
     
-  }
-  if(Math.abs(nouvellePositionSVG.Y)>(this.maxY * this.scale))
-  {
-    nouvellePositionSVG.Y = this.maxY * this.scale *(nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
-    clearInterval(this.myInterval);
-  }
+  // }
+  // if(Math.abs(nouvellePositionSVG.Y)>(this.maxY * this.scale))
+  // {
+  //   nouvellePositionSVG.Y = this.maxY * this.scale *(nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
+  //   clearInterval(this.myInterval);
+  // }
 
   this.positionSVG = nouvellePositionSVG;
   if((((Math.abs(nouveauVecteur.X))+(Math.abs(nouveauVecteur.Y)))/2)<=1)
