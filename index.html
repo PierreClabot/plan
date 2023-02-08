@@ -598,6 +598,8 @@ class PlanDeSalle{
       X:0,
       Y:0
     };
+    this.maxY = 100;
+    this.maxX = 200;
     const svg = document.querySelector("svg");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
     const btnCentrer = document.querySelector(".btn-centrer");
@@ -698,7 +700,7 @@ class PlanDeSalle{
         }
         // Calculer le vecteur vitesse
         // mémoriser la position du svg
-        this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
+        this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),200);
 
         boolZoom = true;
         this.lastScale = 1;
@@ -740,8 +742,8 @@ defilementScroll()
   
 
   let difference = {
-    X : (nouveauVecteur.X - this.vecteur.X)*10,
-    Y : (nouveauVecteur.Y - this.vecteur.Y)*10
+    X : (nouveauVecteur.X - this.vecteur.X)*100,
+    Y : (nouveauVecteur.Y - this.vecteur.Y)*100
   }
   console.log("positionSVG",this.positionSVG);
 
@@ -751,17 +753,29 @@ defilementScroll()
     X : this.positionSVG.X - difference.X,
     Y : this.positionSVG.Y - difference.Y
   }
-  // console.log("nouvellePosition",nouvellePositionSVG);
+
+  if(Math.abs(nouvellePositionSVG.X)>this.maxX)
+  {
+    nouvellePositionSVG.X = this.maxX * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
+  }
+  if(Math.abs(nouvellePositionSVG.Y)>this.maxY)
+  {
+    nouvellePositionSVG.Y = this.maxY * (nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
+  }
+
   this.positionSVG = nouvellePositionSVG;
-  document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${this.scale})`
-  this.dernierePositionSVG = this.positionSVG;
-  console.log("test");
   if((Math.abs(nouveauVecteur.X)<1) || (Math.abs(nouveauVecteur.Y)<1))
   {
     console.log("je sors");
     document.querySelector("svg").style.transition = "";
-    clearInterval(this.myInterval)
+    clearInterval(this.myInterval);
+    return;
   }
+
+  document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${this.scale})`
+  this.dernierePositionSVG = this.positionSVG;
+  console.log("test");
+  
 }
 
 setviewbox()
