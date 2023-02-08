@@ -628,20 +628,25 @@ class PlanDeSalle{
     })
 
     container.addEventListener("touchstart",function(e){
-      this.AppuiA = {
-        X : e.touches[0].clientX,
-        Y : e.touches[0].clientY
-      }
-      this.AppuiB = this.AppuiA;
+
+      this.appuiEn(e.touches[0].clientX, e.touches[0].clientY);
+
+      // this.AppuiA = {
+      //   X : e.touches[0].clientX,
+      //   Y : e.touches[0].clientY
+      // }
+      // this.AppuiB = this.AppuiA;
       
     })
 
     container.addEventListener("touchmove",(e)=>{
-        this.AppuiA = this.AppuiB;
-        this.AppuiB = {
-          X : e.touches[0].clientX,
-          Y : e.touches[0].clientY
-        }
+        // this.AppuiA = this.AppuiB;
+        // this.AppuiB = {
+        //   X : e.touches[0].clientX,
+        //   Y : e.touches[0].clientY
+        // }
+        
+
         e.stopPropagation();
         e.preventDefault(); 
 
@@ -673,20 +678,23 @@ class PlanDeSalle{
         }
         if(e.touches.length == 1)
         {
-          if(boolPremierAppui)
-          {
-            premierAppui = {
-            X : e.touches[0].clientX,
-            Y : e.touches[0].clientY
-            }
-            boolPremierAppui = false;
-          }
-          svg.style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
-          // 
-          this.positionSVG = {
-            X : (this.dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
-            Y : (this.dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
-          }
+
+          this.bougerEn(e.touches[0].clientX , e.touches[0].clientY);
+
+          // if(boolPremierAppui)
+          // {
+          //   premierAppui = {
+          //   X : e.touches[0].clientX,
+          //   Y : e.touches[0].clientY
+          //   }
+          //   boolPremierAppui = false;
+          // }
+          // svg.style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
+          // // 
+          // this.positionSVG = {
+          //   X : (this.dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
+          //   Y : (this.dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
+          // }
 
         }
 
@@ -694,25 +702,25 @@ class PlanDeSalle{
     container.addEventListener("touchend",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
+        this.lever();
+        // this.dernierePositionSVG = this.positionSVG;
+        // this.vecteur = {
+        //   X : this.AppuiB.X - this.AppuiA.X,
+        //   Y : this.AppuiB.Y - this.AppuiA.Y
+        // }
+        // // Calculer le vecteur vitesse
+        // // mémoriser la position du svg
+        // if(this.myInterval)
+        // {
+        //   clearInterval(myInterval)
+        // }
+        // this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
 
-        this.dernierePositionSVG = this.positionSVG;
-        this.vecteur = {
-          X : this.AppuiB.X - this.AppuiA.X,
-          Y : this.AppuiB.Y - this.AppuiA.Y
-        }
-        // Calculer le vecteur vitesse
-        // mémoriser la position du svg
-        if(this.myInterval)
-        {
-          clearInterval(myInterval)
-        }
-        this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
-
-        boolZoom = true;
-        this.lastScale = 1;
-        boolPremierAppui =  true;
-        document.querySelector("svg").style.transition = "";
-        document.querySelector(".vecteur").innerHTML = `{ X : ${this.vecteur.X}, Y : ${this.vecteur.Y}}`
+        // boolZoom = true;
+        // this.lastScale = 1;
+        // boolPremierAppui =  true;
+        // document.querySelector("svg").style.transition = "";
+        // document.querySelector(".vecteur").innerHTML = `{ X : ${this.vecteur.X}, Y : ${this.vecteur.Y}}`
         
     })
 
@@ -733,7 +741,57 @@ class PlanDeSalle{
 
   mouseDown = true;
 }
+appuiEn(x,y){
+    this.AppuiA = {
+      X : x,
+      Y : y
+    }
+    this.AppuiB = this.AppuiA;
+}
+bougerEn(x,y)
+{
+  this.AppuiA = this.AppuiB;
+  this.AppuiB = {
+    X : x,
+    Y : y
+  }
 
+  if(boolPremierAppui)
+  {
+    premierAppui = {
+      X : x,
+      Y : y
+    }
+    boolPremierAppui = false;
+  }
+  svg.style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
+  // 
+  this.positionSVG = {
+    X : (this.dernierePositionSVG.X+(x - premierAppui.X )),
+    Y : (this.dernierePositionSVG.Y+(y - premierAppui.Y))
+  }
+}
+lever()
+{
+  this.dernierePositionSVG = this.positionSVG;
+  this.vecteur = {
+    X : this.AppuiB.X - this.AppuiA.X,
+    Y : this.AppuiB.Y - this.AppuiA.Y
+  }
+  // Calculer le vecteur vitesse
+  // mémoriser la position du svg
+  if(this.myInterval)
+  {
+    clearInterval(myInterval)
+  }
+  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
+
+  boolZoom = true;
+  this.lastScale = 1;
+  boolPremierAppui =  true;
+  document.querySelector("svg").style.transition = "";
+  document.querySelector(".vecteur").innerHTML = `{ X : ${this.vecteur.X}, Y : ${this.vecteur.Y}}`
+}
 defilementScroll()
 {
   // Bouger le SVG avec le vecteur vitesse
