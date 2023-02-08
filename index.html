@@ -580,7 +580,7 @@ class PlanDeSalle{
     var mouseDown = false;
 
     this.scale = 1;
-    var boolZoom = false;
+    this.boolZoom = false;
     this.lastScale = 1;
     this.positionSVG = {
       X : 0,
@@ -591,8 +591,8 @@ class PlanDeSalle{
       Y:0
     };
     this.AppuiB = this.AppuiA;
-    var premierAppui = this.positionSVG;
-    var boolPremierAppui = true;
+    this.premierAppui = this.positionSVG;
+    this.boolPremierAppui = true;
     this.myInterval = 0 ;
     this.dernierePositionSVG = {
       X:0,
@@ -600,6 +600,7 @@ class PlanDeSalle{
     };
     this.maxY = 100;
     this.maxX = 200;
+    this.clicSouris = false;
     const svg = document.querySelector("svg");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
     const btnCentrer = document.querySelector(".btn-centrer");
@@ -627,101 +628,64 @@ class PlanDeSalle{
       this.scale = 1
     })
 
-    container.addEventListener("touchstart",function(e){
-
+    container.addEventListener("touchstart", e =>{
       this.appuiEn(e.touches[0].clientX, e.touches[0].clientY);
-
-      // this.AppuiA = {
-      //   X : e.touches[0].clientX,
-      //   Y : e.touches[0].clientY
-      // }
-      // this.AppuiB = this.AppuiA;
-      
     })
-
+    container.addEventListener("mousedown", e =>{
+      this.appuiEn(e.clientX, e.clientY);
+    })
     container.addEventListener("touchmove",(e)=>{
-        // this.AppuiA = this.AppuiB;
-        // this.AppuiB = {
-        //   X : e.touches[0].clientX,
-        //   Y : e.touches[0].clientY
-        // }
-        
-
         e.stopPropagation();
         e.preventDefault(); 
 
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
-          boolPremierAppui = true;
-          if(this.scale == 1)
-          {
-            this.scale = e.scale;
-          }
+          this.zoom(e.scale);
+          // this.boolPremierAppui = true;
+          // if(this.scale == 1)
+          // {
+          //   this.scale = e.scale;
+          // }
 
-          if (e.scale>=this.lastScale) // Zoom
-          {
-            this.scale += (e.scale-this.lastScale);
-          }
-          else{ // Dezoom
-            this.scale -= (this.lastScale-e.scale);
-          }
-          if(this.scale>4) // Limiter l'échelle de zoom / dezoom
-          {
-            this.scale = 4
-          }
-          if(this.scale <0.8)
-          {
-            this.scale = 0.8;
-          }
-          this.lastScale=e.scale;
-          document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
+          // if (e.scale>=this.lastScale) // Zoom
+          // {
+          //   this.scale += (e.scale-this.lastScale);
+          // }
+          // else{ // Dezoom
+          //   this.scale -= (this.lastScale-e.scale);
+          // }
+          // if(this.scale>4) // Limiter l'échelle de zoom / dezoom
+          // {
+          //   this.scale = 4
+          // }
+          // if(this.scale <0.8)
+          // {
+          //   this.scale = 0.8;
+          // }
+          // this.lastScale=e.scale;
+          // document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
         }
         if(e.touches.length == 1)
         {
-
           this.bougerEn(e.touches[0].clientX , e.touches[0].clientY);
-
-          // if(boolPremierAppui)
-          // {
-          //   premierAppui = {
-          //   X : e.touches[0].clientX,
-          //   Y : e.touches[0].clientY
-          //   }
-          //   boolPremierAppui = false;
-          // }
-          // svg.style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
-          // // 
-          // this.positionSVG = {
-          //   X : (this.dernierePositionSVG.X+(e.touches[0].clientX - premierAppui.X )),
-          //   Y : (this.dernierePositionSVG.Y+(e.touches[0].clientY - premierAppui.Y))
-          // }
-
         }
 
     })
+    container.addEventListener("mousemove",(e)=>{
+        e.stopPropagation();
+        e.preventDefault(); 
+        this.bougerEn(e.clientX , e.clientY);
+    })
+
     container.addEventListener("touchend",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
-        this.lever();
-        // this.dernierePositionSVG = this.positionSVG;
-        // this.vecteur = {
-        //   X : this.AppuiB.X - this.AppuiA.X,
-        //   Y : this.AppuiB.Y - this.AppuiA.Y
-        // }
-        // // Calculer le vecteur vitesse
-        // // mémoriser la position du svg
-        // if(this.myInterval)
-        // {
-        //   clearInterval(myInterval)
-        // }
-        // this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
-
-        // boolZoom = true;
-        // this.lastScale = 1;
-        // boolPremierAppui =  true;
-        // document.querySelector("svg").style.transition = "";
-        // document.querySelector(".vecteur").innerHTML = `{ X : ${this.vecteur.X}, Y : ${this.vecteur.Y}}`
-        
+        this.lever();   
+    })
+    container.addEventListener("mouseup",(e)=>{
+        e.stopPropagation();
+        e.preventDefault(); 
+        this.lever();   
     })
 
     shape.addEventListener("mousemove", ()=>{this.mousemove});
@@ -747,6 +711,7 @@ appuiEn(x,y){
       Y : y
     }
     this.AppuiB = this.AppuiA;
+    this.clicSouris = true;
 }
 bougerEn(x,y)
 {
@@ -756,20 +721,50 @@ bougerEn(x,y)
     Y : y
   }
 
-  if(boolPremierAppui)
+  if(this.boolPremierAppui)
   {
-    premierAppui = {
+    this.premierAppui = {
       X : x,
       Y : y
     }
-    boolPremierAppui = false;
+    this.boolPremierAppui = false;
   }
-  svg.style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
-  // 
-  this.positionSVG = {
-    X : (this.dernierePositionSVG.X+(x - premierAppui.X )),
-    Y : (this.dernierePositionSVG.Y+(y - premierAppui.Y))
+  if(this.clicSouris)
+  {
+    document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
+    // 
+    this.positionSVG = {
+      X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
+      Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
+    }
   }
+
+}
+zoom(scale)
+{
+  this.boolPremierAppui = true;
+  if(this.scale == 1)
+  {
+    this.scale = scale;
+  }
+
+  if (scale>=this.lastScale) // Zoom
+  {
+    this.scale += (scale-this.lastScale);
+  }
+  else{ // Dezoom
+    this.scale -= (this.lastScale-scale);
+  }
+  if(this.scale>4) // Limiter l'échelle de zoom / dezoom
+  {
+    this.scale = 4
+  }
+  if(this.scale <0.8)
+  {
+    this.scale = 0.8;
+  }
+  this.lastScale=e.scale;
+  document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
 }
 lever()
 {
@@ -782,15 +777,16 @@ lever()
   // mémoriser la position du svg
   if(this.myInterval)
   {
-    clearInterval(myInterval)
+    clearInterval(this.myInterval)
   }
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
 
-  boolZoom = true;
+  this.boolZoom = true;
   this.lastScale = 1;
-  boolPremierAppui =  true;
+  this.boolPremierAppui =  true;
   document.querySelector("svg").style.transition = "";
   document.querySelector(".vecteur").innerHTML = `{ X : ${this.vecteur.X}, Y : ${this.vecteur.Y}}`
+  this.clicSouris = false;
 }
 defilementScroll()
 {
