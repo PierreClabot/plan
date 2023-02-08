@@ -754,13 +754,13 @@ defilementScroll()
     Y : this.positionSVG.Y - difference.Y
   }
 
-  if(Math.abs(nouvellePositionSVG.X)>this.maxX)
+  if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
   {
-    nouvellePositionSVG.X = this.maxX * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
+    nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
   }
-  if(Math.abs(nouvellePositionSVG.Y)>this.maxY)
+  if(Math.abs(nouvellePositionSVG.Y)>(this.maxY * this.scale))
   {
-    nouvellePositionSVG.Y = this.maxY * (nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
+    nouvellePositionSVG.Y = this.maxY * this.scale *(nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
   }
 
   this.positionSVG = nouvellePositionSVG;
