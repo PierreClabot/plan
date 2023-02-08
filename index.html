@@ -40,11 +40,11 @@ div[data-name="PLAN-SALLE"]{
   buffered-rendering : dynamic;
 }
 .btn-centrer{
-  position: absolute;
-  bottom: 0;
-  right: 50%;
-  transform: translateX(50%);
+
   z-index: 2;
+  width: 20%;
+  margin: auto;
+  text-align: center;
   background-color: #f1f1f1;
   padding : 0.1rem 0.5rem;
   border-radius: 10px 10px 0 0;
@@ -60,6 +60,7 @@ div[data-name="PLAN-SALLE"]{
 
   </div>
 </div>
+<div class="btn-centrer">Centrer</div>
 <div data-name="PLAN-SALLE" style="text-align:center">
 
   <svg class="img-fluid" height="670" width="1010" viewBox="0 0 1010 670" version="1.1">    
@@ -566,7 +567,7 @@ div[data-name="PLAN-SALLE"]{
     <circle class="place" cx="954" cy="348" r="8" stroke="black" stroke-width="1" fill="#ff7d7d" fill-opacity="0.5"></circle> 
   </svg>
 
-<div class="btn-centrer">Centrer</div>
+
 
 
 <script>
@@ -624,6 +625,8 @@ class PlanDeSalle{
       }
       this.dernierePositionSVG = this.positionSVG;
       this.scale = 1
+      console.log("btn-centrer")
+      document.querySelector("event").innerHTML = "J'appuie sur le bouton centrer"
     })
     btnCentrer.addEventListener("click",function(e){
       svg.style.transform = "translate(0,0) scale(1)";
@@ -633,6 +636,8 @@ class PlanDeSalle{
       }
       this.dernierePositionSVG = this.positionSVG;
       this.scale = 1
+      console.log("btn-centrer")
+      document.querySelector(".event").innerHTML = "J'appuie sur le bouton centrer"
     })
 
     container.addEventListener("touchstart", e =>{
