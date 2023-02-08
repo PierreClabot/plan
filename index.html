@@ -52,8 +52,13 @@ div[data-name="PLAN-SALLE"]{
 }
 </style>
 <div>
-  <h3>vecteur</h3>
-  <div class="vecteur"></div>
+  <h3>Nom de l'event</h3>
+  <div class="event">
+
+  </div>
+  <div class="details-event">
+
+  </div>
 </div>
 <div data-name="PLAN-SALLE" style="text-align:center">
 
@@ -632,13 +637,26 @@ class PlanDeSalle{
 
     container.addEventListener("touchstart", e =>{
       this.appuiEn(e.touches[0].clientX, e.touches[0].clientY);
+      
+      document.querySelector(".event").innerHTML = `TouchStart<br>
+                                                    ClientX : ${e.touches[0].clientX}<br>
+                                                    ClientY : ${e.touches[0].clientY}<br>`;
+      document.querySelector(".details-event").innerHTML = "";
     })
     container.addEventListener("mousedown", e =>{
       this.appuiEn(e.clientX, e.clientY);
+      document.querySelector(".event").innerHTML = `Mouse Down<br>
+                                                    ClientX : ${e.clientX}<br>
+                                                    ClientY : ${e.clientY}<br>`;
+      document.querySelector(".details-event").innerHTML = "";
     })
     container.addEventListener("touchmove",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
+
+        document.querySelector(".event").innerHTML = `TouchStart<br>
+                                                    ClientX : ${e.touches[0].clientX}<br>
+                                                    ClientY : ${e.touches[0].clientY}<br>`;
 
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
@@ -740,10 +758,12 @@ bougerEn(x,y)
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
   }
+  document.querySelector(".event").innerHTML = `Je me déplace`;
 
 }
 zoom(scale)
 {
+
   this.boolPremierAppui = true;
   if(this.scale == 1)
   {
@@ -765,6 +785,10 @@ zoom(scale)
   {
     this.scale = 0.8;
   }
+
+  document.querySelector(".event").innerHTML += `Je zoom<br>
+                                                    scale : ${this.scale}<br>`;
+
   this.lastScale=scale;
   document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
 }
@@ -781,14 +805,17 @@ lever()
   {
     clearInterval(this.myInterval)
   }
+  document.querySelector(".event").innerHTML += `Je n'appuie plus`;
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
   this.boolZoom = true;
   this.lastScale = 1;
   this.boolPremierAppui =  true;
   document.querySelector("svg").style.transition = "";
-  document.querySelector(".vecteur").innerHTML = `{ X : ${this.vecteur.X}, Y : ${this.vecteur.Y}}`
   this.clicSouris = false;
+  document.querySelector(".details-event").innerHTML = "Je n'appuie plus";
+  
+
 }
 defilementScroll()
 {
@@ -815,7 +842,9 @@ defilementScroll()
     X : this.positionSVG.X - difference.X,
     Y : this.positionSVG.Y - difference.Y
   }
-
+  document.querySelector(".details-event").innerHTML = `Je me déplace de : <br>
+                                                  vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }<br>
+                                                  Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`;
   // if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
   // {
   //   nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
@@ -831,7 +860,7 @@ defilementScroll()
   this.positionSVG = nouvellePositionSVG;
   if((((Math.abs(nouveauVecteur.X))+(Math.abs(nouveauVecteur.Y)))/2)<=1)
   {
-    console.log("je sors");
+    document.querySelector(".details-event").innerHTML += "<br>Je sors de mon setInterval";
     document.querySelector("svg").style.transition = "";
     if(this.myInterval)
     {
