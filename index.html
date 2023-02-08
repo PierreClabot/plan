@@ -716,17 +716,16 @@ bougerEn(x,y)
     Y : y
   }
 
-  if(this.boolPremierAppui)
-  {
-    this.premierAppui = {
-      X : x,
-      Y : y
-    }
-    this.boolPremierAppui = false;
-  }
   if(this.clicSouris)
   {
-    console.log("move");
+    if(this.boolPremierAppui)
+    {
+      this.premierAppui = {
+        X : x,
+        Y : y
+      }
+      this.boolPremierAppui = false;
+    }
     document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
     // 
     this.positionSVG = {
@@ -792,14 +791,14 @@ defilementScroll()
   document.querySelector("svg").style.transition = "transform 0.1s";
   let SVG = this.dernierePositionSVG;
   let nouveauVecteur = {
-    X : this.vecteur.X * 0.95, // 0.95
-    Y : this.vecteur.Y * 0.95  // 0.95
+    X : this.vecteur.X * 0.90, // 0.95
+    Y : this.vecteur.Y * 0.90  // 0.95
   }
   
 
   let difference = {
-    X : (nouveauVecteur.X - this.vecteur.X)*10, // 100
-    Y : (nouveauVecteur.Y - this.vecteur.Y)*10 // 100
+    X : (nouveauVecteur.X - this.vecteur.X)*20, // 100
+    Y : (nouveauVecteur.Y - this.vecteur.Y)*20 // 100
   }
   console.log("positionSVG",this.positionSVG);
 
@@ -820,7 +819,6 @@ defilementScroll()
   {
     nouvellePositionSVG.Y = this.maxY * this.scale *(nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
     clearInterval(this.myInterval);
-
   }
 
   this.positionSVG = nouvellePositionSVG;
@@ -829,15 +827,14 @@ defilementScroll()
     console.log("je sors");
     document.querySelector("svg").style.transition = "";
     if(this.myInterval)
-      {
-        clearInterval(this.myInterval);
-      }
+    {
+      clearInterval(this.myInterval);
+    }
     return;
   }
 
   document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${this.scale})`
   this.dernierePositionSVG = this.positionSVG;
-  console.log("test");
 }
 
 setviewbox()
