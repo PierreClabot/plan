@@ -706,6 +706,11 @@ appuiEn(x,y){
     }
     this.AppuiB = this.AppuiA;
     this.clicSouris = true;
+    document.querySelector("svg").style.transition = "";
+    if(this.myInterval)
+    {
+      clearInterval(this.myInterval)
+    }
 }
 bougerEn(x,y)
 {
