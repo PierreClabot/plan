@@ -641,29 +641,6 @@ class PlanDeSalle{
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
           this.zoom(e.scale);
-          // this.boolPremierAppui = true;
-          // if(this.scale == 1)
-          // {
-          //   this.scale = e.scale;
-          // }
-
-          // if (e.scale>=this.lastScale) // Zoom
-          // {
-          //   this.scale += (e.scale-this.lastScale);
-          // }
-          // else{ // Dezoom
-          //   this.scale -= (this.lastScale-e.scale);
-          // }
-          // if(this.scale>4) // Limiter l'échelle de zoom / dezoom
-          // {
-          //   this.scale = 4
-          // }
-          // if(this.scale <0.8)
-          // {
-          //   this.scale = 0.8;
-          // }
-          // this.lastScale=e.scale;
-          // document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
         }
         if(e.touches.length == 1)
         {
@@ -671,9 +648,27 @@ class PlanDeSalle{
         }
 
     })
+    var deltaY = 0
+    container.addEventListener("wheel", e=>{
+      console.log(e);
+      e.stopPropagation();
+      e.preventDefault();
+      
+      if(e.deltaY < 0) // ZOOM
+      {
+        this.scale += 0.1;
+        this.zoom(this.scale);
+      }
+      else // DEZOOM
+      {
+        this.scale -= 0.1;
+        this.zoom(this.scale);
+      }
+    })
     container.addEventListener("mousemove",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
+        
         this.bougerEn(e.clientX , e.clientY);
     })
 
@@ -731,6 +726,7 @@ bougerEn(x,y)
   }
   if(this.clicSouris)
   {
+    console.log("move");
     document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
     // 
     this.positionSVG = {
