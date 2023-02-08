@@ -763,7 +763,7 @@ zoom(scale)
   {
     this.scale = 0.8;
   }
-  this.lastScale=e.scale;
+  this.lastScale=scale;
   document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
 }
 lever()
