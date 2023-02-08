@@ -603,6 +603,7 @@ class PlanDeSalle{
     const btnCentrer = document.querySelector(".btn-centrer");
 
     btnCentrer.addEventListener("touchstart",function(e){
+      clearInterval(this.myInterval);
       svg.style.transform = "translate(0,0) scale(1)";
       this.positionSVG = {
         X : 0,
@@ -676,7 +677,6 @@ class PlanDeSalle{
           }
           boolPremierAppui = false;
           }
-          console.log(this);
           svg.style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
           // 
           this.positionSVG = {
@@ -698,7 +698,7 @@ class PlanDeSalle{
         }
         // Calculer le vecteur vitesse
         // mémoriser la position du svg
-        this.myInterval = setInterval(this.defilementScroll(),100);
+        this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),100);
 
         boolZoom = true;
         this.lastScale = 1;
@@ -731,7 +731,7 @@ defilementScroll()
   // Bouger le SVG avec le vecteur vitesse
   // Diminuer le vecteur vitesse
   // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
-  document.querySelector("svg").style.transition = "all 2s";
+  document.querySelector("svg").style.transition = "all 1s";
   let SVG = this.dernierePositionSVG;
   let nouveauVecteur = {
     X : this.vecteur.X * 0.95,
@@ -740,9 +740,10 @@ defilementScroll()
   
 
   let difference = {
-    X : nouveauVecteur.X - this.vecteur.X,
-    Y : nouveauVecteur.Y - this.vecteur.Y
+    X : (nouveauVecteur.X - this.vecteur.X)*10,
+    Y : (nouveauVecteur.Y - this.vecteur.Y)*10
   }
+  console.log("positionSVG",this.positionSVG);
 
   this.vecteur = nouveauVecteur;
 
@@ -750,11 +751,14 @@ defilementScroll()
     X : this.positionSVG.X - difference.X,
     Y : this.positionSVG.Y - difference.Y
   }
-  this.dernierePositionSVG = nouvellePositionSVG;
+  // console.log("nouvellePosition",nouvellePositionSVG);
+  this.positionSVG = nouvellePositionSVG;
   document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${this.scale})`
-  // document.querySelector("svg").style.background = "red";
-  if((nouveauVecteur.X>1) || (nouveauVecteur.Y>1))
+  this.dernierePositionSVG = this.positionSVG;
+  console.log("test");
+  if((Math.abs(nouveauVecteur.X)<1) || (Math.abs(nouveauVecteur.Y)<1))
   {
+    console.log("je sors");
     clearInterval(this.myInterval)
   }
 }
