@@ -759,6 +759,7 @@ defilementScroll()
   if((Math.abs(nouveauVecteur.X)<1) || (Math.abs(nouveauVecteur.Y)<1))
   {
     console.log("je sors");
+    document.querySelector("svg").style.transition = "";
     clearInterval(this.myInterval)
   }
 }
