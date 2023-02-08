@@ -741,8 +741,8 @@ defilementScroll()
   
 
   let difference = {
-    X : (nouveauVecteur.X - this.vecteur.X)*100, // 100
-    Y : (nouveauVecteur.Y - this.vecteur.Y)*100 // 100
+    X : (nouveauVecteur.X - this.vecteur.X)*80, // 100
+    Y : (nouveauVecteur.Y - this.vecteur.Y)*80 // 100
   }
   console.log("positionSVG",this.positionSVG);
 
@@ -791,7 +791,6 @@ setviewbox()
 
   shape = document.getElementsByTagName("svg")[0];
   shape.setAttribute("viewBox", vp.x + " " + vp.y + " " + vs.x + " " + vs.y);
-  
 }
 
 mousemove(e)
