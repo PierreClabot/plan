@@ -597,6 +597,7 @@ class PlanDeSalle{
     var viewboxScale = 1.0;
 
     var mouseDown = false;
+    this.nom = "Je suis le plan de salle"
     this.calculHauteur();
     window.onresize = this.calculHauteur
     this.scale = 1;
@@ -675,11 +676,9 @@ class PlanDeSalle{
 
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
-          this.zoom(e.scale);
-          this.debug("Typeof e.scale : "+typeof e.scale);
-          this.debug("Valeur e.scale : "+e.scale);
-          this.debug("Typeof this.lastScale : "+typeof this.lastScale);
-          this.debug("Valeur this.lastScale : "+this.lastScale);
+          this.zoom(e,e.scale);
+          this.debugs(`Touche 1 : { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`)
+          this.debugs(`Touche 2 : { X : ${e.touches[1].clientX}, Y : ${e.touches[1].clientY} }`)
         }
         if(e.touches.length == 1)
         {
@@ -696,13 +695,12 @@ class PlanDeSalle{
       if(e.wheelDeltaY < 0) // DZZOOM
       {
         scaleWheelDeltaY -= 0.1;
-        this.zoom(scaleWheelDeltaY);
       }
       else // ZOOM
       {
         scaleWheelDeltaY += 0.1;
-        this.zoom(scaleWheelDeltaY);
       }
+      this.zoom(e,scaleWheelDeltaY);
     })
     container.addEventListener("mousemove",(e)=>{
         e.stopPropagation();
@@ -714,12 +712,12 @@ class PlanDeSalle{
     container.addEventListener("touchend",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
-        this.lever(e.type);   
+        this.lever(e);   
     })
     container.addEventListener("mouseup",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
-        this.lever(e.type);   
+        this.lever(e);   
     })
 
     shape.addEventListener("mousemove", ()=>{this.mousemove});
@@ -758,6 +756,7 @@ appuiEn(x,y,nomEvent){
       clearInterval(this.myInterval)
     }
     this.debug(nomEvent);
+    this.debug(`Je suis : ${this.nom}`)
 }
 bougerEn(x,y,nomEvent)
 {
@@ -785,13 +784,14 @@ bougerEn(x,y,nomEvent)
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
-    this.debug(`${nomEvent}<br>
-            Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
+    this.debug(`${nomEvent}`)
+    this.debug(`Je suis : ${this.nom}`)
+    this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
   }
 
 
 }
-zoom(scale)
+zoom(e,scale)
 {
 
   this.boolPremierAppui = true;
@@ -815,15 +815,20 @@ zoom(scale)
   {
     this.scale = 0.8;
   }
-  this.debug(`Je zoom<br>
-              scale : ${this.scale}<br>`);
+
+  this.debug(`${e.type}`);
+  this.debug(`Typeof scale : ${typeof this.scale}`);
+  this.debug(`Valeur scale : ${this.scale}`);
+  this.debug(`Typeof lastScale : ${typeof this.lastScale}`);
+  this.debug(`Valeur lastScale : ${this.lastScale}`);
+  this.debug(`Je suis : ${this.nom}`)
 
   this.lastScale=scale;
 
   document.querySelector("svg").style.transform = `scale(${this.scale})`;
   // document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
 }
-lever(nomEvent)
+lever(event)
 {
   this.dernierePositionSVG = this.positionSVG;
   this.vecteur = {
@@ -836,7 +841,8 @@ lever(nomEvent)
   {
     clearInterval(this.myInterval)
   }
-  this.debug(`${nomEvent}`)
+  this.debug(`${event.type}`)
+  this.debug(`Je suis : ${this.nom}`)
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
   this.boolZoom = true;
@@ -870,9 +876,10 @@ defilementScroll()
     X : Math.round(this.positionSVG.X - difference.X),
     Y : Math.round(this.positionSVG.Y - difference.Y)
   }
-  this.debug(`Je scroll: <br> 
-            vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }<br>
-            Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`);
+  this.debug(`Défilement scroll`);
+  this.debug(`Je suis : ${this.nom}`)
+  this.debug(`vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }`);
+  this.debug(`Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`);
   // if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
   // {
   //   nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
