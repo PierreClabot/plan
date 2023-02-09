@@ -660,11 +660,13 @@ class PlanDeSalle{
     })
 
     container.addEventListener("touchstart", e =>{
-      this.appuiEn(e.touches[0].clientX, e.touches[0].clientY,e.type);
+      this.debug(e.target.classList.value);
+      this.appuiEn(e,e.touches[0].clientX, e.touches[0].clientY);
       
     })
     container.addEventListener("mousedown", e =>{
-      this.appuiEn(e.clientX, e.clientY,e.type);
+
+      this.appuiEn(e,e.clientX, e.clientY);
       this.debug(`Mouse Down<br>
                   ClientX : ${e.clientX}<br>
                   ClientY : ${e.clientY}<br>`);
@@ -672,7 +674,6 @@ class PlanDeSalle{
     container.addEventListener("touchmove",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
-
 
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
@@ -698,13 +699,13 @@ class PlanDeSalle{
       {
         scaleWheelDeltaY += 0.1;
       }
+
       this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
       this.zoom(e,scaleWheelDeltaY);
     })
     container.addEventListener("mousemove",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
-        
         this.bougerEn(e,e.clientX , e.clientY);
     })
 
@@ -717,6 +718,13 @@ class PlanDeSalle{
         e.stopPropagation();
         e.preventDefault(); 
         this.lever(e);   
+    })
+    container.addEventListener("touchcancel",(e)=>{
+      e.stopPropagation();
+      e.preventDefault(); 
+      this.debug(e.type);
+      this.debug(e.target.classList.value);
+
     })
 
     shape.addEventListener("mousemove", ()=>{this.mousemove});
@@ -742,7 +750,7 @@ calculHauteur(){
   let difference = hauteurEcran - divTop;
   document.querySelector("div[data-name=PLAN-SALLE]").style.height = difference+"px";
 }
-appuiEn(x,y,nomEvent){
+appuiEn(e,x,y){
     this.AppuiA = {
       X : x,
       Y : y
@@ -754,7 +762,8 @@ appuiEn(x,y,nomEvent){
     {
       clearInterval(this.myInterval)
     }
-    this.debug(nomEvent);
+    this.debug(e.type);
+    this.debug(e.target.classList.value);
     this.debug(`Je suis : ${this.nom}`)
 }
 bougerEn(event,x,y)
@@ -784,6 +793,7 @@ bougerEn(event,x,y)
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
     this.debug(`${event.type} : je me déplace`)
+    this.debug(event.target.classList.value);
     this.debug(`Je suis : ${this.nom}`)
     this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
   }
@@ -816,7 +826,8 @@ zoom(e,scale)
   }
 
   this.debug(`${e.type} : je zoom`);
-  this.debug(`Je suis : ${this.nom}`)
+  this.debug(e.target.classList.value);
+  this.debug(`Je suis : ${this.nom}`);
   this.debug(`Typeof scale : ${typeof this.scale}`);
   this.debug(`Valeur scale : ${this.scale}`);
   this.debug(`Typeof lastScale : ${typeof this.lastScale}`);
@@ -844,6 +855,7 @@ lever(event)
     clearInterval(this.myInterval)
   }
   this.debug(`${event.type}`)
+  this.debug(event.target.classList.value);
   this.debug(`Je suis : ${this.nom}`)
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
