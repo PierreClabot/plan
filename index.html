@@ -698,6 +698,7 @@ class PlanDeSalle{
       {
         scaleWheelDeltaY += 0.1;
       }
+      this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
       this.zoom(e,scaleWheelDeltaY);
     })
     container.addEventListener("mousemove",(e)=>{
@@ -820,8 +821,8 @@ zoom(e,scale)
   this.debug(`Valeur scale : ${this.scale}`);
   this.debug(`Typeof lastScale : ${typeof this.lastScale}`);
   this.debug(`Valeur lastScale : ${this.lastScale}`);
-  // this.debugs(`Touche 1 : { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`)
-  // this.debugs(`Touche 2 : { X : ${e.touches[1].clientX}, Y : ${e.touches[1].clientY} }`)
+  this.debug(`Touche 1 : { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`)
+  this.debug(`Touche 2 : { X : ${e.touches[1].clientX}, Y : ${e.touches[1].clientY} }`)
 
 
   this.lastScale=scale;
