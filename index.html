@@ -622,6 +622,7 @@ class PlanDeSalle{
     this.maxY = 100;
     this.maxX = 200;
     this.clicSouris = false;
+    this.pointers = [];
     const svg = document.querySelector("svg");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
     const btnCentrer = document.querySelector(".btn-centrer");
@@ -659,22 +660,57 @@ class PlanDeSalle{
       this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
     })
 
+
+    container.addEventListener("pointerdown",e=>{
+      e.stopPropagation();
+      e.preventDefault(); 
+      this.pointers.push(e);
+      console.log(e);
+      console.log("X : "+e.clientX);
+      console.log("Y : "+e.clientY);
+      // this.appuiEn(e,e.clientX, e.clientY);
+    })
+
+    container.addEventListener("pointermove",e=>{
+      e.stopPropagation();
+      e.preventDefault(); 
+      console.log(e);
+      console.log("X : "+e.clientX);
+      console.log("Y : "+e.clientY);
+      // this.bougerEn(e,e.clientX , e.clientY);
+      for(let i = 0; i<this.pointers.length;i++)
+      {
+        this.debug(`pointer ${i} : ${this.pointers[0].pointerId}`)
+      }
+      
+    })
+
+    container.addEventListener("pointerup",e=>{
+      e.stopPropagation();
+      e.preventDefault(); 
+      console.log(e);
+      this.lever(e);  
+    })
+
+
     container.addEventListener("touchstart", e =>{
+      return;
       this.debug(`target : ${e.target.classList.value}`);
       this.appuiEn(e,e.touches[0].clientX, e.touches[0].clientY);
       
     })
     container.addEventListener("mousedown", e =>{
-
+      return;
       this.appuiEn(e,e.clientX, e.clientY);
       this.debug(`Mouse Down<br>
                   ClientX : ${e.clientX}<br>
                   ClientY : ${e.clientY}<br>`);
     })
     container.addEventListener("touchmove",(e)=>{
+        return;
         e.stopPropagation();
         e.preventDefault(); 
-
+      
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
           this.zoom(e,e.scale);
@@ -686,6 +722,7 @@ class PlanDeSalle{
 
     })
     container.addEventListener("wheel", e=>{
+      return;
       console.log("e wheel",e);
       console.log("wheelDeltaY",e.wheelDeltaY);
       e.stopPropagation();
@@ -704,22 +741,26 @@ class PlanDeSalle{
       this.zoom(e,scaleWheelDeltaY);
     })
     container.addEventListener("mousemove",(e)=>{
+        return;
         e.stopPropagation();
         e.preventDefault(); 
         this.bougerEn(e,e.clientX , e.clientY);
     })
 
     container.addEventListener("touchend",(e)=>{
+        return;  
         e.stopPropagation();
         e.preventDefault(); 
         this.lever(e);   
     })
     container.addEventListener("mouseup",(e)=>{
+        return;
         e.stopPropagation();
         e.preventDefault(); 
         this.lever(e);   
     })
     container.addEventListener("touchcancel",(e)=>{
+      return;
       e.stopPropagation();
       e.preventDefault(); 
       this.debug(e.type);
