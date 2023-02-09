@@ -28,8 +28,9 @@ img{
       display: inline-block;
       buffered-rendering : dynamic;
       position: absolute;
-      right: 50%;
-      transform: translateX(50%);
+      right: 0;
+      top: 0;
+      left: 0;
       transition: transform 0.2s;
 }
 .place{
@@ -141,7 +142,7 @@ class PlanDeSalle{
       this.dernierePositionSVG = this.positionSVG;
       this.scale = 1
       console.log("btn-centrer")
-      this.debug("J'appuie sur le bouton centrer");
+      //this.debug("J'appuie sur le bouton centrer");
     })
     btnCentrer.addEventListener("mousedown",function(e){
       this.positionSVG = {
@@ -155,7 +156,7 @@ class PlanDeSalle{
       this.dernierePositionSVG = this.positionSVG;
       this.scale = 1
       console.log("btn-centrer")
-      this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
+      //this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
     })
 
 
@@ -163,6 +164,7 @@ class PlanDeSalle{
       e.stopPropagation();
       e.preventDefault(); 
       this.pointers.push(e);
+      this.appuiEn(e,e.clientX,e.clientY)
       // console.log(e);
       // console.log("X : "+e.clientX);
       // console.log("Y : "+e.clientY);
@@ -184,7 +186,7 @@ class PlanDeSalle{
       if (this.pointers.length == 2) 
       {
         // Calculate the distance between the two pointers
-        this.debug("J'ai 2 doigts");
+        //this.debug("J'ai 2 doigts");
         var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
         if (this.prevDiff > 0) 
         {
@@ -193,23 +195,28 @@ class PlanDeSalle{
           if (curDiff > this.prevDiff) { // ZOOM
             scale = this.scale + 0.05;
             this.zoom(e,scale)
-            this.debug("Zoom");
+            //this.debug("Zoom");
           }
           if (curDiff < this.prevDiff) { // DEZOOM
             scale = this.scale - 0.01;
             this.zoom(e,scale)
-            this.debug("Dezoom");
+            //this.debug("Dezoom");
           }
-          this.debug(calcul);
+          //this.debug(calcul);
         }
         // Cache the distance for the next move event 
         this.prevDiff = curDiff;
+      }
+      else if (this.pointers.length == 1)
+      {
+        this.bougerEn(e,e.clientX,e.clientY);
       }
 })
 
     container.addEventListener("pointerup",e=>{
       e.stopPropagation();
       e.preventDefault(); 
+      this.lever();
       for (var i = 0; i < this.pointers.length; i++) {
         if (this.pointers[i].pointerId == e.pointerId) {
           this.pointers.splice(i, 1);
@@ -228,16 +235,16 @@ class PlanDeSalle{
 
     container.addEventListener("touchstart", e =>{
       return;
-      this.debug(`target : ${e.target.classList.value}`);
+      //this.debug(`target : ${e.target.classList.value}`);
       this.appuiEn(e,e.touches[0].clientX, e.touches[0].clientY);
       
     })
     container.addEventListener("mousedown", e =>{
       return;
       this.appuiEn(e,e.clientX, e.clientY);
-      this.debug(`Mouse Down<br>
-                  ClientX : ${e.clientX}<br>
-                  ClientY : ${e.clientY}<br>`);
+      // this.debug(`Mouse Down<br>
+      //             ClientX : ${e.clientX}<br>
+      //             ClientY : ${e.clientY}<br>`);
     })
     container.addEventListener("touchmove",(e)=>{
         
@@ -270,7 +277,7 @@ class PlanDeSalle{
         scaleWheelDeltaY += 0.1;
       }
 
-      this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
+      //this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
       this.zoom(e,scaleWheelDeltaY);
     })
     container.addEventListener("mousemove",(e)=>{
@@ -296,8 +303,8 @@ class PlanDeSalle{
       return;
       e.stopPropagation();
       e.preventDefault(); 
-      this.debug(e.type);
-      this.debug(`target : ${e.target.classList.value}`);
+      // this.debug(e.type);
+      // this.debug(`target : ${e.target.classList.value}`);
 
     })
 
@@ -335,9 +342,9 @@ appuiEn(e,x,y){
     {
       clearInterval(this.myInterval)
     }
-    this.debug(e.type);
-    this.debug(`target : ${e.target.classList.value}`);
-    this.debug(`this : ${this.nom}`)
+    // this.debug(e.type);
+    // this.debug(`target : ${e.target.classList.value}`);
+    // this.debug(`this : ${this.nom}`)
 }
 bougerEn(event,x,y)
 {
@@ -365,10 +372,10 @@ bougerEn(event,x,y)
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
-    this.debug(`${event.type} : je me déplace`)
-    this.debug(`target : ${event.target.classList.value}`);
-    this.debug(`Je suis : ${this.nom}`)
-    this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
+    // this.debug(`${event.type} : je me déplace`)
+    // this.debug(`target : ${event.target.classList.value}`);
+    // this.debug(`Je suis : ${this.nom}`)
+    // this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
   }
 
 
@@ -398,7 +405,7 @@ zoom(e,scale)
     this.scale = 0.8;
   }
 
-  this.debug(`${e.type} : je zoom`);
+  //this.debug(`${e.type} : je zoom`);
   // this.debug(`target : ${e.target.classList.value}`);
   // this.debug(`Je suis : ${this.nom}`);
   // this.debug(`Typeof scale : ${typeof this.scale}`);
@@ -427,9 +434,9 @@ lever(event)
   {
     clearInterval(this.myInterval)
   }
-  this.debug(`${event.type}`)
-  this.debug(`target : ${event.target.classList.value}`);
-  this.debug(`Je suis : ${this.nom}`)
+  // this.debug(`${event.type}`)
+  // this.debug(`target : ${event.target.classList.value}`);
+  // this.debug(`Je suis : ${this.nom}`)
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
   this.boolZoom = true;
@@ -463,10 +470,10 @@ defilementScroll()
     X : Math.round(this.positionSVG.X - difference.X),
     Y : Math.round(this.positionSVG.Y - difference.Y)
   }
-  this.debug(`Défilement scroll`);
-  this.debug(`Je suis : ${this.nom}`)
-  this.debug(`vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }`);
-  this.debug(`Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`);
+  // this.debug(`Défilement scroll`);
+  // this.debug(`Je suis : ${this.nom}`)
+  // this.debug(`vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }`);
+  // this.debug(`Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`);
   // if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
   // {
   //   nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
@@ -482,7 +489,7 @@ defilementScroll()
   this.positionSVG = nouvellePositionSVG;
   if((((Math.abs(nouveauVecteur.X))+(Math.abs(nouveauVecteur.Y)))/2)<=1)
   {
-    this.debug("Je sors de mon setInterval");
+    //this.debug("Je sors de mon setInterval");
     if(this.myInterval)
     {
       clearInterval(this.myInterval);
