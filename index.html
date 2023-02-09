@@ -689,7 +689,7 @@ class PlanDeSalle{
       {
         // Calculate the distance between the two pointers
         this.debug("J'ai 2 doigts");
-        var curDiff = Math.sqrt(Math.pow(evCache[1].clientX - evCache[0].clientX, 2) + Math.pow(evCache[1].clientY - evCache[0].clientY, 2));
+        var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
         if (this.prevDiff > 0) 
         {
           if (curDiff > this.prevDiff) {
