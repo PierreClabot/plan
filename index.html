@@ -680,9 +680,9 @@ class PlanDeSalle{
       // console.log("X : "+e.clientX);
       // console.log("Y : "+e.clientY);
       // this.bougerEn(e,e.clientX , e.clientY);
-      for (var i = 0; i < evCache.length; i++) {
-        if (ev.pointerId == evCache[i].pointerId) {
-            evCache[i] = ev;
+      for (var i = 0; i < this.pointers.length; i++) {
+        if (e.pointerId == this.pointers[i].pointerId) {
+          this.pointers[i] = e;
           break;
         }
       }
@@ -718,7 +718,7 @@ class PlanDeSalle{
         }
       }
 
-      if (evCache.length < 2) 
+      if (this.pointers.length < 2) 
       {
         this.prevDiff = -1;
       }
