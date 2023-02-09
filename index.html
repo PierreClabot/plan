@@ -660,7 +660,7 @@ class PlanDeSalle{
     })
 
     container.addEventListener("touchstart", e =>{
-      this.debug(e.target.classList.value);
+      this.debug(`target : ${e.target.classList.value}`);
       this.appuiEn(e,e.touches[0].clientX, e.touches[0].clientY);
       
     })
@@ -723,7 +723,7 @@ class PlanDeSalle{
       e.stopPropagation();
       e.preventDefault(); 
       this.debug(e.type);
-      this.debug(e.target.classList.value);
+      this.debug(`target : ${e.target.classList.value}`);
 
     })
 
@@ -763,8 +763,8 @@ appuiEn(e,x,y){
       clearInterval(this.myInterval)
     }
     this.debug(e.type);
-    this.debug(e.target.classList.value);
-    this.debug(`Je suis : ${this.nom}`)
+    this.debug(`target : ${e.target.classList.value}`);
+    this.debug(`this : ${this.nom}`)
 }
 bougerEn(event,x,y)
 {
@@ -793,7 +793,7 @@ bougerEn(event,x,y)
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
     this.debug(`${event.type} : je me déplace`)
-    this.debug(event.target.classList.value);
+    this.debug(`target : ${event.target.classList.value}`);
     this.debug(`Je suis : ${this.nom}`)
     this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
   }
@@ -826,7 +826,7 @@ zoom(e,scale)
   }
 
   this.debug(`${e.type} : je zoom`);
-  this.debug(e.target.classList.value);
+  this.debug(`target : ${e.target.classList.value}`);
   this.debug(`Je suis : ${this.nom}`);
   this.debug(`Typeof scale : ${typeof this.scale}`);
   this.debug(`Valeur scale : ${this.scale}`);
@@ -855,7 +855,7 @@ lever(event)
     clearInterval(this.myInterval)
   }
   this.debug(`${event.type}`)
-  this.debug(event.target.classList.value);
+  this.debug(`target : ${event.target.classList.value}`);
   this.debug(`Je suis : ${this.nom}`)
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
