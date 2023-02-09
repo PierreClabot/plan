@@ -680,7 +680,7 @@ class PlanDeSalle{
         }
         if(e.touches.length == 1)
         {
-          this.bougerEn(e.touches[0].clientX , e.touches[0].clientY,e.type);
+          this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
         }
 
     })
@@ -704,7 +704,7 @@ class PlanDeSalle{
         e.stopPropagation();
         e.preventDefault(); 
         
-        this.bougerEn(e.clientX , e.clientY,e.type);
+        this.bougerEn(e,e.clientX , e.clientY);
     })
 
     container.addEventListener("touchend",(e)=>{
@@ -756,7 +756,7 @@ appuiEn(x,y,nomEvent){
     this.debug(nomEvent);
     this.debug(`Je suis : ${this.nom}`)
 }
-bougerEn(x,y,nomEvent)
+bougerEn(event,x,y)
 {
   this.AppuiA = this.AppuiB;
   this.AppuiB = {
@@ -782,7 +782,7 @@ bougerEn(x,y,nomEvent)
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
-    this.debug(`${nomEvent}`)
+    this.debug(`${event.type}`)
     this.debug(`Je suis : ${this.nom}`)
     this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
   }
