@@ -700,7 +700,7 @@ class PlanDeSalle{
             this.debug("Zoom");
           }
           if (curDiff < this.prevDiff) { // DEZOOM
-            scale = this.scale - 0.05;
+            scale = this.scale - 0.01;
             this.zoom(e,scale)
             this.debug("Dezoom");
           }
