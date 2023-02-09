@@ -676,10 +676,7 @@ class PlanDeSalle{
     container.addEventListener("pointermove",e=>{
       e.stopPropagation();
       e.preventDefault(); 
-      // console.log(e);
-      // console.log("X : "+e.clientX);
-      // console.log("Y : "+e.clientY);
-      // this.bougerEn(e,e.clientX , e.clientY);
+
       for (var i = 0; i < this.pointers.length; i++) {
         if (e.pointerId == this.pointers[i].pointerId) {
           this.pointers[i] = e;
@@ -688,24 +685,25 @@ class PlanDeSalle{
       }
 
 
-  if (this.pointers.length == 2) 
-  {
-    // Calculate the distance between the two pointers
-    var curDiff = Math.sqrt(Math.pow(evCache[1].clientX - evCache[0].clientX, 2) + Math.pow(evCache[1].clientY - evCache[0].clientY, 2));
-    if (this.prevDiff > 0) 
-    {
-      if (curDiff > this.prevDiff) {
-        // The distance between the two pointers has increased
-        this.debug("Pinch moving OUT -> Zoom in");
+      if (this.pointers.length == 2) 
+      {
+        // Calculate the distance between the two pointers
+        this.debug("J'ai 2 doigts");
+        var curDiff = Math.sqrt(Math.pow(evCache[1].clientX - evCache[0].clientX, 2) + Math.pow(evCache[1].clientY - evCache[0].clientY, 2));
+        if (this.prevDiff > 0) 
+        {
+          if (curDiff > this.prevDiff) {
+            // The distance between the two pointers has increased
+            this.debug("Pinch moving OUT -> Zoom in");
+          }
+          if (curDiff < this.prevDiff) {
+            // The distance between the two pointers has decreased
+            this.debug("Pinch moving IN -> Zoom out");
+          }
+        }
+        // Cache the distance for the next move event 
+        this.prevDiff = curDiff;
       }
-      if (curDiff < this.prevDiff) {
-        // The distance between the two pointers has decreased
-        this.debug("Pinch moving IN -> Zoom out");
-      }
-    }
-    // Cache the distance for the next move event 
-    this.prevDiff = curDiff;
-  }
 })
 
     container.addEventListener("pointerup",e=>{
