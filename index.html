@@ -688,8 +688,14 @@ class PlanDeSalle{
     container.addEventListener("pointerup",e=>{
       e.stopPropagation();
       e.preventDefault(); 
+      for (var i = 0; i < evCache.length; i++) {
+        if (this.pointers[i].pointerId == e.pointerId) {
+          this.pointers.splice(i, 1);
+          break;
+        }
+      }
       console.log(e);
-      this.lever(e);  
+      // this.lever(e);  
     })
 
 
