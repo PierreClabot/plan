@@ -44,6 +44,10 @@ div[data-name="PLAN-SALLE"]{
   buffered-rendering : dynamic;
   height: 100%;
 }
+.event{
+  height: 300px;
+  overflow: scroll;
+}
 .btn-centrer{
 
   z-index: 2;
@@ -62,9 +66,6 @@ div[data-name="PLAN-SALLE"]{
 <div>
   <h3>Nom de l'event</h3>
   <div class="event">
-
-  </div>
-  <div class="details-event">
 
   </div>
 </div>
@@ -640,7 +641,7 @@ class PlanDeSalle{
       this.dernierePositionSVG = this.positionSVG;
       this.scale = 1
       console.log("btn-centrer")
-      document.querySelector("event").innerHTML = "J'appuie sur le bouton centrer"
+      this.debug("J'appuie sur le bouton centrer");
     })
     btnCentrer.addEventListener("mousedown",function(e){
       this.positionSVG = {
@@ -654,35 +655,31 @@ class PlanDeSalle{
       this.dernierePositionSVG = this.positionSVG;
       this.scale = 1
       console.log("btn-centrer")
-      document.querySelector(".event").innerHTML = `J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`
+      this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
     })
 
     container.addEventListener("touchstart", e =>{
       this.appuiEn(e.touches[0].clientX, e.touches[0].clientY,e.type);
       
-      document.querySelector(".event").innerHTML = `TouchStart<br>
-                                                    ClientX : ${e.touches[0].clientX}<br>
-                                                    ClientY : ${e.touches[0].clientY}<br>`;
-      document.querySelector(".details-event").innerHTML = "";
     })
     container.addEventListener("mousedown", e =>{
       this.appuiEn(e.clientX, e.clientY,e.type);
-      document.querySelector(".event").innerHTML = `Mouse Down<br>
-                                                    ClientX : ${e.clientX}<br>
-                                                    ClientY : ${e.clientY}<br>`;
-      document.querySelector(".details-event").innerHTML = "";
+      this.debug(`Mouse Down<br>
+                  ClientX : ${e.clientX}<br>
+                  ClientY : ${e.clientY}<br>`);
     })
     container.addEventListener("touchmove",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
 
-        document.querySelector(".event").innerHTML = `TouchStart<br>
-                                                    ClientX : ${e.touches[0].clientX}<br>
-                                                    ClientY : ${e.touches[0].clientY}<br>`;
 
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
           this.zoom(e.scale);
+          this.debug("Typeof e.scale : "+typeof e.scale);
+          this.debug("Valeur e.scale : "+e.scale);
+          this.debug("Typeof this.lastScale : "+typeof this.lastScale);
+          this.debug("Valeur this.lastScale : "+this.lastScale);
         }
         if(e.touches.length == 1)
         {
@@ -760,7 +757,7 @@ appuiEn(x,y,nomEvent){
     {
       clearInterval(this.myInterval)
     }
-    document.querySelector(".event").innerHTML = nomEvent;
+    this.debug(nomEvent);
 }
 bougerEn(x,y,nomEvent)
 {
@@ -788,9 +785,10 @@ bougerEn(x,y,nomEvent)
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
+    this.debug(`${nomEvent}<br>
+            Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
   }
-  document.querySelector(".event").innerHTML = `${nomEvent}<br>
-                                                Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`;
+
 
 }
 zoom(scale)
@@ -817,9 +815,8 @@ zoom(scale)
   {
     this.scale = 0.8;
   }
-
-  document.querySelector(".event").innerHTML += `Je zoom<br>
-                                                    scale : ${this.scale}<br>`;
+  this.debug(`Je zoom<br>
+              scale : ${this.scale}<br>`);
 
   this.lastScale=scale;
 
@@ -839,14 +836,13 @@ lever(nomEvent)
   {
     clearInterval(this.myInterval)
   }
-  document.querySelector(".event").innerHTML = `${nomEvent}`;
+  this.debug(`${nomEvent}`)
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
   this.boolZoom = true;
   this.lastScale = 1;
   this.boolPremierAppui =  true;
   this.clicSouris = false;
-  
 
 }
 defilementScroll()
@@ -874,9 +870,9 @@ defilementScroll()
     X : Math.round(this.positionSVG.X - difference.X),
     Y : Math.round(this.positionSVG.Y - difference.Y)
   }
-  document.querySelector(".details-event").innerHTML = `Je scroll: <br>
-                                                  vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }<br>
-                                                  Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`;
+  this.debug(`Je scroll: <br> 
+            vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }<br>
+            Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`);
   // if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
   // {
   //   nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
@@ -892,7 +888,7 @@ defilementScroll()
   this.positionSVG = nouvellePositionSVG;
   if((((Math.abs(nouveauVecteur.X))+(Math.abs(nouveauVecteur.Y)))/2)<=1)
   {
-    document.querySelector(".details-event").innerHTML += "<br>Je sors de mon setInterval";
+    this.debug("Je sors de mon setInterval");
     if(this.myInterval)
     {
       clearInterval(this.myInterval);
@@ -961,12 +957,16 @@ wheel(e) {
     this.setviewbox();
   }
 }
+debug(chaine)
+{
+  document.querySelector(".event").innerHTML += "<br>"+chaine;
+}
 
 }
-function pcdNavWLValiderSiegesRpr(place)
-{
-  alert(place);
-}
+// function pcdNavWLValiderSiegesRpr(place)
+// {
+//   alert(place);
+// }
 
 const planDeSalle = new PlanDeSalle();
 </script>
