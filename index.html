@@ -192,7 +192,6 @@ class PlanDeSalle{
         if (this.prevDiff > 0) 
         {
           let scale;
-          let calcul = curDiff - this.prevDiff;
           if (curDiff > this.prevDiff) { // ZOOM
             //scale = this.scale + 0.01;
             scale = this.scale + ((currDiff-this.prevDiff)/100);
@@ -200,7 +199,7 @@ class PlanDeSalle{
             //this.debug("Zoom");
           }
           if (curDiff < this.prevDiff) { // DEZOOM
-            scale = this.scale - 0.01;
+            //scale = this.scale - 0.01;
             scale = this.scale - ((currDiff-this.prevDiff)/100);
             this.zoom(e,scale)
             //this.debug("Dezoom");
