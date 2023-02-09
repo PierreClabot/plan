@@ -193,15 +193,15 @@ class PlanDeSalle{
         {
           let scale;
           if (curDiff > this.prevDiff) { // ZOOM
-            //scale = this.scale + 0.01;
-            scale = this.scale + ((curDiff-this.prevDiff)/100);
+            scale = this.scale + 0.01;
+            //scale = this.scale + ((curDiff-this.prevDiff)/100);
             document.querySelector(".event").innerHTML = this.scale;
             this.zoom(e,scale);
             //this.debug("Zoom");
           }
           if (curDiff < this.prevDiff) { // DEZOOM
-            //scale = this.scale - 0.01;
-            scale = this.scale - ((this.prevDiff - curDiff)/100);
+            scale = this.scale - 0.01;
+            //scale = this.scale - ((this.prevDiff - curDiff)/100);
             document.querySelector(".event").innerHTML = this.scale;
             this.zoom(e,scale)
             //this.debug("Dezoom");
