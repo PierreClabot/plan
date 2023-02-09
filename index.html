@@ -623,10 +623,12 @@ class PlanDeSalle{
     this.maxX = 200;
     this.clicSouris = false;
     this.pointers = [];
+    this.prevDiff = -1;
     const svg = document.querySelector("svg");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
     const btnCentrer = document.querySelector(".btn-centrer");
     var scaleWheelDeltaY = 1;
+
 
     btnCentrer.addEventListener("touchstart",function(e){
       if(this.myInterval)
@@ -665,25 +667,46 @@ class PlanDeSalle{
       e.stopPropagation();
       e.preventDefault(); 
       this.pointers.push(e);
-      console.log(e);
-      console.log("X : "+e.clientX);
-      console.log("Y : "+e.clientY);
+      // console.log(e);
+      // console.log("X : "+e.clientX);
+      // console.log("Y : "+e.clientY);
       // this.appuiEn(e,e.clientX, e.clientY);
     })
 
     container.addEventListener("pointermove",e=>{
       e.stopPropagation();
       e.preventDefault(); 
-      console.log(e);
-      console.log("X : "+e.clientX);
-      console.log("Y : "+e.clientY);
+      // console.log(e);
+      // console.log("X : "+e.clientX);
+      // console.log("Y : "+e.clientY);
       // this.bougerEn(e,e.clientX , e.clientY);
-      for(let i = 0; i<this.pointers.length;i++)
-      {
-        this.debug(`pointer ${i} : ${this.pointers[i].pointerId}`)
+      for (var i = 0; i < evCache.length; i++) {
+        if (ev.pointerId == evCache[i].pointerId) {
+            evCache[i] = ev;
+          break;
+        }
       }
-      
-    })
+
+
+  if (this.pointers.length == 2) 
+  {
+    // Calculate the distance between the two pointers
+    var curDiff = Math.sqrt(Math.pow(evCache[1].clientX - evCache[0].clientX, 2) + Math.pow(evCache[1].clientY - evCache[0].clientY, 2));
+    if (this.prevDiff > 0) 
+    {
+      if (curDiff > this.prevDiff) {
+        // The distance between the two pointers has increased
+        this.debug("Pinch moving OUT -> Zoom in");
+      }
+      if (curDiff < this.prevDiff) {
+        // The distance between the two pointers has decreased
+        this.debug("Pinch moving IN -> Zoom out");
+      }
+    }
+    // Cache the distance for the next move event 
+    this.prevDiff = curDiff;
+  }
+})
 
     container.addEventListener("pointerup",e=>{
       e.stopPropagation();
@@ -693,6 +716,11 @@ class PlanDeSalle{
           this.pointers.splice(i, 1);
           break;
         }
+      }
+
+      if (evCache.length < 2) 
+      {
+        this.prevDiff = -1;
       }
       console.log(e);
       // this.lever(e);  
