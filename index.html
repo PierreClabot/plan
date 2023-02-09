@@ -693,6 +693,7 @@ class PlanDeSalle{
         if (this.prevDiff > 0) 
         {
           let scale;
+          let calcul = curDiff - this.prevDiff;
           if (curDiff > this.prevDiff) { // ZOOM
             scale = this.scale + 0.05;
             this.zoom(e,scale)
@@ -703,6 +704,7 @@ class PlanDeSalle{
             this.zoom(e,scale)
             this.debug("Dezoom");
           }
+          this.debug(calcul);
         }
         // Cache the distance for the next move event 
         this.prevDiff = curDiff;
