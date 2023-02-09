@@ -194,12 +194,14 @@ class PlanDeSalle{
           let scale;
           let calcul = curDiff - this.prevDiff;
           if (curDiff > this.prevDiff) { // ZOOM
-            scale = this.scale + (currDiff-this.prevDiff)/100;
+            scale = this.scale + 0.01;
+            // scale = this.scale + (currDiff-this.prevDiff)/100;
             this.zoom(e,scale)
             //this.debug("Zoom");
           }
           if (curDiff < this.prevDiff) { // DEZOOM
-            scale = this.scale - (currDiff-this.prevDiff)/100;
+            scale = this.scale - 0.01;
+            // scale = this.scale - (currDiff-this.prevDiff)/100;
             this.zoom(e,scale)
             //this.debug("Dezoom");
           }
