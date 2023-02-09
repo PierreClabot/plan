@@ -201,7 +201,7 @@ class PlanDeSalle{
           }
           if (curDiff < this.prevDiff) { // DEZOOM
             //scale = this.scale - 0.01;
-            scale = this.scale - ((this.prevDiff - curDiff)/50);
+            scale = this.scale - ((this.prevDiff - curDiff)/100);
             document.querySelector(".event").innerHTML = this.scale;
             this.zoom(e,scale)
             //this.debug("Dezoom");
