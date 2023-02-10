@@ -446,11 +446,15 @@ bougerEn(event,x,y)
     document.querySelector("img").style.left = `${this.positionSVG.X}px`;
     // document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
     // 
+    document.querySelector(".event").innerHTML += `avant update<br>
+                                                  position SVG : <br>
+                                                  X : ${this.positionSVG.X}<br>
+                                                  Y : ${this.positionSVG.Y}<br>`;
     this.positionSVG = {
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
-    document.querySelector(".event").innerHTML = `je bouge<br>
+    document.querySelector(".event").innerHTML += `je bouge<br>
                                                   premierAppui : <br>
                                                   X : ${this.premierAppui.X}<br>
                                                   Y : ${this.premierAppui.Y}<br>
