@@ -123,6 +123,8 @@ class PlanDeSalle{
     this.clicSouris = false;
     this.pointers = [];
     this.prevDiff = -1;
+    this.coeffGlisse = 0.95;
+    this.coeffGlisseInitial = 0.95;
     var scale = 1;
     const svg = document.querySelector("img");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
@@ -154,6 +156,7 @@ class PlanDeSalle{
       svg.style.left = `${this.positionSVG.X}px`;
       this.scale = 1
       this.lastScale = 1;
+
       scale = 1;
       document.querySelector(".event").innerHTML = `Appui sur le bouton centrer<br>
                                                     dernierPositionSVG : <br>
@@ -483,6 +486,7 @@ lever(event)
   // this.debug(`${event.type}`)
   // this.debug(`target : ${event.target.classList.value}`);
   // this.debug(`Je suis : ${this.nom}`)
+  this.coeffGlisse = this.coeffGlisseInitial;
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
   this.boolZoom = true;
@@ -498,24 +502,26 @@ defilementScroll()
   // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
   // document.querySelector("svg").style.transition = "transform 0.2s";
   let SVG = this.dernierePositionSVG;
-  let nouveauVecteur = {
-    X : this.vecteur.X * 0.95, // 0.95
-    Y : this.vecteur.Y * 0.95  // 0.95
-  }
   
-
-  let difference = {
-    X : (nouveauVecteur.X - this.vecteur.X)*30, // 100
-    Y : (nouveauVecteur.Y - this.vecteur.Y)*30 // 100
-  }
-  console.log("positionSVG",this.positionSVG);
-
-  this.vecteur = nouveauVecteur;
-
   let nouvellePositionSVG = {
-    X : Math.round(this.positionSVG.X - difference.X),
-    Y : Math.round(this.positionSVG.Y - difference.Y)
+    X : this.vecteur.X + this.positionSVG.X,
+    Y : this.vecteur.Y + this.positionSVG.Y
   }
+
+  this.vecteur = {
+    X : this.vecteur.X * this.coeffGlisse, // 0.95
+    Y : this.vecteur.Y * this.coeffGlisse  // 0.95
+  }
+
+  this.coeffGlisse = this.coeffGlisse * 0.9;
+
+  console.log("this",this)
+  // console.log("vecteurX",this.vecteur.X);
+  // console.log("vecteurY",this.vecteur.Y);
+  console.log("coeffGlisse",this.coeffGlisse);
+
+
+
   // this.debug(`Défilement scroll`);
   // this.debug(`Je suis : ${this.nom}`)
   // this.debug(`vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }`);
@@ -533,7 +539,8 @@ defilementScroll()
   // }
 
   this.positionSVG = nouvellePositionSVG;
-  if((((Math.abs(nouveauVecteur.X))+(Math.abs(nouveauVecteur.Y)))/2)<=1)
+  let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y))
+  if(norme < 1)
   {
     //this.debug("Je sors de mon setInterval");
     if(this.myInterval)
