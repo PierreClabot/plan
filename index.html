@@ -154,7 +154,10 @@ class PlanDeSalle{
       this.scale = 1
       this.lastScale = 1;
       scale = 1;
-      document.querySelector(".event").innerHTML = "btn-centrer reset";
+      document.querySelector(".event").innerHTML = `Appui sur le bouton centrer<br>
+                                                    dernierPositionSVG : <br>
+                                                    X :  ${this.dernierePositionSVG.X}<br>
+                                                    Y :  ${this.dernierePositionSVG.Y}`;
       //this.debug("J'appuie sur le bouton centrer");
     })
     btnCentrer.addEventListener("mousedown",function(e){
