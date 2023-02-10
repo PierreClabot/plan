@@ -297,6 +297,7 @@ class PlanDeSalle{
         {
           var curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
         document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
+        this.debug(curDiff);
         let scaleZoom = curDiff;
         if(scaleZoom < 5 )
         {
@@ -325,8 +326,6 @@ class PlanDeSalle{
         }
         if(e.touches.length == 1)
         {
-          console.log("clientX : "+e.touches[0].clientX);
-          console.log("clientY : "+e.touches[0].clientY);
           this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
         }
 
