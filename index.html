@@ -261,6 +261,7 @@ class PlanDeSalle{
 //       }
 // })
     svg.addEventListener("click",(e)=>{
+      
       console.log("click e",e);
       console.log("width natural",svg.naturalWidth);
     })
@@ -437,6 +438,7 @@ appuiEn(e,x,y){
 }
 bougerEn(event,x,y)
 {
+  this.debug("bouge : "+event.type);
   this.AppuiA = this.AppuiB;
   this.AppuiB = {
     X : x,
@@ -458,6 +460,7 @@ bougerEn(event,x,y)
     this.debug("PositionSVGX : "+this.positionSVG.X)
     this.debug("PositionSVGY : "+this.positionSVG.Y)
 
+
     document.querySelector("img").style.top = `${this.positionSVG.Y}px`;
     document.querySelector("img").style.left = `${this.positionSVG.X}px`;
     // document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
@@ -466,10 +469,18 @@ bougerEn(event,x,y)
     //                                               position SVG : <br>
     //                                               X : ${this.positionSVG.X}<br>
     //                                               Y : ${this.positionSVG.Y}<br>`;
+    this.debug("AVANT ******************");
+    this.debug("premierAPpui.X"+this.premierAppui.X);
+    this.debug("touche X"+x);
+    this.debug("dernierPositionSVGX : "+this.dernierePositionSVG.X);
     this.positionSVG = {
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
+    this.debug("APRES ******************");
+    this.debug("premierAPpui.X"+this.premierAppui.X);
+    this.debug("touche X"+x);
+    this.debug("dernierPositionSVGX : "+this.dernierePositionSVG.X);
     // document.querySelector(".event").innerHTML += `je bouge<br>
     //                                               premierAppui : <br>
     //                                               X : ${this.premierAppui.X}<br>
