@@ -208,81 +208,80 @@ class PlanDeSalle{
       // this.appuiEn(e,e.clientX, e.clientY);
     })
 
-    container.addEventListener("pointermove",e=>{
-      return;
-      e.stopPropagation();
-      e.preventDefault(); 
+//     container.addEventListener("pointermove",e=>{
+//       return;
+//       e.stopPropagation();
+//       e.preventDefault(); 
 
-      for (var i = 0; i < this.pointers.length; i++) {
-        if (e.pointerId == this.pointers[i].pointerId) {
-          this.pointers[i] = e;
-          break;
-        }
-      }
+//       for (var i = 0; i < this.pointers.length; i++) {
+//         if (e.pointerId == this.pointers[i].pointerId) {
+//           this.pointers[i] = e;
+//           break;
+//         }
+//       }
 
-      console.log("event",e);
-      if (this.pointers.length == 2) 
-      {
-        // Calculate the distance between the two pointers
-        //this.debug("J'ai 2 doigts");
-        var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
-        document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
-        let scaleZoom = curDiff;
-        if(scaleZoom < 5 )
-        {
-          scaleZoom = 5;
-        }
-        if(scaleZoom > 20 )
-        {
-          scaleZoom = 20;
-        }
-        if (this.prevDiff > 2) 
-        {
-          //scale;
-          if (curDiff > this.prevDiff) { // ZOOM
-            this.lastScale = this.scale;
-            scale = this.scale + scaleZoom/100;
-            this.zoom(e,scale);
-          }
-          if (curDiff < this.prevDiff) { // DEZOOM
-            this.lastScale = this.scale;
-            scale = this.scale - scaleZoom/100;
-            this.zoom(e,scale);
-          }
-        }
-        // Cache the distance for the next move event 
-        this.prevDiff = curDiff;
-      }
-      else if (this.pointers.length == 1)
-      {
-        this.bougerEn(e,e.clientX,e.clientY);
-      }
-})
+//       console.log("event",e);
+//       if (this.pointers.length == 2) 
+//       {
+//         // Calculate the distance between the two pointers
+//         //this.debug("J'ai 2 doigts");
+//         var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
+//         document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
+//         let scaleZoom = curDiff;
+//         if(scaleZoom < 5 )
+//         {
+//           scaleZoom = 5;
+//         }
+//         if(scaleZoom > 20 )
+//         {
+//           scaleZoom = 20;
+//         }
+//         if (this.prevDiff > 2) 
+//         {
+//           //scale;
+//           if (curDiff > this.prevDiff) { // ZOOM
+//             this.lastScale = this.scale;
+//             scale = this.scale + scaleZoom/100;
+//             this.zoom(e,scale);
+//           }
+//           if (curDiff < this.prevDiff) { // DEZOOM
+//             this.lastScale = this.scale;
+//             scale = this.scale - scaleZoom/100;
+//             this.zoom(e,scale);
+//           }
+//         }
+//         // Cache the distance for the next move event 
+//         this.prevDiff = curDiff;
+//       }
+//       else if (this.pointers.length == 1)
+//       {
+//         this.bougerEn(e,e.clientX,e.clientY);
+//       }
+// })
     svg.addEventListener("click",(e)=>{
       console.log("click e",e);
       console.log("width natural",svg.naturalWidth);
     })
-    container.addEventListener("pointerup",e=>{
-      return;
-      e.stopPropagation();
-      e.preventDefault(); 
-      this.lever();
-      for (var i = 0; i < this.pointers.length; i++) {
-        if (this.pointers[i].pointerId == e.pointerId) {
-          this.pointers.splice(i, 1);
-          break;
-        }
-      }
+    // container.addEventListener("pointerup",e=>{
+    //   return;
+    //   e.stopPropagation();
+    //   e.preventDefault(); 
+    //   this.lever();
+    //   for (var i = 0; i < this.pointers.length; i++) {
+    //     if (this.pointers[i].pointerId == e.pointerId) {
+    //       this.pointers.splice(i, 1);
+    //       break;
+    //     }
+    //   }
 
-      if (this.pointers.length < 2) 
-      {
-        this.prevDiff = -1;
-      }
-      // this.lever(e);  
-    })
+    //   if (this.pointers.length < 2) 
+    //   {
+    //     this.prevDiff = -1;
+    //   }
+    //   // this.lever(e);  
+    // })
 
     container.addEventListener("mousedown", e =>{
-      return;
       this.appuiEn(e,e.clientX, e.clientY);
       // this.debug(`Mouse Down<br>
       //             ClientX : ${e.clientX}<br>
