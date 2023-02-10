@@ -179,7 +179,7 @@ class PlanDeSalle{
       this.AppuiB = this.AppuiA
       this.scale = 1;
       this.lastScale = 1;
-      console.log("btn-centrer")
+      console.log("btn-centrer");
       //this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
     })
 
@@ -219,22 +219,18 @@ class PlanDeSalle{
           if (curDiff > this.prevDiff) { // ZOOM
             this.lastScale = this.scale;
             scale = this.scale + 0.02;
-            //scale = this.scale + ((curDiff-this.prevDiff)/100);
             document.querySelector(".event").innerHTML = "Je zoom<br>";
             document.querySelector(".event").innerHTML += "scale"+scale;
             document.querySelector(".event").innerHTML += "<br>this.scale"+this.scale;
             this.zoom(e,scale);
-            //this.debug("Zoom");
           }
           if (curDiff < this.prevDiff) { // DEZOOM
             this.lastScale = this.scale;
             scale = this.scale - 0.02;
-            //scale = this.scale - ((this.prevDiff - curDiff)/100);
             document.querySelector(".event").innerHTML = "Je dezoom<br>";
             document.querySelector(".event").innerHTML += scale;
             document.querySelector(".event").innerHTML += "<br>this.scale"+this.scale;
-            this.zoom(e,scale)
-            //this.debug("Dezoom");
+            this.zoom(e,scale);
           }
           //this.debug(calcul);
         }
@@ -269,7 +265,7 @@ class PlanDeSalle{
       // this.lever(e);  
     })
 
-    svg.addEventListener("touchstart",e=>{ // eviter d'enregistrer/partager l'image
+    svg.addEventListener("touchstart",e=>{ // eviter le menu pour enregistrer/partager l'image sur portable
       e.stopPropagation();
       e.preventDefault();
     })
