@@ -7,11 +7,22 @@
   <title>Document</title>
 </head>
 <body>
+  <style>
+    .target{
+      border : solid 1px black;
+      width: 100%;
+      height: 50vh;
+    }
+  </style>
   <div class="event">
 
   </div>
+  <div class="target">
+
+  </div>
   <script>
-    document.addEventListener("touchmove",e=>{
+    const target = document.querySelector(".target");
+    target.addEventListener("touchmove",e=>{
       e.preventDefault();
       e.stopPropagation();
       document.querySelector(".event").innerHTML = e.scale;
