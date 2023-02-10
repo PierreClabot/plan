@@ -405,6 +405,12 @@ bougerEn(event,x,y)
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
+    document.querySelector(".event").innerHTML = `position SVG : <br>
+                                                  X : ${this.positionSVG.X}<br>
+                                                  Y : ${this.positionSVG.Y}<br>
+                                                  dernièrePositionSVG : <br>
+                                                  X : ${this.dernierePositionSVG.X}<br>
+                                                  Y : ${this.dernierePositionSVG.Y}<br>`
     // this.debug(`${event.type} : je me déplace`)
     // this.debug(`target : ${event.target.classList.value}`);
     // this.debug(`Je suis : ${this.nom}`)
