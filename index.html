@@ -157,10 +157,10 @@ class PlanDeSalle{
       this.lastScale = 1;
 
       scale = 1;
-      document.querySelector(".event").innerHTML = `Appui sur le bouton centrer<br>
-                                                    dernierPositionSVG : <br>
-                                                    X :  ${this.dernierePositionSVG.X}<br>
-                                                    Y :  ${this.dernierePositionSVG.Y}`;
+      // document.querySelector(".event").innerHTML = `Appui sur le bouton centrer<br>
+      //                                               dernierPositionSVG : <br>
+      //                                               X :  ${this.dernierePositionSVG.X}<br>
+      //                                               Y :  ${this.dernierePositionSVG.Y}`;
       //this.debug("J'appuie sur le bouton centrer");
     })
     btnCentrer.addEventListener("mousedown",(e)=>{
@@ -296,7 +296,7 @@ class PlanDeSalle{
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
 
-          document.querySelector(".event").innerHTML = "2 doigts";
+          // document.querySelector(".event").innerHTML = "2 doigts";
           // var curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
           // document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
           // this.debug(curDiff);
@@ -329,9 +329,9 @@ class PlanDeSalle{
         if(e.touches.length == 1)
         {
           //this.prevDiff = -1;
-          document.querySelector(".event").innerHTML = `e.touches[0] : <br>
-                                                        clientX : ${e.touches[0].clientX}<br>
-                                                        clientY : ${e.touches[0].clientY}<br>`;
+          // document.querySelector(".event").innerHTML = `e.touches[0] : <br>
+          //                                               clientX : ${e.touches[0].clientX}<br>
+          //                                               clientY : ${e.touches[0].clientY}<br>`;
           this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
         }
       }
@@ -422,9 +422,9 @@ appuiEn(e,x,y){
       clearInterval(this.myInterval)
     }
     console.log(this);
-    document.querySelector(".event").innerHTML =`dernièrePositionSVG : <br>
-                                      X : ${this.dernierePositionSVG.X}<br>
-                                      Y : ${this.dernierePositionSVG.Y}<br>`
+    // document.querySelector(".event").innerHTML =`dernièrePositionSVG : <br>
+    //                                   X : ${this.dernierePositionSVG.X}<br>
+    //                                   Y : ${this.dernierePositionSVG.Y}<br>`
     // this.debug(e.type);
     // this.debug(`target : ${e.target.classList.value}`);
     // this.debug(`this : ${this.nom}`)
