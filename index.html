@@ -326,6 +326,7 @@ class PlanDeSalle{
         }
         if(e.touches.length == 1)
         {
+          this.prevDiff = -1;
           this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
         }
 
