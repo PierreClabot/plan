@@ -215,24 +215,24 @@ class PlanDeSalle{
         // Calculate the distance between the two pointers
         //this.debug("J'ai 2 doigts");
         var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
-        document.querySelector(".event").innerHTML = `curDiff : ${curDiff}, prevDiff : ${this.prevDiff}`;
+        document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
         if (this.prevDiff > 0) 
         {
           scale;
           if (curDiff > this.prevDiff) { // ZOOM
             this.lastScale = this.scale;
             scale = this.scale + 0.02;
-            document.querySelector(".event").innerHTML = "Je zoom<br>";
-            document.querySelector(".event").innerHTML += "scale"+scale;
-            document.querySelector(".event").innerHTML += "<br>this.scale"+this.scale;
+            // document.querySelector(".event").innerHTML = "Je zoom<br>";
+            // document.querySelector(".event").innerHTML += "scale"+scale;
+            // document.querySelector(".event").innerHTML += "<br>this.scale"+this.scale;
             this.zoom(e,scale);
           }
           if (curDiff < this.prevDiff) { // DEZOOM
             this.lastScale = this.scale;
             scale = this.scale - 0.02;
-            document.querySelector(".event").innerHTML = "Je dezoom<br>";
-            document.querySelector(".event").innerHTML += scale;
-            document.querySelector(".event").innerHTML += "<br>this.scale"+this.scale;
+            // document.querySelector(".event").innerHTML = "Je dezoom<br>";
+            // document.querySelector(".event").innerHTML += scale;
+            // document.querySelector(".event").innerHTML += "<br>this.scale"+this.scale;
             this.zoom(e,scale);
           }
           //this.debug(calcul);
@@ -478,8 +478,9 @@ lever(event)
     Y : this.AppuiB.Y - this.AppuiA.Y
   }
   let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y));
-  console.log(norme);
-
+  console.log("norme",norme);
+  console.log("vecteurX",this.vecteur.X);
+  console.log("vecteurY",this.vecteur.Y);
   if(norme > 10)
   {
     this.vecteur.X = this.vecteur.X/norme;
@@ -487,6 +488,9 @@ lever(event)
     this.vecteur.X = this.vecteur.X * 10;
     this.vecteur.Y = this.vecteur.Y * 10;
   }
+  console.log("norme",norme);
+  console.log("vecteurX",this.vecteur.X);
+  console.log("vecteurY",this.vecteur.Y);
   // Calculer le vecteur vitesse
   // mémoriser la position du svg
   if(this.myInterval)
