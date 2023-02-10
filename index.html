@@ -134,8 +134,7 @@ class PlanDeSalle{
       {
         clearInterval(this.myInterval);
       }
-      svg.style.top = "0px";
-      svg.style.left = "0px";
+
       svg.style.transform = "scale(1)";
       this.positionSVG = {
         X : 0,
@@ -146,9 +145,11 @@ class PlanDeSalle{
         Y : 0
       }
       this.AppuiB = this.AppuiA
-      
+
       this.dernierePositionSVG = this.positionSVG;
       this.nouvellePositionSVG = this.positionSVG;
+      svg.style.top = `${this.positionSVG.Y}px`;
+      svg.style.left = `${this.positionSVG.X}px`;
       this.scale = 1
       this.lastScale = 1;
       scale = 1;
