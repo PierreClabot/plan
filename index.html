@@ -438,6 +438,7 @@ bougerEn(event,x,y)
       }
       this.boolPremierAppui = false;
     }
+
     console.log("PositionSVGX : ",this.positionSVG.X)
     console.log("PositionSVGY : ",this.positionSVG.Y)
 
@@ -449,7 +450,11 @@ bougerEn(event,x,y)
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
-    document.querySelector(".event").innerHTML = `position SVG : <br>
+    document.querySelector(".event").innerHTML = `je bouge<br>
+                                                  premierAppui : <br>
+                                                  X : ${this.premierAppui.X}<br>
+                                                  Y : ${this.premierAppui.Y}<br>
+                                                  position SVG : <br>
                                                   X : ${this.positionSVG.X}<br>
                                                   Y : ${this.positionSVG.Y}<br>
                                                   dernièrePositionSVG : <br>
