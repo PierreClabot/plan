@@ -195,7 +195,7 @@ class PlanDeSalle{
           let scale;
           if (curDiff > this.prevDiff) { // ZOOM
             this.lastScale = this.scale;
-            scale = this.scale + 0.02;
+            scale = this.scale + 0.01;
             //scale = this.scale + ((curDiff-this.prevDiff)/100);
             document.querySelector(".event").innerHTML = "Je zoom<br>";
             document.querySelector(".event").innerHTML += "scale"+scale;
@@ -205,7 +205,7 @@ class PlanDeSalle{
           }
           if (curDiff < this.prevDiff) { // DEZOOM
             this.lastScale = this.scale;
-            scale = this.scale - 0.02;
+            scale = this.scale - 0.01;
             //scale = this.scale - ((this.prevDiff - curDiff)/100);
             document.querySelector(".event").innerHTML = "Je dezoom<br>";
             document.querySelector(".event").innerHTML += scale;
