@@ -160,7 +160,7 @@ class PlanDeSalle{
                                                     Y :  ${this.dernierePositionSVG.Y}`;
       //this.debug("J'appuie sur le bouton centrer");
     })
-    btnCentrer.addEventListener("mousedown",function(e){
+    btnCentrer.addEventListener("mousedown",(e)=>{
       this.positionSVG = {
         X : 0,
         Y : 0
@@ -378,6 +378,7 @@ appuiEn(e,x,y){
     {
       clearInterval(this.myInterval)
     }
+    console.log(this);
     document.querySelector(".event").innerHTML =`dernièrePositionSVG : <br>
                                       X : ${this.dernierePositionSVG.X}<br>
                                       Y : ${this.dernierePositionSVG.Y}<br>`
