@@ -477,6 +477,16 @@ lever(event)
     X : this.AppuiB.X - this.AppuiA.X,
     Y : this.AppuiB.Y - this.AppuiA.Y
   }
+  let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y));
+  console.log(norme);
+
+  if(norme > 10)
+  {
+    this.vecteur.X = this.vecteur.X/norme;
+    this.vecteur.Y = this.vecteur.Y/norme;
+    this.vecteur.X = this.vecteur.X * 10;
+    this.vecteur.Y = this.vecteur.Y * 10;
+  }
   // Calculer le vecteur vitesse
   // mémoriser la position du svg
   if(this.myInterval)
