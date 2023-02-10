@@ -579,7 +579,11 @@ defilementScroll()
   // Diminuer le vecteur vitesse
   // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
   // document.querySelector("svg").style.transition = "transform 0.2s";
-  let SVG = this.dernierePositionSVG;
+
+  let SVG = {
+    X : this.dernierePositionSVG.X,
+    Y : this.dernierePositionSVG.Y
+  } 
   
   let nouvellePositionSVG = {
     X : this.vecteur.X + this.positionSVG.X,
