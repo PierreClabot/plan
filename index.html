@@ -378,7 +378,7 @@ appuiEn(e,x,y){
     {
       clearInterval(this.myInterval)
     }
-    document.querySelector(".event")=`dernièrePositionSVG : <br>
+    document.querySelector(".event").innerHTML =`dernièrePositionSVG : <br>
                                       X : ${this.dernierePositionSVG.X}<br>
                                       Y : ${this.dernierePositionSVG.Y}<br>`
     // this.debug(e.type);
