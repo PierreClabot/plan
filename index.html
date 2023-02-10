@@ -331,25 +331,24 @@ class PlanDeSalle{
         }
 
     })
-    // container.addEventListener("wheel", e=>{
-    //   return;
-    //   console.log("e wheel",e);
-    //   console.log("wheelDeltaY",e.wheelDeltaY);
-    //   e.stopPropagation();
-    //   e.preventDefault();
+    container.addEventListener("wheel", e=>{
+      console.log("e wheel",e);
+      console.log("wheelDeltaY",e.wheelDeltaY);
+      e.stopPropagation();
+      e.preventDefault();
       
-    //   if(e.wheelDeltaY < 0) // DZZOOM
-    //   {
-    //     scaleWheelDeltaY -= 0.1;
-    //   }
-    //   else // ZOOM
-    //   {
-    //     scaleWheelDeltaY += 0.1;
-    //   }
+      if(e.wheelDeltaY < 0) // DZZOOM
+      {
+        scaleWheelDeltaY -= 0.1;
+      }
+      else // ZOOM
+      {
+        scaleWheelDeltaY += 0.1;
+      }
 
-    //   //this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
-    //   this.zoom(e,scaleWheelDeltaY);
-    // })
+      //this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
+      this.zoom(e,scaleWheelDeltaY);
+    })
     // container.addEventListener("mousemove",(e)=>{
     //     return;
     //     e.stopPropagation();
@@ -430,7 +429,7 @@ bougerEn(event,x,y)
 
   if(this.clicSouris)
   {
-    // this.debug(clicSouris);
+    //this.debug(clicSouris);
     if(this.boolPremierAppui)
     {
       this.premierAppui = {
