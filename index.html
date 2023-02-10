@@ -295,34 +295,34 @@ class PlanDeSalle{
         
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
-          var curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
-        document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
-        this.debug(curDiff);
-        let scaleZoom = curDiff;
-        if(scaleZoom < 5 )
-        {
-          scaleZoom = 5;
-        }
-        if(scaleZoom > 20 )
-        {
-          scaleZoom = 20;
-        }
-        if (this.prevDiff > 2) 
-        {
-          //scale;
-          if (curDiff > this.prevDiff) { // ZOOM
-            this.lastScale = this.scale;
-            scale = this.scale + scaleZoom/100;
-            //this.zoom(e,scale);
-          }
-          if (curDiff < this.prevDiff) { // DEZOOM
-            this.lastScale = this.scale;
-            scale = this.scale - scaleZoom/100;
-            //this.zoom(e,scale);
-          }
-        }
-        // Cache the distance for the next move event 
-        this.prevDiff = curDiff;
+          // var curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
+          // document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
+          // this.debug(curDiff);
+          // let scaleZoom = curDiff;
+          // if(scaleZoom < 5 )
+          // {
+          //   scaleZoom = 5;
+          // }
+          // if(scaleZoom > 20 )
+          // {
+          //   scaleZoom = 20;
+          // }
+          // if (this.prevDiff > 2) 
+          // {
+          //   //scale;
+          //   if (curDiff > this.prevDiff) { // ZOOM
+          //     this.lastScale = this.scale;
+          //     scale = this.scale + scaleZoom/100;
+          //     //this.zoom(e,scale);
+          //   }
+          //   if (curDiff < this.prevDiff) { // DEZOOM
+          //     this.lastScale = this.scale;
+          //     scale = this.scale - scaleZoom/100;
+          //     //this.zoom(e,scale);
+          //   }
+          // }
+          // // Cache the distance for the next move event 
+          // this.prevDiff = curDiff;
         }
         if(e.touches.length == 1)
         {
