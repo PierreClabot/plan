@@ -201,7 +201,8 @@ class PlanDeSalle{
       e.preventDefault(); 
       console.log("J'appuie");
       this.debug("touchstart type : "+e.type);
-      this.debug("TOUCHSTART JAPPUIE")
+      this.debug("TOUCHSTART JAPPUIE");
+      this.debug("nom"+this.nom);
       this.appuiEn(e,e.clientX,e.clientY)
       // console.log(e);
       // console.log("X : "+e.clientX);
@@ -295,6 +296,7 @@ class PlanDeSalle{
         e.stopPropagation();
         e.preventDefault(); 
         this.debug("e.type"+e.type);
+        this.debug("nom"+this.nom);
         this.debug("e.touches length"+e.touches.length);
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
