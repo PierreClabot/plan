@@ -187,19 +187,20 @@ class PlanDeSalle{
     })
 
 
-    container.addEventListener("pointerdown",e=>{
-      // e.stopPropagation();
-      // e.preventDefault(); 
-      // this.pointers.push(e);
-      // this.appuiEn(e,e.clientX,e.clientY)
-      // console.log(e);
-      // console.log("X : "+e.clientX);
-      // console.log("Y : "+e.clientY);
-      // this.appuiEn(e,e.clientX, e.clientY);
-    })
+    // container.addEventListener("pointerdown",e=>{
+    //   // e.stopPropagation();
+    //   // e.preventDefault(); 
+    //   // this.pointers.push(e);
+    //   // this.appuiEn(e,e.clientX,e.clientY)
+    //   // console.log(e);
+    //   // console.log("X : "+e.clientX);
+    //   // console.log("Y : "+e.clientY);
+    //   // this.appuiEn(e,e.clientX, e.clientY);
+    // })
     container.addEventListener("touchstart",e=>{
       e.stopPropagation();
       e.preventDefault(); 
+      console.log("J'appuie");
       this.appuiEn(e,e.clientX,e.clientY)
       // console.log(e);
       // console.log("X : "+e.clientX);
@@ -208,6 +209,7 @@ class PlanDeSalle{
     })
 
     container.addEventListener("pointermove",e=>{
+      return;
       e.stopPropagation();
       e.preventDefault(); 
 
@@ -261,6 +263,7 @@ class PlanDeSalle{
       console.log("width natural",svg.naturalWidth);
     })
     container.addEventListener("pointerup",e=>{
+      return;
       e.stopPropagation();
       e.preventDefault(); 
       this.lever();
@@ -275,20 +278,9 @@ class PlanDeSalle{
       {
         this.prevDiff = -1;
       }
-      console.log(e);
       // this.lever(e);  
     })
 
-    svg.addEventListener("touchstart",e=>{ // eviter le menu pour enregistrer/partager l'image sur portable
-      e.stopPropagation();
-      e.preventDefault();
-    })
-    container.addEventListener("touchstart", e =>{
-      return;
-      //this.debug(`target : ${e.target.classList.value}`);
-      this.appuiEn(e,e.touches[0].clientX, e.touches[0].clientY);
-      
-    })
     container.addEventListener("mousedown", e =>{
       return;
       this.appuiEn(e,e.clientX, e.clientY);
@@ -300,6 +292,7 @@ class PlanDeSalle{
         
         e.stopPropagation();
         e.preventDefault(); 
+        
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
           var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
@@ -332,6 +325,8 @@ class PlanDeSalle{
         }
         if(e.touches.length == 1)
         {
+          console.log("clientX : "+e.touches[0].clientX);
+          console.log("clientY : "+e.touches[0].clientY);
           this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
         }
 
@@ -362,12 +357,11 @@ class PlanDeSalle{
     //     this.bougerEn(e,e.clientX , e.clientY);
     // })
 
-    // container.addEventListener("touchend",(e)=>{
-    //     return;  
-    //     e.stopPropagation();
-    //     e.preventDefault(); 
-    //     this.lever(e);   
-    // })
+    container.addEventListener("touchend",(e)=>{
+        e.stopPropagation();
+        e.preventDefault(); 
+        this.lever(e);   
+    })
     // container.addEventListener("mouseup",(e)=>{
     //     return;
     //     e.stopPropagation();
@@ -411,6 +405,7 @@ appuiEn(e,x,y){
       X : x,
       Y : y
     }
+    console.log("APPUI");
     this.AppuiB = this.AppuiA;
     this.clicSouris = true;
     if(this.myInterval)
@@ -443,6 +438,9 @@ bougerEn(event,x,y)
       }
       this.boolPremierAppui = false;
     }
+    console.log("PositionSVGX : ",this.positionSVG.X)
+    console.log("PositionSVGY : ",this.positionSVG.Y)
+
     document.querySelector("img").style.top = `${this.positionSVG.Y}px`;
     document.querySelector("img").style.left = `${this.positionSVG.X}px`;
     // document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
@@ -514,9 +512,6 @@ lever(event)
     Y : this.AppuiB.Y - this.AppuiA.Y
   }
   let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y));
-  console.log("norme",norme);
-  console.log("vecteurX",this.vecteur.X);
-  console.log("vecteurY",this.vecteur.Y);
   if(norme > 10)
   {
     this.vecteur.X = this.vecteur.X/norme;
@@ -524,9 +519,6 @@ lever(event)
     this.vecteur.X = this.vecteur.X * 10;
     this.vecteur.Y = this.vecteur.Y * 10;
   }
-  console.log("norme",norme);
-  console.log("vecteurX",this.vecteur.X);
-  console.log("vecteurY",this.vecteur.Y);
   // Calculer le vecteur vitesse
   // mémoriser la position du svg
   if(this.myInterval)
@@ -564,13 +556,6 @@ defilementScroll()
   }
 
   this.coeffGlisse = this.coeffGlisse * 0.9;
-
-  console.log("this",this)
-  // console.log("vecteurX",this.vecteur.X);
-  // console.log("vecteurY",this.vecteur.Y);
-  console.log("coeffGlisse",this.coeffGlisse);
-
-
 
   // this.debug(`Défilement scroll`);
   // this.debug(`Je suis : ${this.nom}`)
