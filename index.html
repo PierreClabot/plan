@@ -12,6 +12,8 @@
   </div>
   <script>
     document.addEventListener("touchmove",e=>{
+      e.preventDefault();
+      e.stopPropagation();
       document.querySelector(".event").innerHTML = e.scale;
     })
   </script>
