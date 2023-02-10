@@ -45,6 +45,7 @@ div[data-name="PLAN-SALLE"]{
   contain: paint;
   buffered-rendering : dynamic;
   height: 100%;
+  border : black solid 1px;
 }
 .event{
   height: 300px;
@@ -195,14 +196,16 @@ class PlanDeSalle{
           if (curDiff > this.prevDiff) { // ZOOM
             scale = this.scale + 0.01;
             //scale = this.scale + ((curDiff-this.prevDiff)/100);
-            document.querySelector(".event").innerHTML = this.scale;
+            document.querySelector(".event").innerHTML = "Je zoom";
+            document.querySelector(".event").innerHTML += scale;
             this.zoom(e,scale);
             //this.debug("Zoom");
           }
           if (curDiff < this.prevDiff) { // DEZOOM
             scale = this.scale - 0.01;
             //scale = this.scale - ((this.prevDiff - curDiff)/100);
-            document.querySelector(".event").innerHTML = this.scale;
+            document.querySelector(".event").innerHTML = "Je dezoom";
+            document.querySelector(".event").innerHTML = scale;
             this.zoom(e,scale)
             //this.debug("Dezoom");
           }
@@ -216,7 +219,10 @@ class PlanDeSalle{
         this.bougerEn(e,e.clientX,e.clientY);
       }
 })
-
+    svg.addEventListener("click",(e)=>{
+      console.log("click e",e);
+      console.log("width natural",svg.naturalWidth);
+    })
     container.addEventListener("pointerup",e=>{
       e.stopPropagation();
       e.preventDefault(); 
