@@ -230,7 +230,7 @@ class PlanDeSalle{
           //scale;
           if (curDiff > this.prevDiff) { // ZOOM
             this.lastScale = this.scale;
-            scale = this.scale + scaleZoom/50;
+            scale = this.scale + scaleZoom/100;
             // document.querySelector(".event").innerHTML = "Je zoom<br>";
             // document.querySelector(".event").innerHTML += "scale"+scale;
             // document.querySelector(".event").innerHTML += "<br>this.scale"+this.scale;
@@ -238,7 +238,7 @@ class PlanDeSalle{
           }
           if (curDiff < this.prevDiff) { // DEZOOM
             this.lastScale = this.scale;
-            scale = this.scale - scaleZoom/50;
+            scale = this.scale - scaleZoom/100;
             // document.querySelector(".event").innerHTML = "Je dezoom<br>";
             // document.querySelector(".event").innerHTML += scale;
             // document.querySelector(".event").innerHTML += "<br>this.scale"+this.scale;
