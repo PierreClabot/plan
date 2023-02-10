@@ -25,7 +25,12 @@
     target.addEventListener("touchmove",e=>{
       e.preventDefault();
       e.stopPropagation();
-      document.querySelector(".event").innerHTML = e.scale;
+      console.log(e);
+      document.querySelector(".event").innerHTML = "e.scale "+e.scale;
+      document.querySelector(".event").innerHTML += "<br>e.scaleX "+e.scaleX;
+      document.querySelector(".event").innerHTML += "<br>e.scalex "+e.scalex;
+      document.querySelector(".event").innerHTML += "<br>e.scaleY "+e.scaleY;
+      document.querySelector(".event").innerHTML += "<br>e.scaley "+e.scaley;
     })
   </script>
 </body>
