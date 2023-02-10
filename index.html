@@ -313,12 +313,12 @@ class PlanDeSalle{
           if (curDiff > this.prevDiff) { // ZOOM
             this.lastScale = this.scale;
             scale = this.scale + scaleZoom/100;
-            this.zoom(e,scale);
+            //this.zoom(e,scale);
           }
           if (curDiff < this.prevDiff) { // DEZOOM
             this.lastScale = this.scale;
             scale = this.scale - scaleZoom/100;
-            this.zoom(e,scale);
+            //this.zoom(e,scale);
           }
         }
         // Cache the distance for the next move event 
