@@ -295,7 +295,7 @@ class PlanDeSalle{
         
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
-          var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
+          var curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
         document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
         let scaleZoom = curDiff;
         if(scaleZoom < 5 )
