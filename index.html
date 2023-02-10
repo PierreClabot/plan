@@ -1,37 +1,683 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-  <style>
-    .target{
-      border : solid 1px black;
-      width: 100%;
-      height: 50vh;
-    }
-  </style>
+    <h1>V1.4</h1>
+    <div class="container-fluid">
+        <div class="row">
+            
+
+    <div class="col-12" data-name="TB_PLAN_SVG">
+   
+<script language="javascript" type="text/javascript">
+function pcdClic(elem) {
+alert('Clic '+elem);
+}
+
+
+</script>
+<style>
+
+img{
+      display: inline-block;
+      buffered-rendering : dynamic;
+      position: absolute;
+      right: 0;
+      top: 0;
+      left: 0;
+      user-select: none;
+      /* transition: transform 0.2s; */
+}
+.place{
+opacity:0.5;
+}
+.place:hover {
+opacity:1;
+}
+div[data-name="PLAN-SALLE"]{
+  overflow: hidden;
+  position: relative;
+  contain: paint;
+  buffered-rendering : dynamic;
+  height: 100%;
+  border : black solid 1px;
+}
+.event{
+  height: 300px;
+  overflow: scroll;
+}
+.btn-centrer{
+
+  z-index: 2;
+  width: 20%;
+  margin: auto;
+  text-align: center;
+  background-color: #f1f1f1;
+  padding : 0.1rem 0.5rem;
+  border-radius: 10px 10px 0 0;
+  border : solid 1px black
+}
+.blue{
+  fill: blue !important;
+}
+</style>
+<div>
+  <h3>Nom de l'event</h3>
   <div class="event">
 
   </div>
-  <div class="target">
+</div>
+<div class="btn-centrer">Centrer</div>
+<div data-name="PLAN-SALLE" style="text-align:center">
 
-  </div>
-  <script>
-    const target = document.querySelector(".target");
-    target.addEventListener("touchmove",e=>{
-      e.preventDefault();
-      e.stopPropagation();
-      console.log(e);
-      document.querySelector(".event").innerHTML = "e.scale "+e.scale;
-      document.querySelector(".event").innerHTML += "<br>e.scaleX "+e.scaleX;
-      document.querySelector(".event").innerHTML += "<br>e.scalex "+e.scalex;
-      document.querySelector(".event").innerHTML += "<br>e.scaleY "+e.scaleY;
-      document.querySelector(".event").innerHTML += "<br>e.scaley "+e.scaley;
+    <img class="img-fluid" src="svg.svg" alt="">
+
+
+
+<script>
+
+class PlanDeSalle{
+  constructor()
+  {
+    const shape = document.querySelector("img");
+
+
+    var mouseStartPosition = {x: 0, y: 0};
+    var mousePosition = {x: 0, y: 0};
+    var viewboxStartPosition = {x: 0, y: 0};
+    var viewboxPosition = {x: 0, y: 0};
+    var viewboxSize = {x: 670, y: 1010};
+    var viewboxScale = 1.0;
+
+    var mouseDown = false;
+    this.nom = "plan de salle"
+    this.calculHauteur();
+    window.onresize = this.calculHauteur
+    this.scale = 1;
+    this.boolZoom = false;
+    this.lastScale = 1;
+    this.positionSVG = {
+      X : 0,
+      Y : 0,
+    };
+    this.AppuiA = {
+      X:0,
+      Y:0
+    };
+    this.AppuiB = this.AppuiA;
+    this.premierAppui = this.positionSVG;
+    this.boolPremierAppui = true;
+    this.myInterval = 0 ;
+    this.dernierePositionSVG = {
+      X:0,
+      Y:0
+    };
+    this.maxY = 100;
+    this.maxX = 200;
+    this.clicSouris = false;
+    this.pointers = [];
+    this.prevDiff = -1;
+    this.coeffGlisse = 0.95;
+    this.coeffGlisseInitial = 0.95;
+    var scale = 1;
+    const svg = document.querySelector("img");
+    const container = document.querySelector("div[data-name=PLAN-SALLE]");
+    const btnCentrer = document.querySelector(".btn-centrer");
+    var scaleWheelDeltaY = 1;
+
+
+    btnCentrer.addEventListener("touchstart",(e)=>{
+      if(this.myInterval)
+      {
+        clearInterval(this.myInterval);
+      }
+
+      svg.style.transform = "scale(1)";
+      this.positionSVG = {
+        X : 0,
+        Y : 0
+      }
+      this.AppuiA = {
+        X : 0,
+        Y : 0
+      }
+      this.AppuiB = this.AppuiA
+      this.premierAppui = this.AppuiA;
+      this.boolPremierAppui = true;
+      this.dernierePositionSVG = this.positionSVG;
+      this.nouvellePositionSVG = this.positionSVG;
+      svg.style.top = `${this.positionSVG.Y}px`;
+      svg.style.left = `${this.positionSVG.X}px`;
+      this.scale = 1
+      this.lastScale = 1;
+
+      scale = 1;
+      document.querySelector(".event").innerHTML = `Appui sur le bouton centrer<br>
+                                                    dernierPositionSVG : <br>
+                                                    X :  ${this.dernierePositionSVG.X}<br>
+                                                    Y :  ${this.dernierePositionSVG.Y}`;
+      //this.debug("J'appuie sur le bouton centrer");
     })
-  </script>
-</body>
+    btnCentrer.addEventListener("mousedown",(e)=>{
+      this.positionSVG = {
+        X : 0,
+        Y : 0
+      }
+      svg.style.left = `${this.positionSVG.X}px`;
+      svg.style.top = `${this.positionSVG.Y}px`;
+      //svg.style.transform = `translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(1)`;
+
+      this.dernierePositionSVG = this.positionSVG;
+      this.nouvellePositionSVG = this.positionSVG;
+      this.AppuiA = {
+        X : 0,
+        Y : 0
+      }
+      this.AppuiB = this.AppuiA
+      this.scale = 1;
+      this.lastScale = 1;
+      console.log("btn-centrer");
+      //this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
+    })
+
+
+    container.addEventListener("pointerdown",e=>{
+      // e.stopPropagation();
+      // e.preventDefault(); 
+      // this.pointers.push(e);
+      // this.appuiEn(e,e.clientX,e.clientY)
+      // console.log(e);
+      // console.log("X : "+e.clientX);
+      // console.log("Y : "+e.clientY);
+      // this.appuiEn(e,e.clientX, e.clientY);
+    })
+    container.addEventListener("touchstart",e=>{
+      e.stopPropagation();
+      e.preventDefault(); 
+      this.appuiEn(e,e.clientX,e.clientY)
+      // console.log(e);
+      // console.log("X : "+e.clientX);
+      // console.log("Y : "+e.clientY);
+      // this.appuiEn(e,e.clientX, e.clientY);
+    })
+
+    container.addEventListener("pointermove",e=>{
+      e.stopPropagation();
+      e.preventDefault(); 
+
+      for (var i = 0; i < this.pointers.length; i++) {
+        if (e.pointerId == this.pointers[i].pointerId) {
+          this.pointers[i] = e;
+          break;
+        }
+      }
+
+      console.log("event",e);
+      if (this.pointers.length == 2) 
+      {
+        // Calculate the distance between the two pointers
+        //this.debug("J'ai 2 doigts");
+        var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
+        document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
+        let scaleZoom = curDiff;
+        if(scaleZoom < 5 )
+        {
+          scaleZoom = 5;
+        }
+        if(scaleZoom > 20 )
+        {
+          scaleZoom = 20;
+        }
+        if (this.prevDiff > 2) 
+        {
+          //scale;
+          if (curDiff > this.prevDiff) { // ZOOM
+            this.lastScale = this.scale;
+            scale = this.scale + scaleZoom/100;
+            this.zoom(e,scale);
+          }
+          if (curDiff < this.prevDiff) { // DEZOOM
+            this.lastScale = this.scale;
+            scale = this.scale - scaleZoom/100;
+            this.zoom(e,scale);
+          }
+        }
+        // Cache the distance for the next move event 
+        this.prevDiff = curDiff;
+      }
+      else if (this.pointers.length == 1)
+      {
+        this.bougerEn(e,e.clientX,e.clientY);
+      }
+})
+    svg.addEventListener("click",(e)=>{
+      console.log("click e",e);
+      console.log("width natural",svg.naturalWidth);
+    })
+    container.addEventListener("pointerup",e=>{
+      e.stopPropagation();
+      e.preventDefault(); 
+      this.lever();
+      for (var i = 0; i < this.pointers.length; i++) {
+        if (this.pointers[i].pointerId == e.pointerId) {
+          this.pointers.splice(i, 1);
+          break;
+        }
+      }
+
+      if (this.pointers.length < 2) 
+      {
+        this.prevDiff = -1;
+      }
+      console.log(e);
+      // this.lever(e);  
+    })
+
+    svg.addEventListener("touchstart",e=>{ // eviter le menu pour enregistrer/partager l'image sur portable
+      e.stopPropagation();
+      e.preventDefault();
+    })
+    container.addEventListener("touchstart", e =>{
+      return;
+      //this.debug(`target : ${e.target.classList.value}`);
+      this.appuiEn(e,e.touches[0].clientX, e.touches[0].clientY);
+      
+    })
+    container.addEventListener("mousedown", e =>{
+      return;
+      this.appuiEn(e,e.clientX, e.clientY);
+      // this.debug(`Mouse Down<br>
+      //             ClientX : ${e.clientX}<br>
+      //             ClientY : ${e.clientY}<br>`);
+    })
+    container.addEventListener("touchmove",(e)=>{
+        
+        e.stopPropagation();
+        e.preventDefault(); 
+        if(e.touches.length > 1) // Plusieurs doigts simultanés
+        {
+          var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
+        document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
+        let scaleZoom = curDiff;
+        if(scaleZoom < 5 )
+        {
+          scaleZoom = 5;
+        }
+        if(scaleZoom > 20 )
+        {
+          scaleZoom = 20;
+        }
+        if (this.prevDiff > 2) 
+        {
+          //scale;
+          if (curDiff > this.prevDiff) { // ZOOM
+            this.lastScale = this.scale;
+            scale = this.scale + scaleZoom/100;
+            this.zoom(e,scale);
+          }
+          if (curDiff < this.prevDiff) { // DEZOOM
+            this.lastScale = this.scale;
+            scale = this.scale - scaleZoom/100;
+            this.zoom(e,scale);
+          }
+        }
+        // Cache the distance for the next move event 
+        this.prevDiff = curDiff;
+        }
+        if(e.touches.length == 1)
+        {
+          this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
+        }
+
+    })
+    // container.addEventListener("wheel", e=>{
+    //   return;
+    //   console.log("e wheel",e);
+    //   console.log("wheelDeltaY",e.wheelDeltaY);
+    //   e.stopPropagation();
+    //   e.preventDefault();
+      
+    //   if(e.wheelDeltaY < 0) // DZZOOM
+    //   {
+    //     scaleWheelDeltaY -= 0.1;
+    //   }
+    //   else // ZOOM
+    //   {
+    //     scaleWheelDeltaY += 0.1;
+    //   }
+
+    //   //this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
+    //   this.zoom(e,scaleWheelDeltaY);
+    // })
+    // container.addEventListener("mousemove",(e)=>{
+    //     return;
+    //     e.stopPropagation();
+    //     e.preventDefault(); 
+    //     this.bougerEn(e,e.clientX , e.clientY);
+    // })
+
+    // container.addEventListener("touchend",(e)=>{
+    //     return;  
+    //     e.stopPropagation();
+    //     e.preventDefault(); 
+    //     this.lever(e);   
+    // })
+    // container.addEventListener("mouseup",(e)=>{
+    //     return;
+    //     e.stopPropagation();
+    //     e.preventDefault(); 
+    //     this.lever(e);   
+    // })
+    // container.addEventListener("touchcancel",(e)=>{
+    //   return;
+    //   e.stopPropagation();
+    //   e.preventDefault(); 
+    //   // this.debug(e.type);
+    //   // this.debug(`target : ${e.target.classList.value}`);
+
+    // })
+
+    shape.addEventListener("mousemove", ()=>{this.mousemove});
+    shape.addEventListener("mousedown", ()=>{this.mousedown});
+    shape.addEventListener("wheel", ()=>{this.wheel});
+
+  }
+
+  mousedown(e) {
+  mouseStartPosition.x = e.pageX;
+  mouseStartPosition.y = e.pageY;
+
+  viewboxStartPosition.x = viewboxPosition.x;
+  viewboxStartPosition.y = viewboxPosition.y;
+
+  window.addEventListener("mouseup", this.mouseup);
+
+  mouseDown = true;
+}
+calculHauteur(){
+  let divTop = document.querySelector("div[data-name=PLAN-SALLE]").offsetTop;
+  let hauteurEcran = document.documentElement.clientHeight;
+  let difference = hauteurEcran - divTop;
+  document.querySelector("div[data-name=PLAN-SALLE]").style.height = difference+"px";
+}
+appuiEn(e,x,y){
+    this.AppuiA = {
+      X : x,
+      Y : y
+    }
+    this.AppuiB = this.AppuiA;
+    this.clicSouris = true;
+    if(this.myInterval)
+    {
+      clearInterval(this.myInterval)
+    }
+    console.log(this);
+    document.querySelector(".event").innerHTML =`dernièrePositionSVG : <br>
+                                      X : ${this.dernierePositionSVG.X}<br>
+                                      Y : ${this.dernierePositionSVG.Y}<br>`
+    // this.debug(e.type);
+    // this.debug(`target : ${e.target.classList.value}`);
+    // this.debug(`this : ${this.nom}`)
+}
+bougerEn(event,x,y)
+{
+  this.AppuiA = this.AppuiB;
+  this.AppuiB = {
+    X : x,
+    Y : y
+  }
+
+  if(this.clicSouris)
+  {
+    if(this.boolPremierAppui)
+    {
+      this.premierAppui = {
+        X : Math.round(x),
+        Y : Math.round(y)
+      }
+      this.boolPremierAppui = false;
+    }
+    document.querySelector("img").style.top = `${this.positionSVG.Y}px`;
+    document.querySelector("img").style.left = `${this.positionSVG.X}px`;
+    // document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
+    // 
+    this.positionSVG = {
+      X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
+      Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
+    }
+    document.querySelector(".event").innerHTML = `position SVG : <br>
+                                                  X : ${this.positionSVG.X}<br>
+                                                  Y : ${this.positionSVG.Y}<br>
+                                                  dernièrePositionSVG : <br>
+                                                  X : ${this.dernierePositionSVG.X}<br>
+                                                  Y : ${this.dernierePositionSVG.Y}<br>`
+    // this.debug(`${event.type} : je me déplace`)
+    // this.debug(`target : ${event.target.classList.value}`);
+    // this.debug(`Je suis : ${this.nom}`)
+    // this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
+  }
+
+
+}
+zoom(e,scale)
+{
+
+  this.boolPremierAppui = true;
+  if(this.scale == 1)
+  {
+    this.scale = scale;
+  }
+
+  if (scale>=this.lastScale) // Zoom
+  {
+    this.scale += (scale-this.lastScale);
+  }
+  else{ // Dezoom
+    this.scale -= (this.lastScale-scale);
+  }
+  if(this.scale>4) // Limiter l'échelle de zoom / dezoom
+  {
+    this.scale = 4
+  }
+  if(this.scale <0.8)
+  {
+    this.scale = 0.8;
+  }
+
+  //this.debug(`${e.type} : je zoom`);
+  // this.debug(`target : ${e.target.classList.value}`);
+  // this.debug(`Je suis : ${this.nom}`);
+  // this.debug(`Typeof scale : ${typeof this.scale}`);
+  // this.debug(`Valeur scale : ${this.scale}`);
+  // this.debug(`Typeof lastScale : ${typeof this.lastScale}`);
+  // this.debug(`Valeur lastScale : ${this.lastScale}`);
+  // this.debug(`Touche 1 : { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`)
+  // this.debug(`Touche 2 : { X : ${e.touches[1].clientX}, Y : ${e.touches[1].clientY} }`)
+
+
+  this.lastScale=scale;
+
+  document.querySelector("img").style.transform = `scale(${this.scale})`;
+  // document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
+}
+lever(event)
+{
+  this.dernierePositionSVG = this.positionSVG;
+  this.vecteur = {
+    X : this.AppuiB.X - this.AppuiA.X,
+    Y : this.AppuiB.Y - this.AppuiA.Y
+  }
+  let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y));
+  console.log("norme",norme);
+  console.log("vecteurX",this.vecteur.X);
+  console.log("vecteurY",this.vecteur.Y);
+  if(norme > 10)
+  {
+    this.vecteur.X = this.vecteur.X/norme;
+    this.vecteur.Y = this.vecteur.Y/norme;
+    this.vecteur.X = this.vecteur.X * 10;
+    this.vecteur.Y = this.vecteur.Y * 10;
+  }
+  console.log("norme",norme);
+  console.log("vecteurX",this.vecteur.X);
+  console.log("vecteurY",this.vecteur.Y);
+  // Calculer le vecteur vitesse
+  // mémoriser la position du svg
+  if(this.myInterval)
+  {
+    clearInterval(this.myInterval)
+  }
+  // this.debug(`${event.type}`)
+  // this.debug(`target : ${event.target.classList.value}`);
+  // this.debug(`Je suis : ${this.nom}`)
+  this.coeffGlisse = this.coeffGlisseInitial;
+  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
+
+  this.boolZoom = true;
+  this.lastScale = 1;
+  this.boolPremierAppui =  true;
+  this.clicSouris = false;
+
+}
+defilementScroll()
+{
+  // Bouger le SVG avec le vecteur vitesse
+  // Diminuer le vecteur vitesse
+  // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
+  // document.querySelector("svg").style.transition = "transform 0.2s";
+  let SVG = this.dernierePositionSVG;
+  
+  let nouvellePositionSVG = {
+    X : this.vecteur.X + this.positionSVG.X,
+    Y : this.vecteur.Y + this.positionSVG.Y
+  }
+
+  this.vecteur = {
+    X : this.vecteur.X * this.coeffGlisse, // 0.95
+    Y : this.vecteur.Y * this.coeffGlisse  // 0.95
+  }
+
+  this.coeffGlisse = this.coeffGlisse * 0.9;
+
+  console.log("this",this)
+  // console.log("vecteurX",this.vecteur.X);
+  // console.log("vecteurY",this.vecteur.Y);
+  console.log("coeffGlisse",this.coeffGlisse);
+
+
+
+  // this.debug(`Défilement scroll`);
+  // this.debug(`Je suis : ${this.nom}`)
+  // this.debug(`vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }`);
+  // this.debug(`Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`);
+  // if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
+  // {
+  //   nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
+  //   clearInterval(this.myInterval);
+    
+  // }
+  // if(Math.abs(nouvellePositionSVG.Y)>(this.maxY * this.scale))
+  // {
+  //   nouvellePositionSVG.Y = this.maxY * this.scale *(nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
+  //   clearInterval(this.myInterval);
+  // }
+
+  this.positionSVG = nouvellePositionSVG;
+  let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y))
+  if(norme < 1)
+  {
+    //this.debug("Je sors de mon setInterval");
+    if(this.myInterval)
+    {
+      clearInterval(this.myInterval);
+    }
+    return;
+  }
+  document.querySelector("img").style.top = `${nouvellePositionSVG.Y}px`;
+  document.querySelector("img").style.left = `${nouvellePositionSVG.X}px`;
+  // document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${this.scale})`
+  this.dernierePositionSVG = this.positionSVG;
+}
+
+setviewbox()
+{
+  var vp = {x: 0, y: 0};
+  var vs = {x: 0, y: 0};
+  
+  vp.x = viewboxPosition.x;
+  vp.y = viewboxPosition.y;
+  
+  vs.x = viewboxSize.x * viewboxScale;
+  vs.y = viewboxSize.y * viewboxScale;
+
+  shape = document.getElementsByTagName("svg")[0];
+  shape.setAttribute("viewBox", vp.x + " " + vp.y + " " + vs.x + " " + vs.y);
+}
+
+mousemove(e)
+{
+  console.log(this);
+  mousePosition.x = e.offsetX;
+  mousePosition.y = e.offsetY;
+  
+  if (mouseDown)
+  {
+    viewboxPosition.x = viewboxStartPosition.x + (mouseStartPosition.x - e.pageX) * viewboxScale;
+    viewboxPosition.y = viewboxStartPosition.y + (mouseStartPosition.y - e.pageY) * viewboxScale;
+
+    this.setviewbox();
+  }
+  
+  var mpos = {x: mousePosition.x * viewboxScale, y: mousePosition.y * viewboxScale};
+  var vpos = {x: viewboxPosition.x, y: viewboxPosition.y};
+  var cpos = {x: mpos.x + vpos.x, y: mpos.y + vpos.y}
+}
+
+mouseup(e) {
+  window.removeEventListener("mouseup", this.mouseup);
+  
+  mouseDown = false;
+}
+
+wheel(e) {
+  var scale = (e.deltaY < 0) ? 0.8 : 1.2;
+  
+  if ((viewboxScale * scale < 8.) && (viewboxScale * scale > 1./256.))
+  {  
+    var mpos = {x: mousePosition.x * viewboxScale, y: mousePosition.y * viewboxScale};
+    var vpos = {x: viewboxPosition.x, y: viewboxPosition.y};
+    var cpos = {x: mpos.x + vpos.x, y: mpos.y + vpos.y}
+
+    viewboxPosition.x = (viewboxPosition.x - cpos.x) * scale + cpos.x;
+    viewboxPosition.y = (viewboxPosition.y - cpos.y) * scale + cpos.y;
+    viewboxScale *= scale;
+  
+    this.setviewbox();
+  }
+}
+debug(chaine)
+{
+  document.querySelector(".event").innerHTML += "<br>"+chaine;
+}
+
+}
+// function pcdNavWLValiderSiegesRpr(place)
+// {
+//   alert(place);
+// }
+
+const planDeSalle = new PlanDeSalle();
+</script>
+ </div>
+  </div>
+</div>
+</div>
+
+</body> 
 </html>
