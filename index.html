@@ -441,32 +441,32 @@ bougerEn(event,x,y)
       }
       this.boolPremierAppui = false;
     }
-
-    console.log("PositionSVGX : ",this.positionSVG.X)
-    console.log("PositionSVGY : ",this.positionSVG.Y)
+    console.log(this)
+    this.debug("PositionSVGX : "+this.positionSVG.X)
+    this.debug("PositionSVGY : "+this.positionSVG.Y)
 
     document.querySelector("img").style.top = `${this.positionSVG.Y}px`;
     document.querySelector("img").style.left = `${this.positionSVG.X}px`;
     // document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
     // 
-    document.querySelector(".event").innerHTML += `avant update<br>
-                                                  position SVG : <br>
-                                                  X : ${this.positionSVG.X}<br>
-                                                  Y : ${this.positionSVG.Y}<br>`;
+    // document.querySelector(".event").innerHTML += `avant update<br>
+    //                                               position SVG : <br>
+    //                                               X : ${this.positionSVG.X}<br>
+    //                                               Y : ${this.positionSVG.Y}<br>`;
     this.positionSVG = {
       X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
       Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
     }
-    document.querySelector(".event").innerHTML += `je bouge<br>
-                                                  premierAppui : <br>
-                                                  X : ${this.premierAppui.X}<br>
-                                                  Y : ${this.premierAppui.Y}<br>
-                                                  position SVG : <br>
-                                                  X : ${this.positionSVG.X}<br>
-                                                  Y : ${this.positionSVG.Y}<br>
-                                                  dernièrePositionSVG : <br>
-                                                  X : ${this.dernierePositionSVG.X}<br>
-                                                  Y : ${this.dernierePositionSVG.Y}<br>`
+    // document.querySelector(".event").innerHTML += `je bouge<br>
+    //                                               premierAppui : <br>
+    //                                               X : ${this.premierAppui.X}<br>
+    //                                               Y : ${this.premierAppui.Y}<br>
+    //                                               position SVG : <br>
+    //                                               X : ${this.positionSVG.X}<br>
+    //                                               Y : ${this.positionSVG.Y}<br>
+    //                                               dernièrePositionSVG : <br>
+    //                                               X : ${this.dernierePositionSVG.X}<br>
+    //                                               Y : ${this.dernierePositionSVG.Y}<br>`
     // this.debug(`${event.type} : je me déplace`)
     // this.debug(`target : ${event.target.classList.value}`);
     // this.debug(`Je suis : ${this.nom}`)
