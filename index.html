@@ -294,6 +294,7 @@ class PlanDeSalle{
         
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
+          document.querySelector(".event").innerHTML = "2 doigts";
           // var curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
           // document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
           // this.debug(curDiff);
@@ -325,7 +326,7 @@ class PlanDeSalle{
         }
         if(e.touches.length == 1)
         {
-          this.prevDiff = -1;
+          //this.prevDiff = -1;
           this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
         }
 
