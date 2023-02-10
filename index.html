@@ -269,7 +269,10 @@ class PlanDeSalle{
       // this.lever(e);  
     })
 
-
+    svg.addEventListener("touchstart",e=>{ // eviter d'enregistrer/partager l'image
+      e.stopPropagation();
+      e.preventDefault();
+    })
     container.addEventListener("touchstart", e =>{
       return;
       //this.debug(`target : ${e.target.classList.value}`);
