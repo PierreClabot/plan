@@ -121,7 +121,6 @@ class PlanDeSalle{
     this.maxY = 100;
     this.maxX = 200;
     this.clicSouris = false;
-    this.pointers = [];
     this.prevDiff = -1;
     this.coeffGlisse = 0.95;
     this.coeffGlisseInitial = 0.95;
@@ -288,12 +287,15 @@ class PlanDeSalle{
       //             ClientY : ${e.clientY}<br>`);
     })
     container.addEventListener("touchmove",(e)=>{
+        try{
+
         
         e.stopPropagation();
         e.preventDefault(); 
         
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
+
           document.querySelector(".event").innerHTML = "2 doigts";
           // var curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
           // document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
@@ -332,6 +334,11 @@ class PlanDeSalle{
                                                         clientY : ${e.touches[0].clientY}<br>`;
           this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
         }
+      }
+      catch(error){
+        this.debug(error.name);
+        this.debug(error.message);
+      }
 
     })
     container.addEventListener("wheel", e=>{
