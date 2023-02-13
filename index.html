@@ -563,8 +563,8 @@ zoom(e,scale)
   if(this.scale > 4){ this.scale = 4;}
   if(this.scale < 0.8){ this.scale = 0.8;}
 
-  document.querySelector("img").style.transform = `scale(${this.scale})`;
-  //this.scaleDOM();
+  //document.querySelector("img").style.transform = `scale(${this.scale})`;
+  this.scaleDOM();
   this.lastScale=this.scale;
 }
 
