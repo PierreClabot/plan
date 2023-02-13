@@ -139,6 +139,7 @@ class PlanDeSalle{
     this.coeffGlisse = 0.95;
     this.coeffGlisseInitial = 0.95;
     this.scale = 1;
+    this.domElement=document.querySelector("img");
     const svg = document.querySelector("img");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
 
@@ -546,7 +547,7 @@ bougerEn(event,x,y)
 
 
 stopGlisse(){
-  if(this.myInterval) // @TODO method stopglisse
+  if(this.myInterval)
   {
     clearInterval(this.myInterval)
   }
@@ -602,7 +603,6 @@ zoom(e,scale)
 
   document.querySelector("img").style.transform = `scale(${this.scale})`; // passer en méthode @TODO
   this.lastScale=this.scale;
-  // document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
 }
 
 
@@ -710,7 +710,6 @@ defilementScroll()
     return;
   }
   
-  // document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${this.scale})`
   
   //@MODIF
   //--this.dernierePositionSVG = this.positionSVG;
@@ -782,18 +781,17 @@ wheel(e) { // pour debug
 
 
 svgPosition(point) {
-  let domElement=document.querySelector("img"); // A modifier
-  domElement.style.left = `${point.X}px`;
-  domElement.style.top  = `${point.Y}px`;
+  // let domElement=document.querySelector("img"); // A modifier
+  this.domElement.style.left = `${point.X}px`;
+  this.domElement.style.top  = `${point.Y}px`;
 }
 
 
 
 svgPositionDonne() {
-  let domElement=document.querySelector("img"); // A modifier
   let point= { 
-                X : domElement.offsetLeft, 
-                Y : domElement.offsetTop, 
+                X : this.domElement.offsetLeft, 
+                Y : this.domElement.offsetTop, 
               };
   return point;
 }
