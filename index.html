@@ -165,75 +165,21 @@ class PlanDeSalle{
     document.querySelector("#PLAN-CENTRER").addEventListener("click",(e)=>{
       this.debug("Centrer !");   
       this.stopGlisse();   
-      // if(this.myInterval)
-      // {
-      //   clearInterval(this.myInterval);
-      // }
       this.scale = 1;
       this.scaleDOM()
-      // svg.style.transform = "scale(1)";
       this.positionSVG = {
         X : 0,
         Y : 0
       }
       
       this.svgPosition({X:0,Y:0});
-      //svg.style.top = `${this.positionSVG.Y}px`;
-      //svg.style.left = `${this.positionSVG.X}px`;
       this.scale = 1
       this.lastScale = 1;
 
-      //scale = 1;
-      // document.querySelector(".event").innerHTML = `Appui sur le bouton centrer<br>
-      //                                               dernierPositionSVG : <br>
-      //                                               X :  ${this.dernierePositionSVG.X}<br>
-      //                                               Y :  ${this.dernierePositionSVG.Y}`;
-      //this.debug("J'appuie sur le bouton centrer");
     });
 
-    // btnCentrer.addEventListener("click",(e)=>{
-    //   console.log("btn-centrer");
-    //   this.positionSVG = {
-    //     X : 0,
-    //     Y : 0
-    //   }
-    //   svg.style.left = `${this.positionSVG.X}px`;
-    //   svg.style.top = `${this.positionSVG.Y}px`;
-    //   //svg.style.transform = `translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(1)`;
-
-    //   //@MODIF
-    //   this.dernierePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.Y };
-    //   this.nouvellePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.X };
-    //   this.AppuiA = {
-    //     X : 0,
-    //     Y : 0
-    //   }
-    //   //@----
-
-    //   //@MODIF
-    //   this.AppuiB = { X:this.AppuiA.X , Y:this.AppuiA.Y };
-    //   //@----
-
-    //   this.scale = 1;
-    //   this.lastScale = 1;
-      
-    //   //this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
-    // })
-
-
-    // container.addEventListener("pointerdown",e=>{
-    //   // e.stopPropagation();
-    //   // e.preventDefault(); 
-    //   // this.pointers.push(e);
-    //   // this.appuiEn(e,e.clientX,e.clientY)
-    //   // console.log(e);
-    //   // console.log("X : "+e.clientX);
-    //   // console.log("Y : "+e.clientY);
-    //   // this.appuiEn(e,e.clientX, e.clientY);
-    // })
     container.addEventListener("touchstart",e=>{
       
-      //this.debug("e.touchlen="+e.touches.length);
       e.stopPropagation();
       e.preventDefault(); 
       
@@ -248,90 +194,15 @@ class PlanDeSalle{
       if (e.touches.length==1) {
          this.appuiEn(e,e.clientX,e.clientY)
       }
-      // console.log(e);
-      // console.log("X : "+e.clientX);
-      // console.log("Y : "+e.clientY);
-      // this.appuiEn(e,e.clientX, e.clientY);
     })
 
-//     container.addEventListener("pointermove",e=>{
-//       return;
-//       e.stopPropagation();
-//       e.preventDefault(); 
-
-//       for (var i = 0; i < this.pointers.length; i++) {
-//         if (e.pointerId == this.pointers[i].pointerId) {
-//           this.pointers[i] = e;
-//           break;
-//         }
-//       }
-
-//       console.log("event",e);
-//       if (this.pointers.length == 2) 
-//       {
-//         // Calculate the distance between the two pointers
-//         //this.debug("J'ai 2 doigts");
-//         var curDiff = Math.sqrt(Math.pow(this.pointers[1].clientX - this.pointers[0].clientX, 2) + Math.pow(this.pointers[1].clientY - this.pointers[0].clientY, 2));
-//         document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
-//         let scaleZoom = curDiff;
-//         if(scaleZoom < 5 )
-//         {
-//           scaleZoom = 5;
-//         }
-//         if(scaleZoom > 20 )
-//         {
-//           scaleZoom = 20;
-//         }
-//         if (this.prevDiff > 2) 
-//         {
-//           //scale;
-//           if (curDiff > this.prevDiff) { // ZOOM
-//             this.lastScale = this.scale;
-//             scale = this.scale + scaleZoom/100;
-//             this.zoom(e,scale);
-//           }
-//           if (curDiff < this.prevDiff) { // DEZOOM
-//             this.lastScale = this.scale;
-//             scale = this.scale - scaleZoom/100;
-//             this.zoom(e,scale);
-//           }
-//         }
-//         // Cache the distance for the next move event 
-//         this.prevDiff = curDiff;
-//       }
-//       else if (this.pointers.length == 1)
-//       {
-//         this.bougerEn(e,e.clientX,e.clientY);
-//       }
-// })
     svg.addEventListener("click",(e)=>{
       
       
     })
-    // container.addEventListener("pointerup",e=>{
-    //   return;
-    //   e.stopPropagation();
-    //   e.preventDefault(); 
-    //   this.lever();
-    //   for (var i = 0; i < this.pointers.length; i++) {
-    //     if (this.pointers[i].pointerId == e.pointerId) {
-    //       this.pointers.splice(i, 1);
-    //       break;
-    //     }
-    //   }
-
-    //   if (this.pointers.length < 2) 
-    //   {
-    //     this.prevDiff = -1;
-    //   }
-    //   // this.lever(e);  
-    // })
 
     container.addEventListener("mousedown", e =>{
       this.appuiEn(e,e.clientX, e.clientY);
-      // this.debug(`Mouse Down<br>
-      //             ClientX : ${e.clientX}<br>
-      //             ClientY : ${e.clientY}<br>`);
     })
     container.addEventListener("touchmove",(e)=>{
       console.log("**TOUC MOV");
@@ -352,10 +223,6 @@ class PlanDeSalle{
       }
       if(e.touches.length == 1)
       {
-        //this.prevDiff = -1;
-        // document.querySelector(".event").innerHTML = `e.touches[0] : <br>
-        //                                               clientX : ${e.touches[0].clientX}<br>
-        //                                               clientY : ${e.touches[0].clientY}<br>`;
         this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
       }
 
@@ -377,7 +244,6 @@ class PlanDeSalle{
         scaleWheelDeltaY += 0.1;
       }
 
-      //this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
       this.zoom(e,scaleWheelDeltaY);
     })
 
@@ -402,22 +268,7 @@ class PlanDeSalle{
         e.preventDefault(); 
         this.lever(e);   
     })
-    // container.addEventListener("mouseup",(e)=>{
-    //     return;
-    //     e.stopPropagation();
-    //     e.preventDefault(); 
-    //     this.lever(e);   
-    // })
-    // container.addEventListener("touchcancel",(e)=>{
-    //   return;
-    //   e.stopPropagation();
-    //   e.preventDefault(); 
-    //   // this.debug(e.type);
-    //   // this.debug(`target : ${e.target.classList.value}`);
 
-    // })
-
-    //
     this.debug("Event handlers");
 
     //shape.addEventListener("mousemove", ()=>{this.mousemove});
@@ -455,7 +306,6 @@ calculHauteur(){
 
 
 appuiEn(e,x,y){
-    //this.debug(`appuiEn (${x},${y})`);
     
     this.historiquePos[0]={
       X: x,
@@ -468,20 +318,7 @@ appuiEn(e,x,y){
     }
 
     this.etatJeDeplace=true;
-    
-    //this.clicSouris = true;
     this.stopGlisse();
-    // if(this.myInterval) // @TODO method stopglisse
-    // {
-    //   clearInterval(this.myInterval)
-    // }
-    //console.log(this);
-    // document.querySelector(".event").innerHTML =`dernièrePositionSVG : <br>
-    //                                   X : ${this.dernierePositionSVG.X}<br>
-    //                                   Y : ${this.dernierePositionSVG.Y}<br>`
-    // this.debug(e.type);
-    // this.debug(`target : ${e.target.classList.value}`);
-    // this.debug(`this : ${this.nom}`)
 }
 
 
@@ -511,33 +348,9 @@ bougerEn(event,x,y)
     
     let posActuelle=this.svgPositionDonne();
     
-    //this.debug("pos="+this.pointVersChaine("-posSvg=",posActuelle)+" Vecteur deplacement="+this.pointVersChaine("Vect depla=",this.vecteur));
-    //@MODIF
     posActuelle.X+=this.vecteur.X;
     posActuelle.Y+=this.vecteur.Y;
-    //this.debug("pos="+this.pointVersChaine("+newPOS=",posActuelle)+" Vecteur deplacement=");
     this.svgPosition(posActuelle);
-    
-    //this.debug("pos="+this.pointVersChaine("+REALPOS=",posActuelle)+" Vecteur deplacement=");
-    
-    
-    //this.debug(this.pointVersChaine("svg pos=",posActuelle));
-    //this.debug("-----------");
-
-    // document.querySelector(".event").innerHTML += `je bouge<br>
-    //                                               premierAppui : <br>
-    //                                               X : ${this.premierAppui.X}<br>
-    //                                               Y : ${this.premierAppui.Y}<br>
-    //                                               position SVG : <br>
-    //                                               X : ${this.positionSVG.X}<br>
-    //                                               Y : ${this.positionSVG.Y}<br>
-    //                                               dernièrePositionSVG : <br>
-    //                                               X : ${this.dernierePositionSVG.X}<br>
-    //                                               Y : ${this.dernierePositionSVG.Y}<br>`
-    // this.debug(`${event.type} : je me déplace`)
-    // this.debug(`target : ${event.target.classList.value}`);
-    // this.debug(`Je suis : ${this.nom}`)
-    // this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
   }
 
 }
@@ -556,17 +369,13 @@ zoom(e,scale)
 
   console.log("***ZOOM");
   this.scale+=scale;
-  // this.debug("param scale "+scale);
-  // this.debug("this.scale "+this.scale);
   if(e.type != "wheel")
   {
     this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
   }
-
   if(this.scale > 4){ this.scale = 4;}
   if(this.scale < 0.8){ this.scale = 0.8;}
 
-  //document.querySelector("img").style.transform = `scale(${this.scale})`;
   this.scaleDOM();
   this.lastScale=this.scale;
 }
@@ -614,11 +423,6 @@ lever(event)
 defilementScroll()
 {
   
-  // Bouger le SVG avec le vecteur vitesse
-  // Diminuer le vecteur vitesse
-  // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
-  // document.querySelector("svg").style.transition = "transform 0.2s";
-
   let SVGPos=this.svgPositionDonne();
   
   SVGPos = {
