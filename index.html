@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>V1.4</h1>
+    <h1>V1.6a</h1>
     <div class="container-fluid">
         <div class="row">
             
@@ -28,7 +28,7 @@ img{
       display: inline-block;
       buffered-rendering : dynamic;
       position: absolute;
-      right: 0;
+      
       top: 0;
       left: 0;
       user-select: none;
@@ -50,13 +50,20 @@ div[data-name="PLAN-SALLE"]{
 }
 .event{
   height: 300px;
+  font-size:9px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   overflow: scroll;
 }
-.btn-centrer{
+
+.btn-plan-container  {
+   display:flex;
+}
+
+.btn-plan-commande {
 
   z-index: 2;
-  width: 20%;
   margin: auto;
+  cursor:pointer;
   text-align: center;
   background-color: #f1f1f1;
   padding : 0.1rem 0.5rem;
@@ -73,7 +80,13 @@ div[data-name="PLAN-SALLE"]{
 
   </div>
 </div>
-<div class="btn-centrer">Centrer</div>
+
+<div class="btn-plan-container">
+ <div class="btn-plan-commande" id="PLAN-CENTRER">Centrer</div>
+ <div class="btn-plan-commande" id="PLAN-DEBUG-CLEAR">Clear Debug</div>
+ <div class="btn-plan-commande" id="TEST-POSITION">TestPos 50,50</div>
+</div>
+
 <div data-name="PLAN-SALLE" style="text-align:center">
 
     <img class="img-fluid" src="svg.svg" alt="">
@@ -88,14 +101,14 @@ class PlanDeSalle{
     const shape = document.querySelector("img");
 
 
-    var mouseStartPosition = {x: 0, y: 0};
-    var mousePosition = {x: 0, y: 0};
-    var viewboxStartPosition = {x: 0, y: 0};
-    var viewboxPosition = {x: 0, y: 0};
-    var viewboxSize = {x: 670, y: 1010};
-    var viewboxScale = 1.0;
+    this.mouseStartPosition = {x: 0, y: 0};
+    this.mousePosition = {x: 0, y: 0};
+    this.viewboxStartPosition = {x: 0, y: 0};
+    this.viewboxPosition = {x: 0, y: 0};
+    this.viewboxSize = {x: 670, y: 1010};
+    this.viewboxScale = 1.0;
 
-    var mouseDown = false;
+    this.etatJeDeplace = false;
     this.nom = "plan de salle"
     this.calculHauteur();
     window.onresize = this.calculHauteur
@@ -110,9 +123,9 @@ class PlanDeSalle{
       X:0,
       Y:0
     };
-    this.AppuiB = this.AppuiA;
-    this.premierAppui = this.positionSVG;
-    this.boolPremierAppui = true;
+    
+    this.historiquePos=[{x:0,y:0},{x:0,y:0}];
+    
     this.myInterval = 0 ;
     this.dernierePositionSVG = {
       X:0,
@@ -121,17 +134,39 @@ class PlanDeSalle{
     this.maxY = 100;
     this.maxX = 200;
     this.clicSouris = false;
+    this.curDiffInitial=1;
     this.prevDiff = -1;
     this.coeffGlisse = 0.95;
     this.coeffGlisseInitial = 0.95;
-    var scale = 1;
+    this.scale = 1;
     const svg = document.querySelector("img");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
-    const btnCentrer = document.querySelector(".btn-centrer");
-    var scaleWheelDeltaY = 1;
+
+    //@MODIF
+    //const btnCentrer = 
+    //---
+
+    this.scaleWheelDeltaY = 1;
+
+    //@MODIF
+    document.querySelector("#PLAN-DEBUG-CLEAR").addEventListener("click",(e)=>{
+      this.debugClear();
+    });
+
+    //@MODIF
+    document.querySelector("#TEST-POSITION").addEventListener("click",(e)=>{
+      console.log("TST POS");
+      this.svgPosition({X:50,Y:50});
+      
+      // dbg--
+      let p=this.svgPositionDonne();
+      this.debug("pos svg="+this.pointVersChaine("Sbg pos_1=",p));
+      //--dbg
+    });
 
 
-    btnCentrer.addEventListener("touchstart",(e)=>{
+    document.querySelector("#PLAN-CENTRER").addEventListener("click",(e)=>{
+      this.debug("Centrer !");      
       if(this.myInterval)
       {
         clearInterval(this.myInterval);
@@ -142,48 +177,49 @@ class PlanDeSalle{
         X : 0,
         Y : 0
       }
-      this.AppuiA = {
-        X : 0,
-        Y : 0
-      }
-      this.AppuiB = this.AppuiA
-      this.premierAppui = this.AppuiA;
-      this.boolPremierAppui = true;
-      this.dernierePositionSVG = this.positionSVG;
-      this.nouvellePositionSVG = this.positionSVG;
-      svg.style.top = `${this.positionSVG.Y}px`;
-      svg.style.left = `${this.positionSVG.X}px`;
+      
+      this.svgPosition({X:0,Y:0});
+      //svg.style.top = `${this.positionSVG.Y}px`;
+      //svg.style.left = `${this.positionSVG.X}px`;
       this.scale = 1
       this.lastScale = 1;
 
-      scale = 1;
+      //scale = 1;
       // document.querySelector(".event").innerHTML = `Appui sur le bouton centrer<br>
       //                                               dernierPositionSVG : <br>
       //                                               X :  ${this.dernierePositionSVG.X}<br>
       //                                               Y :  ${this.dernierePositionSVG.Y}`;
       //this.debug("J'appuie sur le bouton centrer");
-    })
-    btnCentrer.addEventListener("mousedown",(e)=>{
-      this.positionSVG = {
-        X : 0,
-        Y : 0
-      }
-      svg.style.left = `${this.positionSVG.X}px`;
-      svg.style.top = `${this.positionSVG.Y}px`;
-      //svg.style.transform = `translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(1)`;
+    });
 
-      this.dernierePositionSVG = this.positionSVG;
-      this.nouvellePositionSVG = this.positionSVG;
-      this.AppuiA = {
-        X : 0,
-        Y : 0
-      }
-      this.AppuiB = this.AppuiA
-      this.scale = 1;
-      this.lastScale = 1;
-      console.log("btn-centrer");
-      //this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
-    })
+    // btnCentrer.addEventListener("click",(e)=>{
+    //   console.log("btn-centrer");
+    //   this.positionSVG = {
+    //     X : 0,
+    //     Y : 0
+    //   }
+    //   svg.style.left = `${this.positionSVG.X}px`;
+    //   svg.style.top = `${this.positionSVG.Y}px`;
+    //   //svg.style.transform = `translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(1)`;
+
+    //   //@MODIF
+    //   this.dernierePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.Y };
+    //   this.nouvellePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.X };
+    //   this.AppuiA = {
+    //     X : 0,
+    //     Y : 0
+    //   }
+    //   //@----
+
+    //   //@MODIF
+    //   this.AppuiB = { X:this.AppuiA.X , Y:this.AppuiA.Y };
+    //   //@----
+
+    //   this.scale = 1;
+    //   this.lastScale = 1;
+      
+    //   //this.debug(`J'appuie sur le bouton centrer, svg en position ${this.positionSVG.X}px,${this.positionSVG.Y}px`);
+    // })
 
 
     // container.addEventListener("pointerdown",e=>{
@@ -197,13 +233,21 @@ class PlanDeSalle{
     //   // this.appuiEn(e,e.clientX, e.clientY);
     // })
     container.addEventListener("touchstart",e=>{
+      
+      //this.debug("e.touchlen="+e.touches.length);
       e.stopPropagation();
       e.preventDefault(); 
-      console.log("J'appuie");
-      this.debug("touchstart type : "+e.type);
-      this.debug("TOUCHSTART JAPPUIE");
-      this.debug("nom"+this.nom);
-      this.appuiEn(e,e.clientX,e.clientY)
+      
+      
+      if (e.touches.length>1) {
+        this.etatJeDeplace=false;
+        this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+        this.debug("CUR DIF NINIT="+this.curDiffInitial);
+      }
+
+      if (e.touches.length==1) {
+         this.appuiEn(e,e.clientX,e.clientY)
+      }
       // console.log(e);
       // console.log("X : "+e.clientX);
       // console.log("Y : "+e.clientY);
@@ -262,8 +306,7 @@ class PlanDeSalle{
 // })
     svg.addEventListener("click",(e)=>{
       
-      console.log("click e",e);
-      console.log("width natural",svg.naturalWidth);
+      
     })
     // container.addEventListener("pointerup",e=>{
     //   return;
@@ -291,19 +334,17 @@ class PlanDeSalle{
       //             ClientY : ${e.clientY}<br>`);
     })
     container.addEventListener("touchmove",(e)=>{
+      console.log("**TOUC MOV");
         try{
 
         
         e.stopPropagation();
         e.preventDefault(); 
-        this.debug("e.type"+e.type);
-        this.debug("nom"+this.nom);
-        this.debug("e.touches length"+e.touches.length);
+        
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
-
-          // document.querySelector(".event").innerHTML = "2 doigts";
-          // var curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
+          let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+          //let curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
           // document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
           // this.debug(curDiff);
           // let scaleZoom = curDiff;
@@ -331,7 +372,13 @@ class PlanDeSalle{
           // }
           // // Cache the distance for the next move event 
           // this.prevDiff = curDiff;
-          this.debug("2 doigts");
+          
+          let scaleFacteur=curDiff-this.curDiffInitial;
+          this.debug("scalle Facteur="+scaleFacteur);
+          if (scaleFacteur>0.2) { scaleFacteur=0.1; }
+          if (scaleFacteur<0.2) { scaleFacteur=-0.1; }
+          this.zoom(e,scaleFacteur);
+
         }
         if(e.touches.length == 1)
         {
@@ -349,10 +396,12 @@ class PlanDeSalle{
 
     })
     container.addEventListener("wheel", e=>{
-      console.log("e wheel",e);
-      console.log("wheelDeltaY",e.wheelDeltaY);
+      this.debug(`e wheel deltay=${e.wheelDeltaY}`);
       e.stopPropagation();
       e.preventDefault();
+      this.debug("deltaY",e.wheelDeltaY);
+      this.zoom(e,e.wheelDeltaY/480);
+      return;
       
       if(e.wheelDeltaY < 0) // DZZOOM
       {
@@ -366,12 +415,22 @@ class PlanDeSalle{
       //this.debug("scaleWheelDeltaY : "+scaleWheelDeltaY)
       this.zoom(e,scaleWheelDeltaY);
     })
-    // container.addEventListener("mousemove",(e)=>{
-    //     return;
-    //     e.stopPropagation();
-    //     e.preventDefault(); 
-    //     this.bougerEn(e,e.clientX , e.clientY);
-    // })
+
+    //@MODIF
+     container.addEventListener("mousemove",(e)=>{
+         // --return;
+         e.stopPropagation();
+         e.preventDefault(); 
+         this.bougerEn(e,e.clientX , e.clientY);
+    });
+
+    container.addEventListener("mouseup",(e)=>{
+         // --return;
+         e.stopPropagation();
+         e.preventDefault(); 
+         this.lever(e);
+    });
+    //@---
 
     container.addEventListener("touchend",(e)=>{
         e.stopPropagation();
@@ -393,42 +452,64 @@ class PlanDeSalle{
 
     // })
 
-    shape.addEventListener("mousemove", ()=>{this.mousemove});
-    shape.addEventListener("mousedown", ()=>{this.mousedown});
-    shape.addEventListener("wheel", ()=>{this.wheel});
+    //
+    this.debug("Event handlers");
+
+    //shape.addEventListener("mousemove", ()=>{this.mousemove});
+    //shape.addEventListener("mousedown", ()=>{this.mousedown});
+    //shape.addEventListener("wheel", ()=>{this.wheel});
 
   }
 
+
+
+
   mousedown(e) {
-  mouseStartPosition.x = e.pageX;
-  mouseStartPosition.y = e.pageY;
+    this.debug('*************"MOUSE DOWN "');
+    mouseStartPosition.x = e.pageX;
+    mouseStartPosition.y = e.pageY;
 
-  viewboxStartPosition.x = viewboxPosition.x;
-  viewboxStartPosition.y = viewboxPosition.y;
+    viewboxStartPosition.x = viewboxPosition.x;
+    viewboxStartPosition.y = viewboxPosition.y;
 
-  window.addEventListener("mouseup", this.mouseup);
+    window.addEventListener("mouseup", this.mouseup);
 
-  mouseDown = true;
+    
 }
+
+
+
+
 calculHauteur(){
   let divTop = document.querySelector("div[data-name=PLAN-SALLE]").offsetTop;
   let hauteurEcran = document.documentElement.clientHeight;
   let difference = hauteurEcran - divTop;
   document.querySelector("div[data-name=PLAN-SALLE]").style.height = difference+"px";
 }
+
+
+
 appuiEn(e,x,y){
-    this.AppuiA = {
-      X : x,
-      Y : y
+    //this.debug(`appuiEn (${x},${y})`);
+    
+    this.historiquePos[0]={
+      X: x,
+      Y: y,
     }
-    console.log("APPUI");
-    this.AppuiB = this.AppuiA;
-    this.clicSouris = true;
+
+    this.historiquePos[1]={
+      X: x,
+      Y: y,
+    }
+
+    this.etatJeDeplace=true;
+    
+    //this.clicSouris = true;
     if(this.myInterval)
     {
       clearInterval(this.myInterval)
     }
-    console.log(this);
+    //console.log(this);
     // document.querySelector(".event").innerHTML =`dernièrePositionSVG : <br>
     //                                   X : ${this.dernierePositionSVG.X}<br>
     //                                   Y : ${this.dernierePositionSVG.Y}<br>`
@@ -436,51 +517,48 @@ appuiEn(e,x,y){
     // this.debug(`target : ${e.target.classList.value}`);
     // this.debug(`this : ${this.nom}`)
 }
+
+
+
+
+
 bougerEn(event,x,y)
 {
-  this.debug("bouge : "+event.type);
-  this.AppuiA = this.AppuiB;
-  this.AppuiB = {
-    X : x,
-    Y : y
-  }
-
-  if(this.clicSouris)
+   
+  if(this.etatJeDeplace)
   {
-    //this.debug(clicSouris);
-    if(this.boolPremierAppui)
-    {
-      this.premierAppui = {
-        X : Math.round(x),
-        Y : Math.round(y)
-      }
-      this.boolPremierAppui = false;
-    }
-    console.log(this)
-    this.debug("PositionSVGX : "+this.positionSVG.X)
-    this.debug("PositionSVGY : "+this.positionSVG.Y)
 
-
-    document.querySelector("img").style.top = `${this.positionSVG.Y}px`;
-    document.querySelector("img").style.left = `${this.positionSVG.X}px`;
-    // document.querySelector("svg").style.transform=`translate(${this.positionSVG.X}px,${this.positionSVG.Y}px) scale(${this.scale})`;
-    // 
-    // document.querySelector(".event").innerHTML += `avant update<br>
-    //                                               position SVG : <br>
-    //                                               X : ${this.positionSVG.X}<br>
-    //                                               Y : ${this.positionSVG.Y}<br>`;
-    this.debug("AVANT ******************");
-    this.debug("premierAPpui.X"+this.premierAppui.X);
-    this.debug("touche X"+x);
-    this.debug("dernierPositionSVGX : "+this.dernierePositionSVG.X);
-    this.positionSVG = {
-      X : (this.dernierePositionSVG.X+(x - this.premierAppui.X )),
-      Y : (this.dernierePositionSVG.Y+(y - this.premierAppui.Y))
+    this.historiquePos[0]={
+      X : this.historiquePos[1].X ,
+      Y : this.historiquePos[1].Y
     }
-    this.debug("APRES ******************");
-    this.debug("premierAPpui.X"+this.premierAppui.X);
-    this.debug("touche X"+x);
-    this.debug("dernierPositionSVGX : "+this.dernierePositionSVG.X);
+    this.historiquePos[1]={
+      X : x,
+      Y : y
+    }
+
+    this.vecteur={
+      X:this.historiquePos[1].X - this.historiquePos[0].X,
+      Y:this.historiquePos[1].Y - this.historiquePos[0].Y,
+    }
+    
+    
+    let posActuelle=this.svgPositionDonne();
+    
+    //this.debug("pos="+this.pointVersChaine("-posSvg=",posActuelle)+" Vecteur deplacement="+this.pointVersChaine("Vect depla=",this.vecteur));
+    //@MODIF
+    posActuelle.X+=this.vecteur.X;
+    posActuelle.Y+=this.vecteur.Y;
+    //this.debug("pos="+this.pointVersChaine("+newPOS=",posActuelle)+" Vecteur deplacement=");
+    this.svgPosition(posActuelle);
+    
+    posActuelle=this.svgPositionDonne();
+    //this.debug("pos="+this.pointVersChaine("+REALPOS=",posActuelle)+" Vecteur deplacement=");
+    
+    
+    //this.debug(this.pointVersChaine("svg pos=",posActuelle));
+    //this.debug("-----------");
+
     // document.querySelector(".event").innerHTML += `je bouge<br>
     //                                               premierAppui : <br>
     //                                               X : ${this.premierAppui.X}<br>
@@ -497,32 +575,39 @@ bougerEn(event,x,y)
     // this.debug(`Position du SVG : { X : ${this.positionSVG.X}, Y :${this.positionSVG.Y} }`);
   }
 
-
 }
+
+
+
+
+
 zoom(e,scale)
 {
 
-  this.boolPremierAppui = true;
-  if(this.scale == 1)
-  {
-    this.scale = scale;
-  }
+  console.log("***ZOOM");
+  this.scale+=scale;
 
-  if (scale>=this.lastScale) // Zoom
-  {
-    this.scale += (scale-this.lastScale);
-  }
-  else{ // Dezoom
-    this.scale -= (this.lastScale-scale);
-  }
-  if(this.scale>4) // Limiter l'échelle de zoom / dezoom
-  {
-    this.scale = 4
-  }
-  if(this.scale <0.8)
-  {
-    this.scale = 0.8;
-  }
+  // this.boolPremierAppui = true;
+  // if(this.scale == 1)
+  // {
+  //   this.scale = scale;
+  // }
+
+  // if (scale>=this.lastScale) // Zoom
+  // {
+  //   this.scale += (scale-this.lastScale);
+  // }
+  // else{ // Dezoom
+  //   this.scale -= (this.lastScale-scale);
+  // }
+  // if(this.scale>4) // Limiter l'échelle de zoom / dezoom
+  // {
+  //   this.scale = 4
+  // }
+  // if(this.scale <0.8)
+  // {
+  //   this.scale = 0.8;
+  // }
 
   //this.debug(`${e.type} : je zoom`);
   // this.debug(`target : ${e.target.classList.value}`);
@@ -540,14 +625,20 @@ zoom(e,scale)
   document.querySelector("img").style.transform = `scale(${this.scale})`;
   // document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
 }
+
+
+
+
+
+
+
 lever(event)
 {
-  this.dernierePositionSVG = this.positionSVG;
+  //@MODIF
+  //--this.dernierePositionSVG=this.positionSVG;
   
-  this.vecteur = {
-    X : this.AppuiB.X - this.AppuiA.X,
-    Y : this.AppuiB.Y - this.AppuiA.Y
-  }
+  this.etatJeDeplace=false;
+  
   let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y));
   if(norme > 10)
   {
@@ -574,21 +665,26 @@ lever(event)
   this.clicSouris = false;
 
 }
+
+
+
+
+
+
+
 defilementScroll()
 {
+  
   // Bouger le SVG avec le vecteur vitesse
   // Diminuer le vecteur vitesse
   // Si vecteur vitesse < 1 trop petit alors désactiver setInterval 
   // document.querySelector("svg").style.transition = "transform 0.2s";
 
-  let SVG = {
-    X : this.dernierePositionSVG.X,
-    Y : this.dernierePositionSVG.Y
-  } 
+  let SVGPos=this.svgPositionDonne();
   
-  let nouvellePositionSVG = {
-    X : this.vecteur.X + this.positionSVG.X,
-    Y : this.vecteur.Y + this.positionSVG.Y
+  SVGPos = {
+    X : this.vecteur.X + SVGPos.X,
+    Y : this.vecteur.Y + SVGPos.Y
   }
 
   this.vecteur = {
@@ -596,7 +692,10 @@ defilementScroll()
     Y : this.vecteur.Y * this.coeffGlisse  // 0.95
   }
 
-  this.coeffGlisse = this.coeffGlisse * 0.9;
+  this.coeffGlisse = this.coeffGlisse * 0.95;
+  
+
+  this.svgPosition(SVGPos);
 
   // this.debug(`Défilement scroll`);
   // this.debug(`Je suis : ${this.nom}`)
@@ -614,7 +713,11 @@ defilementScroll()
   //   clearInterval(this.myInterval);
   // }
 
-  this.positionSVG = nouvellePositionSVG;
+  //@MODIF
+  //--this.positionSVG = nouvellePositionSVG;
+  //this.positionSVG = {X:nouvellePositionSVG.X, Y:nouvellePositionSVG.Y }
+  //----
+  
   let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y))
   if(norme < 1)
   {
@@ -625,30 +728,31 @@ defilementScroll()
     }
     return;
   }
-  document.querySelector("img").style.top = `${nouvellePositionSVG.Y}px`;
-  document.querySelector("img").style.left = `${nouvellePositionSVG.X}px`;
+  
   // document.querySelector("svg").style.transform = `translate(${nouvellePositionSVG.X}px,${nouvellePositionSVG.Y}px) scale(${this.scale})`
-  this.dernierePositionSVG = this.positionSVG;
+  
+  //@MODIF
+  //--this.dernierePositionSVG = this.positionSVG;
+  this.dernierePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.Y };
+  //@-----
 }
+
+
 
 setviewbox()
 {
-  var vp = {x: 0, y: 0};
-  var vs = {x: 0, y: 0};
-  
-  vp.x = viewboxPosition.x;
-  vp.y = viewboxPosition.y;
-  
-  vs.x = viewboxSize.x * viewboxScale;
-  vs.y = viewboxSize.y * viewboxScale;
-
+  console.log("****** SET VIEW BOX");
+  var vp = {x: viewboxPosition.x ,  y:viewboxPosition.y};
+  var vs = {x: viewboxSize.x * viewboxScale , y:  viewboxSize.y * viewboxScale};
   shape = document.getElementsByTagName("svg")[0];
   shape.setAttribute("viewBox", vp.x + " " + vp.y + " " + vs.x + " " + vs.y);
 }
 
+
+
 mousemove(e)
 {
-  console.log(this);
+  console.log("******** MOUS  MOVE");
   mousePosition.x = e.offsetX;
   mousePosition.y = e.offsetY;
   
@@ -665,16 +769,23 @@ mousemove(e)
   var cpos = {x: mpos.x + vpos.x, y: mpos.y + vpos.y}
 }
 
+
+
 mouseup(e) {
+  console.log("*****MOUSEU");
   window.removeEventListener("mouseup", this.mouseup);
-  
-  mouseDown = false;
+  //mouseDown = false;
 }
 
+
+
+
 wheel(e) {
+  this.debug("***WHHHHHHH");
+  return;
   var scale = (e.deltaY < 0) ? 0.8 : 1.2;
   
-  if ((viewboxScale * scale < 8.) && (viewboxScale * scale > 1./256.))
+  if ((viewboxScale * scale < 8.0) && (viewboxScale * scale > 1.0/256.0))
   {  
     var mpos = {x: mousePosition.x * viewboxScale, y: mousePosition.y * viewboxScale};
     var vpos = {x: viewboxPosition.x, y: viewboxPosition.y};
@@ -687,9 +798,48 @@ wheel(e) {
     this.setviewbox();
   }
 }
+
+
+svgPosition(point) {
+  let domElement=document.querySelector("img");
+  domElement.style.left = `${point.X}px`;
+  domElement.style.top  = `${point.Y}px`;
+}
+
+
+
+svgPositionDonne() {
+  let domElement=document.querySelector("img");
+  let point= { 
+                X : domElement.offsetLeft, 
+                Y : domElement.offsetTop, 
+              };
+  return point;
+}
+
+
+
 debug(chaine)
 {
+  console.log(chaine);
   document.querySelector(".event").innerHTML += "<br>"+chaine;
+}
+
+
+
+pointVersChaine(chaInfo,p) {
+  let chaRet=`${chaInfo}=(${p.X},${p.Y})`;
+  return chaRet;
+}
+
+debugClear()
+{
+  document.querySelector(".event").innerHTML = ""
+}
+
+norme2Points(p1,p2) {
+ let norme= Math.sqrt(  (p1.X - p2.X)*(p1.X - p2.X) + (p1.Y - p2.Y)*(p1.Y - p2.Y) );
+ return norme;
 }
 
 }
