@@ -345,35 +345,7 @@ class PlanDeSalle{
         if(e.touches.length > 1) // Plusieurs doigts simultanés
         {
           let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-          //let curDiff = Math.sqrt(Math.pow(e.touches[1].clientX - e.touches[0].clientX, 2) + Math.pow(e.touches[1].clientY - e.touches[0].clientY, 2));
-          // document.querySelector(".event").innerHTML = `scale : ${e.scale}`;
-          // this.debug(curDiff);
-          // let scaleZoom = curDiff;
-          // if(scaleZoom < 5 )
-          // {
-          //   scaleZoom = 5;
-          // }
-          // if(scaleZoom > 20 )
-          // {
-          //   scaleZoom = 20;
-          // }
-          // if (this.prevDiff > 2) 
-          // {
-          //   //scale;
-          //   if (curDiff > this.prevDiff) { // ZOOM
-          //     this.lastScale = this.scale;
-          //     scale = this.scale + scaleZoom/100;
-          //     //this.zoom(e,scale);
-          //   }
-          //   if (curDiff < this.prevDiff) { // DEZOOM
-          //     this.lastScale = this.scale;
-          //     scale = this.scale - scaleZoom/100;
-          //     //this.zoom(e,scale);
-          //   }
-          // }
-          // // Cache the distance for the next move event 
-          // this.prevDiff = curDiff;
-          
+
           let scaleFacteur=curDiff-this.curDiffInitial;
           this.debug("scalle Facteur="+scaleFacteur);
           let paramScale = 0;
@@ -587,8 +559,10 @@ zoom(e,scale)
 
   console.log("***ZOOM");
   this.scale+=scale;
-  this.debug("param scale "+scale)
-  this.debug("this.scale "+this.scale)
+  this.debug("param scale "+scale);
+  this.debug("this.scale "+this.scale);
+  this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+
   if(this.scale > 4){ this.scale = 4;}
   if(this.scale < 0.8){ this.scale = 0.8;}
 
