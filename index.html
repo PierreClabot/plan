@@ -563,43 +563,8 @@ zoom(e,scale)
   if(this.scale > 4){ this.scale = 4;}
   if(this.scale < 0.8){ this.scale = 0.8;}
 
-  // this.boolPremierAppui = true;
-  // if(this.scale == 1)
-  // {
-  //   this.scale = scale;
-  // }
-
-  // if (scale>=this.lastScale) // Zoom
-  // {
-  //   this.scale += (scale-this.lastScale);
-  // }
-  // else{ // Dezoom
-  //   this.scale -= (this.lastScale-scale);
-  // }
-  // if(this.scale>4) // Limiter l'échelle de zoom / dezoom
-  // {
-  //   this.scale = 4
-  // }
-  // if(this.scale <0.8)
-  // {
-  //   this.scale = 0.8;
-  // }
-
-  //this.debug(`${e.type} : je zoom`);
-  // this.debug(`target : ${e.target.classList.value}`);
-  // this.debug(`Je suis : ${this.nom}`);
-  // this.debug(`Typeof scale : ${typeof this.scale}`);
-  // this.debug(`Valeur scale : ${this.scale}`);
-  // this.debug(`Typeof lastScale : ${typeof this.lastScale}`);
-  // this.debug(`Valeur lastScale : ${this.lastScale}`);
-  // this.debug(`Touche 1 : { X : ${e.touches[0].clientX}, Y : ${e.touches[0].clientY} }`)
-  // this.debug(`Touche 2 : { X : ${e.touches[1].clientX}, Y : ${e.touches[1].clientY} }`)
-
-
-  
-
-  // document.querySelector("img").style.transform = `scale(${this.scale})`;
-  this.scaleDOM();
+  document.querySelector("img").style.transform = `scale(${this.scale})`;
+  //this.scaleDOM();
   this.lastScale=this.scale;
 }
 
