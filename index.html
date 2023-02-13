@@ -729,10 +729,6 @@ svgPosition(point) {
     deplacement.Y = ((heightSVG/2)-(container.offsetHeight*0.3))*(Math.abs(point.Y)/(point.Y));
   }
 
-
-  this.debug("width container : "+ container.offsetWidth);
-  this.debug("width SVG : "+widthSVG);
-  // this.debug("width SVG : "+this.domElement.naturalWidth);
   this.domElement.style.left = `${deplacement.X}px`;
   this.domElement.style.top  = `${deplacement.Y}px`;
 }
