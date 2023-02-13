@@ -558,7 +558,10 @@ zoom(e,scale)
   this.scale+=scale;
   // this.debug("param scale "+scale);
   // this.debug("this.scale "+this.scale);
-  this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+  if(e.type != "wheel")
+  {
+    this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+  }
 
   if(this.scale > 4){ this.scale = 4;}
   if(this.scale < 0.8){ this.scale = 0.8;}
@@ -709,11 +712,18 @@ wheel(e) { // pour debug
 
 
 svgPosition(point) {
+  let deplacement = {
+    X : point.X,
+    Y : point.Y
+  }
   let container = document.querySelector("div[data-name=PLAN-SALLE]");
+  let widthSVG = this.domElement.getBoundingClientRect().width;
+  let heightSVG = this.domElement.getBoundingClientRect().height;
   this.debug("width container : "+ container.offsetWidth);
-  this.debug("width SVG : "+this.domElement.offsetWidth);
-  this.domElement.style.left = `${point.X}px`;
-  this.domElement.style.top  = `${point.Y}px`;
+  this.debug("width SVG : "+widthSVG);
+  // this.debug("width SVG : "+this.domElement.naturalWidth);
+  this.domElement.style.left = `${deplacement.X}px`;
+  this.domElement.style.top  = `${deplacement.Y}px`;
 }
 
 
