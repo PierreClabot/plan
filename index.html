@@ -587,6 +587,7 @@ zoom(e,scale)
 
   console.log("***ZOOM");
   this.scale+=scale;
+  this.debug("param scale "+scale)
   this.debug("this.scale "+this.scale)
   if(this.scale > 4){ this.scale = 4;}
   if(this.scale < 0.8){ this.scale = 0.8;}
