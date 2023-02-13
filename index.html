@@ -143,10 +143,6 @@ class PlanDeSalle{
     const svg = document.querySelector("img");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
 
-    //@MODIF
-    //const btnCentrer = 
-    //---
-
     this.scaleWheelDeltaY = 1;
 
     //@MODIF
@@ -173,8 +169,9 @@ class PlanDeSalle{
       // {
       //   clearInterval(this.myInterval);
       // }
-
-      svg.style.transform = "scale(1)";
+      this.scale = 1;
+      this.scaleDOM()
+      // svg.style.transform = "scale(1)";
       this.positionSVG = {
         X : 0,
         Y : 0
@@ -601,7 +598,8 @@ zoom(e,scale)
 
   
 
-  document.querySelector("img").style.transform = `scale(${this.scale})`; // passer en méthode @TODO
+  // document.querySelector("img").style.transform = `scale(${this.scale})`;
+  this.scaleDOM();
   this.lastScale=this.scale;
 }
 
@@ -717,7 +715,9 @@ defilementScroll()
   //@-----
 }
 
-
+scaleDOM(){
+  this.domElement.transform = `scale(${this.scale})`;
+}
 
 setviewbox() // inutile ?
 {
