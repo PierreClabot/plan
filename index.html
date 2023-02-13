@@ -379,7 +379,7 @@ class PlanDeSalle{
           let paramScale = 0;
           if (scaleFacteur>0.2) { paramScale=0.01; this.debug("ZOOM");}
           if (scaleFacteur<0.2) { paramScale=-0.01; this.debug("DEZOOM");}
-          this.zoom(e,scaleFacteur);
+          this.zoom(e,paramScale);
 
         }
         if(e.touches.length == 1)
