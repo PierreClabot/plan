@@ -484,7 +484,7 @@ zoom(e,scale)
 
 
   this.lastScale=scale;
-
+  this.debug(this.lastScale);
   document.querySelector("img").style.transform = `scale(${this.scale})`;
   // document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
 }

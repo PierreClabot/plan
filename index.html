@@ -178,11 +178,14 @@ class PlanDeSalle{
 
     });
     svg.addEventListener("click",e=>{
-      let bounds = document.querySelector("div[data-name=PLAN-SALLE]").getBoundingClientRect();
-      let x = e.clientX - bounds.left;
-      let y = e.clientY - bounds.top;
+      let x = e.offsetX / svg.offsetWidth;
+      let y = e.offsetY / svg.offsetHeight;
+      console.log("x :"+x+" y :"+y);
 
-      console.log(x, y);
+      // console.log("width img * scale "+svg.offsetWidth*this.scale);
+      // console.log("height img * scale "+svg.offsetHeight*this.scale);
+      // console.log(x*this.scale, y*this.scale);
+      console.log(e);
     })
     container.addEventListener("touchstart",e=>{
       
@@ -202,10 +205,6 @@ class PlanDeSalle{
       }
     })
 
-    svg.addEventListener("click",(e)=>{
-      
-      
-    })
 
     container.addEventListener("mousedown", e =>{
       this.appuiEn(e,e.clientX, e.clientY);
