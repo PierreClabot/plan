@@ -592,13 +592,6 @@ lever(event)
   // Calculer le vecteur vitesse
   // mémoriser la position du svg
   this.stopGlisse();
-  // if(this.myInterval)
-  // {
-  //   clearInterval(this.myInterval)
-  // }
-  // this.debug(`${event.type}`)
-  // this.debug(`target : ${event.target.classList.value}`);
-  // this.debug(`Je suis : ${this.nom}`)
   this.coeffGlisse = this.coeffGlisseInitial;
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
 
@@ -639,49 +632,18 @@ defilementScroll()
   
 
   this.svgPosition(SVGPos);
-
-  // this.debug(`Défilement scroll`);
-  // this.debug(`Je suis : ${this.nom}`)
-  // this.debug(`vecteur : <br>{ X : ${difference.X}, Y : ${difference.Y} }`);
-  // this.debug(`Nouvelle Position SVG : <br>{ X : ${nouvellePositionSVG.X}, Y : ${nouvellePositionSVG.Y} }`);
-  // if(Math.abs(nouvellePositionSVG.X)>(this.maxX * this.scale))
-  // {
-  //   nouvellePositionSVG.X = this.maxX * this.scale * (nouvellePositionSVG.X/(Math.abs(nouvellePositionSVG.X)));
-  //   clearInterval(this.myInterval);
-    
-  // }
-  // if(Math.abs(nouvellePositionSVG.Y)>(this.maxY * this.scale))
-  // {
-  //   nouvellePositionSVG.Y = this.maxY * this.scale *(nouvellePositionSVG.Y/(Math.abs(nouvellePositionSVG.Y)));
-  //   clearInterval(this.myInterval);
-  // }
-
-  //@MODIF
-  //--this.positionSVG = nouvellePositionSVG;
-  //this.positionSVG = {X:nouvellePositionSVG.X, Y:nouvellePositionSVG.Y }
-  //----
   
   let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y))
   if(norme < 1)
   {
     this.stopGlisse();
-    //this.debug("Je sors de mon setInterval");
-    // if(this.myInterval)
-    // {
-    //   clearInterval(this.myInterval);
-    // }
     return;
   }
   
-  
-  //@MODIF
-  //--this.dernierePositionSVG = this.positionSVG;
   this.dernierePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.Y };
-  //@-----
 }
 
 scaleDOM(){
-  this.debug(this.nom);
   this.domElement.style.transform = `scale(${this.scale})`;
 }
 
@@ -747,7 +709,7 @@ wheel(e) { // pour debug
 
 
 svgPosition(point) {
-  // let domElement=document.querySelector("img"); // A modifier
+  this.debug(this.domElement.offsetWidth);
   this.domElement.style.left = `${point.X}px`;
   this.domElement.style.top  = `${point.Y}px`;
 }
