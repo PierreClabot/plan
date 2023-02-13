@@ -377,8 +377,8 @@ class PlanDeSalle{
           let scaleFacteur=curDiff-this.curDiffInitial;
           this.debug("scalle Facteur="+scaleFacteur);
           let paramScale = 0;
-          if (scaleFacteur>0.2) { paramScale=0.1; this.debug("ZOOM");}
-          if (scaleFacteur<0.2) { paramScale=-0.1; this.debug("DEZOOM");}
+          if (scaleFacteur>0.2) { paramScale=0.01; this.debug("ZOOM");}
+          if (scaleFacteur<0.2) { paramScale=-0.01; this.debug("DEZOOM");}
           this.zoom(e,scaleFacteur);
 
         }
