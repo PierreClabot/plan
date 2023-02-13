@@ -119,11 +119,11 @@ class PlanDeSalle{
       X : 0,
       Y : 0,
     };
-    this.AppuiA = {
-      X:0,
-      Y:0
-    };
-    
+
+    this.vecteur = {
+        X:0,
+        Y:0
+    }
     this.historiquePos=[{x:0,y:0},{x:0,y:0}];
     
     this.myInterval = 0 ;
@@ -171,13 +171,19 @@ class PlanDeSalle{
         X : 0,
         Y : 0
       }
-      
+
       this.svgPosition({X:0,Y:0});
       this.scale = 1
       this.lastScale = 1;
 
     });
+    svg.addEventListener("click",e=>{
+      let bounds = document.querySelector("div[data-name=PLAN-SALLE]").getBoundingClientRect();
+      let x = e.clientX - bounds.left;
+      let y = e.clientY - bounds.top;
 
+      console.log(x, y);
+    })
     container.addEventListener("touchstart",e=>{
       
       e.stopPropagation();
@@ -360,6 +366,10 @@ stopGlisse(){
   if(this.myInterval)
   {
     clearInterval(this.myInterval)
+    this.vecteur = {
+      X:0,
+      Y:0
+    }
   }
 }
 
@@ -386,14 +396,26 @@ zoom(e,scale)
 
 
 
-lever(event)
+lever(e)
 {
   //@MODIF
   //--this.dernierePositionSVG=this.positionSVG;
   
   this.etatJeDeplace=false;
-  
   let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
+  if(norme < 1 ) // On sélectionne une place
+  {
+    let point ;
+    if(e.type == "mouseup")
+    {
+      point = { X:e.clientX, Y:e.clientY};
+    }
+    else{
+      point = { X:e.touches[0].clientX, Y:e.touches[0].clientY};
+    }
+    this.chercheElement(point)
+    return;
+  }
   if(norme > 10)
   {
     this.vecteur.X = this.vecteur.X/norme;
@@ -411,7 +433,9 @@ lever(event)
   this.lastScale = 1;
   this.boolPremierAppui =  true;
   this.clicSouris = false;
-
+  console.log(e);
+  // let point = {X : , Y: }
+  // this.chercheElement(point)
 }
 
 
@@ -547,7 +571,11 @@ svgPositionDonne() {
   return point;
 }
 
-
+chercheElement(point){
+  //console.log(point);
+  let container = document.querySelector("div[data-name=PLAN-SALLE]");
+  // console.log(container.getBoundingClientRect()); @TODO
+}
 
 debug(chaine)
 {
