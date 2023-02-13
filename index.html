@@ -166,11 +166,12 @@ class PlanDeSalle{
 
 
     document.querySelector("#PLAN-CENTRER").addEventListener("click",(e)=>{
-      this.debug("Centrer !");      
-      if(this.myInterval)
-      {
-        clearInterval(this.myInterval);
-      }
+      this.debug("Centrer !");   
+      this.stopGlisse();   
+      // if(this.myInterval)
+      // {
+      //   clearInterval(this.myInterval);
+      // }
 
       svg.style.transform = "scale(1)";
       this.positionSVG = {
@@ -471,10 +472,11 @@ appuiEn(e,x,y){
     this.etatJeDeplace=true;
     
     //this.clicSouris = true;
-    if(this.myInterval) // @TODO method stopglisse
-    {
-      clearInterval(this.myInterval)
-    }
+    this.stopGlisse();
+    // if(this.myInterval) // @TODO method stopglisse
+    // {
+    //   clearInterval(this.myInterval)
+    // }
     //console.log(this);
     // document.querySelector(".event").innerHTML =`dernièrePositionSVG : <br>
     //                                   X : ${this.dernierePositionSVG.X}<br>
@@ -543,7 +545,12 @@ bougerEn(event,x,y)
 }
 
 
-
+stopGlisse(){
+  if(this.myInterval) // @TODO method stopglisse
+  {
+    clearInterval(this.myInterval)
+  }
+}
 
 
 zoom(e,scale)
@@ -621,10 +628,11 @@ lever(event)
   }
   // Calculer le vecteur vitesse
   // mémoriser la position du svg
-  if(this.myInterval)
-  {
-    clearInterval(this.myInterval)
-  }
+  this.stopGlisse();
+  // if(this.myInterval)
+  // {
+  //   clearInterval(this.myInterval)
+  // }
   // this.debug(`${event.type}`)
   // this.debug(`target : ${event.target.classList.value}`);
   // this.debug(`Je suis : ${this.nom}`)
@@ -693,11 +701,12 @@ defilementScroll()
   let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y))
   if(norme < 1)
   {
+    this.stopGlisse();
     //this.debug("Je sors de mon setInterval");
-    if(this.myInterval)
-    {
-      clearInterval(this.myInterval);
-    }
+    // if(this.myInterval)
+    // {
+    //   clearInterval(this.myInterval);
+    // }
     return;
   }
   
