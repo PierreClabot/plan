@@ -722,11 +722,11 @@ svgPosition(point) {
 
   if(Math.abs(point.X) > (widthSVG/2)-(container.offsetWidth*0.3))
   {
-    return;
+    deplacement.X = ((widthSVG/2)-(container.offsetWidth*0.3))*(Math.abs(point.X)/(point.X));
   }
   if(Math.abs(point.Y) > (heightSVG/2)-(container.offsetHeight*0.3))
   {
-    return;
+    deplacement.Y = ((heightSVG/2)-(container.offsetHeight*0.3))*(Math.abs(point.Y)/(point.Y));
   }
 
 
