@@ -709,7 +709,9 @@ wheel(e) { // pour debug
 
 
 svgPosition(point) {
-  this.debug(this.domElement.offsetWidth);
+  let container = document.querySelector("div[data-name=PLAN-SALLE]");
+  this.debug("width container : "+ container.offsetWidth);
+  this.debug("width SVG : "+this.domElement.offsetWidth);
   this.domElement.style.left = `${point.X}px`;
   this.domElement.style.top  = `${point.Y}px`;
 }
