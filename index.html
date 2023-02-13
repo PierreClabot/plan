@@ -241,6 +241,7 @@ class PlanDeSalle{
       
       if (e.touches.length>1) {
         this.etatJeDeplace=false;
+        this.debug("initStart");
         this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         this.debug("CUR DIF NINIT="+this.curDiffInitial);
       }
@@ -505,7 +506,7 @@ appuiEn(e,x,y){
     this.etatJeDeplace=true;
     
     //this.clicSouris = true;
-    if(this.myInterval)
+    if(this.myInterval) // @TODO method stopglisse
     {
       clearInterval(this.myInterval)
     }
@@ -552,7 +553,6 @@ bougerEn(event,x,y)
     //this.debug("pos="+this.pointVersChaine("+newPOS=",posActuelle)+" Vecteur deplacement=");
     this.svgPosition(posActuelle);
     
-    posActuelle=this.svgPositionDonne();
     //this.debug("pos="+this.pointVersChaine("+REALPOS=",posActuelle)+" Vecteur deplacement=");
     
     
@@ -586,6 +586,7 @@ zoom(e,scale)
 
   console.log("***ZOOM");
   this.scale+=scale;
+  this.debug("this.scale",this.scale);
 
   // this.boolPremierAppui = true;
   // if(this.scale == 1)
@@ -620,9 +621,10 @@ zoom(e,scale)
   // this.debug(`Touche 2 : { X : ${e.touches[1].clientX}, Y : ${e.touches[1].clientY} }`)
 
 
-  this.lastScale=scale;
+  
 
-  document.querySelector("img").style.transform = `scale(${this.scale})`;
+  document.querySelector("img").style.transform = `scale(${this.scale})`; // passer en méthode @TODO
+  this.lastScale=this.scale;
   // document.querySelector("svg").style.transform = `translate(${this.dernierePositionSVG.X}px,${this.dernierePositionSVG.Y}px) scale(${this.scale})`;
 }
 
@@ -639,7 +641,7 @@ lever(event)
   
   this.etatJeDeplace=false;
   
-  let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y));
+  let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
   if(norme > 10)
   {
     this.vecteur.X = this.vecteur.X/norme;
@@ -739,7 +741,7 @@ defilementScroll()
 
 
 
-setviewbox()
+setviewbox() // inutile ?
 {
   console.log("****** SET VIEW BOX");
   var vp = {x: viewboxPosition.x ,  y:viewboxPosition.y};
@@ -750,7 +752,7 @@ setviewbox()
 
 
 
-mousemove(e)
+mousemove(e) // debug
 {
   console.log("******** MOUS  MOVE");
   mousePosition.x = e.offsetX;
@@ -771,7 +773,7 @@ mousemove(e)
 
 
 
-mouseup(e) {
+mouseup(e) { // debug
   console.log("*****MOUSEU");
   window.removeEventListener("mouseup", this.mouseup);
   //mouseDown = false;
@@ -780,7 +782,7 @@ mouseup(e) {
 
 
 
-wheel(e) {
+wheel(e) { // pour debug
   this.debug("***WHHHHHHH");
   return;
   var scale = (e.deltaY < 0) ? 0.8 : 1.2;
@@ -801,7 +803,7 @@ wheel(e) {
 
 
 svgPosition(point) {
-  let domElement=document.querySelector("img");
+  let domElement=document.querySelector("img"); // A modifier
   domElement.style.left = `${point.X}px`;
   domElement.style.top  = `${point.Y}px`;
 }
@@ -809,7 +811,7 @@ svgPosition(point) {
 
 
 svgPositionDonne() {
-  let domElement=document.querySelector("img");
+  let domElement=document.querySelector("img"); // A modifier
   let point= { 
                 X : domElement.offsetLeft, 
                 Y : domElement.offsetTop, 
