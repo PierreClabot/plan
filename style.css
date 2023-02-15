@@ -1,0 +1,40 @@
+/*---- plan de salle ----*/
+.btn-plan-container {
+    display:flex;
+    font-size:10px;
+    justify-content: space-between;
+}
+
+.btn-plan-commande {
+ border:solid 1px green;
+ background-color:lightblue;
+  padding: 0.25rem 0.25rem;
+ background-color:#D0FFD0;
+color:#006000;
+ cursor: pointer;
+    border-radius: 0.4rem;
+}
+
+#IMG_PLANSALLE {
+    position:absolute;
+    left : 0;
+}
+
+div[data-name="PLAN-SALLE"] {
+  border:none;
+  background-color: #D0E0D0 !important;
+  position:relative;
+  overflow: hidden;
+
+}
+
+div.event {
+ height:200px;
+ background-color:#D0FFD0 !important;
+font-size:10px;
+overflow: scroll;
+color:#006000;
+display:none;
+}
+
+/*---- plan de salle ----*/
