@@ -314,7 +314,9 @@ zoom(e,scale)
     this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
   }
   // if(this.scale > 4){ this.scale = 4;} // xxxxxxxxxxxxxxx
-  // if(this.scale < 0.8){ this.scale = 0.8;}
+  
+  if(this.scale < 0.8){ this.scale = 0.8;}
+
   this.debug(this.scale);
   this.scaleDOM();
   this.lastScale=this.scale;
