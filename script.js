@@ -315,7 +315,7 @@ zoom(e,scale)
   }
   // if(this.scale > 4){ this.scale = 4;} // xxxxxxxxxxxxxxx
 
-  if(this.scale < 0){ this.scale = 0;}
+  if(this.scale < 0.1){ this.scale = 0.1;}
 
   this.debug(this.scale);
   this.scaleDOM();
