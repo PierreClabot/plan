@@ -40,13 +40,17 @@ class PlanDeSalle{
     this.clicSouris = false;
     this.curDiffInitial=1;
     this.prevDiff = -1;
-    this.coeffGlisse = 0.95;
-    this.coeffGlisseInitial = 0.95;
+    this.coeffGlisse = 0.70;
+    // this.coeffGlisseInitial = 0.95;
     this.scale = 1;
     this.domElement=document.querySelector("#IMG_PLANSALLE");
     this.premierAppui = {x:0,y:0};
     this.observers = [];
-
+    this.t1 ;
+    this.tt;
+    this.intervalAnimationMs = 5;
+    this.tempsGlisse = 500;
+    this.sourisGlisseMax = 150;
     this.toleranceMouse = 5;
     this.toleranceTouch = 5;
 
@@ -269,6 +273,21 @@ class PlanDeSalle{
          // --return;
          e.stopPropagation();
          e.preventDefault(); 
+
+         let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
+         if(norme > this.sourisGlisseMax)
+         {
+           this.vecteur.X = this.vecteur.X/norme;
+           this.vecteur.Y = this.vecteur.Y/norme;
+           this.vecteur.X = this.vecteur.X * this.sourisGlisseMax;
+           this.vecteur.Y = this.vecteur.Y * this.sourisGlisseMax;
+         }
+         console.log("vecteur",this.vecteur);
+         this.vInit = {
+          x:this.vecteur.X,
+          y:this.vecteur.Y
+         }
+         console.log("vInit",this.vInit);
          this.lever(e);
     });
     //@---
@@ -374,6 +393,8 @@ stopGlisse(){
   if(this.myInterval)
   {
     clearInterval(this.myInterval)
+    this.myInterval = 0;
+    console.log("stopGlisse");
     this.vecteur = {
       X:0,
       Y:0
@@ -413,32 +434,21 @@ lever(e)
   //--this.dernierePositionSVG=this.positionSVG;
   
   this.etatJeDeplace=false;
-  let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
-  // if(norme < 1 ) // On sélectionne une place
+  this.t1 = Date.now();
+  // let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
+  // if(norme > 10)
   // {
-  //   let point ;
-  //   if(e.type == "mouseup")
-  //   {
-  //     point = { X:e.clientX, Y:e.clientY};
-  //   }
-  //   else{
-  //     point = { X:e.touches[0].clientX, Y:e.touches[0].clientY};
-  //   }
-  //   this.chercheElement(point)
-  //   return;
+  //   this.vecteur.X = this.vecteur.X/norme;
+  //   this.vecteur.Y = this.vecteur.Y/norme;
+  //   this.vecteur.X = this.vecteur.X * 10;
+  //   this.vecteur.Y = this.vecteur.Y * 10;
   // }
-  if(norme > 10)
-  {
-    this.vecteur.X = this.vecteur.X/norme;
-    this.vecteur.Y = this.vecteur.Y/norme;
-    this.vecteur.X = this.vecteur.X * 10;
-    this.vecteur.Y = this.vecteur.Y * 10;
-  }
   // Calculer le vecteur vitesse
   // mémoriser la position du svg
   this.stopGlisse();
-  this.coeffGlisse = this.coeffGlisseInitial;
-  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),30);
+  // this.coeffGlisse = this.coeffGlisseInitial;
+  console.log("startGlisse");
+  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),this.intervalAnimationMs);
 
   this.boolZoom = true;
   this.lastScale = 1;
@@ -456,7 +466,8 @@ lever(e)
 
 defilementScroll()
 {
-  
+  //console.log("*=",this.vecteur);
+
   let SVGPos=this.svgPositionDonne();
   
   SVGPos = {
@@ -464,23 +475,39 @@ defilementScroll()
     Y : this.vecteur.Y + SVGPos.Y
   }
 
+  this.tt = Date.now();
+  //console.log(this.vInit)
+  let t = (this.tt-this.t1)/this.tempsGlisse;
+  let sinus = Math.sin((Math.PI/4)*(1-t))
+  // this.vecteur = {
+  //   X : this.vInit.x * (1-t),
+  //   Y : this.vInit.y * (1-t)
+  // }
   this.vecteur = {
-    X : this.vecteur.X * this.coeffGlisse, // 0.95
-    Y : this.vecteur.Y * this.coeffGlisse  // 0.95
+    X : this.vInit.x * sinus * this.coeffGlisse,
+    Y : this.vInit.y * sinus * this.coeffGlisse
   }
-
-  this.coeffGlisse = this.coeffGlisse * 0.95;
+  // this.vecteur = {
+  //   X : this.vecteur.X * this.coeffGlisse, // 0.95
+  //   Y : this.vecteur.Y * this.coeffGlisse  // 0.95
+  // }
+  if(this.tt-this.t1 >= this.tempsGlisse)
+  {
+    clearInterval(this.myInterval);
+    this.myInterval = 0;
+  }
+  // this.coeffGlisse = this.coeffGlisse * 0.95;
   
 
   this.svgPosition(SVGPos);
   
-  let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y))
-  if(norme < 1)
-  {
-    this.stopGlisse();
-    return;
-  }
-  
+  // let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y))
+  // if(norme < 1)
+  // {
+  //   this.stopGlisse();
+  //   return;
+  // }
+
   this.dernierePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.Y };
 }
 
