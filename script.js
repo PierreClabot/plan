@@ -282,12 +282,11 @@ class PlanDeSalle{
            this.vecteur.X = this.vecteur.X * this.sourisGlisseMax;
            this.vecteur.Y = this.vecteur.Y * this.sourisGlisseMax;
          }
-         console.log("vecteur",this.vecteur);
          this.vInit = {
           x:this.vecteur.X,
           y:this.vecteur.Y
          }
-         console.log("vInit",this.vInit);
+
          this.lever(e);
     });
     //@---
@@ -295,6 +294,18 @@ class PlanDeSalle{
     container.addEventListener("touchend",(e)=>{
         e.stopPropagation();
         e.preventDefault(); 
+        let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
+        if(norme > this.sourisGlisseMax)
+        {
+          this.vecteur.X = this.vecteur.X/norme;
+          this.vecteur.Y = this.vecteur.Y/norme;
+          this.vecteur.X = this.vecteur.X * this.sourisGlisseMax;
+          this.vecteur.Y = this.vecteur.Y * this.sourisGlisseMax;
+        }
+        this.vInit = {
+         x:this.vecteur.X,
+         y:this.vecteur.Y
+        }
         this.lever(e);   
     })
 
