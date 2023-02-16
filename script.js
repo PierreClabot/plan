@@ -29,7 +29,7 @@ class PlanDeSalle{
         Y:0
     }
     this.historiquePos=[{x:0,y:0},{x:0,y:0}];
-    
+    // this.transformOrigin = {x:0,y:0}; // Ajout
     this.myInterval = 0 ;
     this.dernierePositionSVG = {
       X:0,
@@ -44,8 +44,11 @@ class PlanDeSalle{
     this.coeffGlisseInitial = 0.95;
     this.scale = 1;
     this.domElement=document.querySelector("#IMG_PLANSALLE");
-
+    this.premierAppui = {x:0,y:0};
     this.observers = [];
+
+    this.toleranceMouse = 5;
+    this.toleranceTouch = 5;
 
     const svg = document.querySelector("#IMG_PLANSALLE");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
@@ -100,24 +103,98 @@ class PlanDeSalle{
       this.lastScale = 1;
 
     });
-    svg.addEventListener("click",e=>{
-      // Calcul position
-      let x = e.offsetX / svg.offsetWidth;
-      let y = e.offsetY / svg.offsetHeight;
-      let data = { coefX:x , coefY:y };
-      this.fire(data);
-      console.log("x :"+x+" y :"+y);
-
-      // console.log("width img * scale "+svg.offsetWidth*this.scale);
-      // console.log("height img * scale "+svg.offsetHeight*this.scale);
-      // console.log(x*this.scale, y*this.scale);
-      console.log(e);
+    svg.addEventListener("mousedown",e=>{
+      this.premierAppui = {
+        x:e.clientX,
+        y:e.clientY,
+        offsetX : e.offsetX,
+        offsetY : e.offsetY
+      }
+      console.log("premierAPpui",this.premierAppui);
     })
+
+    svg.addEventListener("touchstart",e=>{
+      console.log(e);
+      var rect = e.target.getBoundingClientRect();
+      var offsetX = e.targetTouches[0].pageX - rect.left;
+      var offsetY = e.targetTouches[0].pageY - rect.top;
+      this.premierAppui = {
+        x:e.touches[0].clientX,
+        y:e.touches[0].clientY,
+        offsetX : offsetX,
+        offsetY : offsetY
+      }
+      console.log("premierAPpui",this.premierAppui);
+    })
+
+    svg.addEventListener("touchend",e=>{
+
+      let point = {
+        x : e.changedTouches[0].clientX,
+        y: e.changedTouches[0].clientY
+      }
+      console.log(this.premierAppui.x);
+      if((Math.abs(point.x-this.premierAppui.x)<this.toleranceTouch) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceTouch))
+      {
+        let x = this.premierAppui.offsetX / svg.offsetWidth;
+        let y = this.premierAppui.offsetY / svg.offsetHeight;
+        let data = { coefX:x , coefY:y };
+        this.fire(data);
+        this.debug(`data -> X: ${data.coefX} Y:${data.coefY}`);
+      }
+    })
+
+    svg.addEventListener("mouseup",e=>{
+      let point = {
+        x : e.clientX,
+        y: e.clientY
+      }
+
+      if((Math.abs(point.x-this.premierAppui.x)<this.toleranceMouse) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceMouse))
+      {
+        let x = e.offsetX / svg.offsetWidth;
+        let y = e.offsetY / svg.offsetHeight;
+        let data = { coefX:x , coefY:y };
+        this.fire(data);
+      }
+    })
+    
+    // svg.addEventListener("touchend",e=>{
+    //   let point = {
+    //     x : e.clientX,
+    //     y: e.clientY
+    //   }
+
+    //   if((Math.abs(point.x-this.premierAppui.x)<this.toleranceMouse) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceMouse))
+    //   {
+    //     let x = e.offsetX / svg.offsetWidth;
+    //     let y = e.offsetY / svg.offsetHeight;
+    //     let data = { coefX:x , coefY:y };
+    //     this.fire(data);
+    //   }
+    // })
+    // svg.addEventListener("click",e=>{
+    //   // Calcul position
+    //   // let x = e.offsetX / svg.offsetWidth;
+    //   // let y = e.offsetY / svg.offsetHeight;
+    //   // let data = { coefX:x , coefY:y };
+    //   // this.fire(data);
+    //   //console.log("x :"+x+" y :"+y);
+
+    //   // console.log("width img * scale "+svg.offsetWidth*this.scale);
+    //   // console.log("height img * scale "+svg.offsetHeight*this.scale);
+    //   // console.log(x*this.scale, y*this.scale);
+    //   //console.log(e);
+    // })
+    // AJOUT
+    // svg.addEventListener("mousemove",e=>{
+    //   // this.transformOrigin = {x:e.offsetX,y:e.offsetY}
+    //   // console.log(this.transformOrigin);
+    // })
     container.addEventListener("touchstart",e=>{
       
       e.stopPropagation();
       e.preventDefault(); 
-      
       
       if (e.touches.length>1) {
         this.etatJeDeplace=false;
@@ -162,6 +239,7 @@ class PlanDeSalle{
       this.debug(`e wheel deltay=${e.wheelDeltaY}`);
       e.stopPropagation();
       e.preventDefault();
+      // this.domElement.style.transformOrigin = `${this.transformOrigin.x}px ${this.transformOrigin.y}px `; //AJOUT
       this.debug("deltaY",e.wheelDeltaY);
       this.zoom(e,e.wheelDeltaY/480);
       return;
@@ -314,10 +392,11 @@ zoom(e,scale)
     this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
   }
   // if(this.scale > 4){ this.scale = 4;} // xxxxxxxxxxxxxxx
-
   if(this.scale < 0.1){ this.scale = 0.1;}
-
   this.debug(this.scale);
+  console.log(e);
+  console.log("offsetWidth",this.domElement);
+  console.log("offsetHeight",this.domElement.offsetHeight);
   this.scaleDOM();
   this.lastScale=this.scale;
 }
@@ -335,19 +414,19 @@ lever(e)
   
   this.etatJeDeplace=false;
   let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
-  if(norme < 1 ) // On sélectionne une place
-  {
-    let point ;
-    if(e.type == "mouseup")
-    {
-      point = { X:e.clientX, Y:e.clientY};
-    }
-    else{
-      point = { X:e.touches[0].clientX, Y:e.touches[0].clientY};
-    }
-    this.chercheElement(point)
-    return;
-  }
+  // if(norme < 1 ) // On sélectionne une place
+  // {
+  //   let point ;
+  //   if(e.type == "mouseup")
+  //   {
+  //     point = { X:e.clientX, Y:e.clientY};
+  //   }
+  //   else{
+  //     point = { X:e.touches[0].clientX, Y:e.touches[0].clientY};
+  //   }
+  //   this.chercheElement(point)
+  //   return;
+  // }
   if(norme > 10)
   {
     this.vecteur.X = this.vecteur.X/norme;
@@ -363,9 +442,8 @@ lever(e)
 
   this.boolZoom = true;
   this.lastScale = 1;
-  this.boolPremierAppui =  true;
   this.clicSouris = false;
-  console.log(e);
+  //console.log(e);
   // let point = {X : , Y: }
   // this.chercheElement(point)
 }
@@ -497,9 +575,9 @@ svgPosition(point) {
 //   {
 //     deplacement.Y = ((heightSVG/2)-(container.offsetHeight*0.3))*(Math.abs(point.Y)/(point.Y));
 //   }
-
   this.domElement.style.left = `${deplacement.X}px`;
   this.domElement.style.top  = `${deplacement.Y}px`;
+
 }
 
 
