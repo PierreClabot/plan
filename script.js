@@ -243,15 +243,18 @@ class PlanDeSalle{
           this.boolPremierScale = false;
           this.debugL(" cdf"+this.arrondirMillieme(this.vInit)+" ");
         }
-        let Vt = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        let coefScale = Vt/this.vInit;
+        let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+        let coefScale = vT/this.vInit;
         let scale = this.scaleInit * coefScale;
         // let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         // let scaleFacteur=curDiff-this.curDiffInitial;
         // let paramScale = 0;
         // if (scaleFacteur>0.2) { paramScale=0.05;}
         // if (scaleFacteur<0.2) { paramScale=-0.05;}
-        this.debugL(" vs:"+this.arrondirMillieme(this.scale)+" ");
+        this.debugL(" vInit "+this.vInit+" ");
+        this.debugL(" vT "+vT+" ");
+        this.debugL(" scaleInit "+this.scaleInit+" ");
+        this.debugL(" vs:"+this.arrondirMillieme(scale)+" ");
 
         //this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         
