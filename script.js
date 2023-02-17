@@ -247,13 +247,20 @@ class PlanDeSalle{
         if(Math.abs(pointReference.x-this.pointReferenceInit.x)<10 && Math.abs(pointReference.y-this.pointReferenceInit.y)<10) // Point de référence identique, on se déplace
         {
             // @TODO
-            this.bougerEn(e,Math.abs(e.touches[0].clientX-e.touches[1].clientX),Math.abs(e.touches[0].clientY-e.touches[1].clientY));
-            this.debug("JE ME DEPLACE");
+            let deplacement = {
+              x:Math.abs(e.touches[0].clientX-e.touches[1].clientX),
+              y:Math.abs(e.touches[0].clientY-e.touches[1].clientY)
+            }
+            this.debugL(" deplacement.x:"+deplacement.x);
+            this.debugL(" deplacement.y:"+deplacement.y);
+            this.bougerEn(e,deplacement.x,deplacement.y);
+            // this.debug("JE ME DEPLACE");
             this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
 
         }
         else
         {
+          this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
           this.debug("JE VEUX ZOOM");
           if(this.boolPremierScale)
           {
