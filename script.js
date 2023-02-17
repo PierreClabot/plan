@@ -236,6 +236,8 @@ class PlanDeSalle{
       
       if(e.touches.length > 1) // Plusieurs doigts simultanés
       {
+        let pointReference = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
+        this.debugL(" pointReference:"+pointReference+" ")
         if(this.boolPremierScale)
         {
           this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
@@ -245,16 +247,17 @@ class PlanDeSalle{
         let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         let coefScale = vT/this.vInit;
         let scale = this.scaleInit * coefScale;
+
+
         // let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         // let scaleFacteur=curDiff-this.curDiffInitial;
         // let paramScale = 0;
         // if (scaleFacteur>0.2) { paramScale=0.05;}
         // if (scaleFacteur<0.2) { paramScale=-0.05;}
-        this.debugL(" vInit "+this.vInit+" ");
-        this.debugL(" vT "+vT+" ");
-        this.debugL(" scaleInit "+this.scaleInit+" ");
-        this.debugL(" vs:"+this.arrondirMillieme(scale)+" ");
-        this.debug("");
+        // this.debugL(" vInit "+this.vInit+" ");
+        // this.debugL(" vT "+vT+" ");
+        // this.debugL(" scaleInit "+this.scaleInit+" ");
+        // this.debugL(" vs:"+this.arrondirMillieme(scale)+" ");
 
         //this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         
@@ -695,6 +698,10 @@ debugClear()
 norme2Points(p1,p2) {
  let norme= Math.sqrt(  (p1.X - p2.X)*(p1.X - p2.X) + (p1.Y - p2.Y)*(p1.Y - p2.Y) );
  return norme;
+}
+pointReference(p1,p2){
+  let pointReference = { x:Math.abs(p1.x-p2.x), y:Math.abs(p1.y-p2.y) }
+  return pointReference;
 }
 
 
