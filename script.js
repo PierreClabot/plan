@@ -23,6 +23,7 @@ class PlanDeSalle{
     this.scale = 1;
     this.boolZoom = false;
     this.lastScale = 1;
+    this.boolPremierScale = true;
     this.positionSVG = {
       X : 0,
       Y : 0,
@@ -54,6 +55,8 @@ class PlanDeSalle{
     this.observers = [];
     this.t1 ;
     this.tt;
+    this.vInit = 0;
+    this.scaleInit = 0;
     this.intervalAnimationMs = 1;
     this.tempsGlisse = 500;
     this.sourisGlisseMax = 50;
@@ -233,12 +236,26 @@ class PlanDeSalle{
       
       if(e.touches.length > 1) // Plusieurs doigts simultanés
       {
-        let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        let scaleFacteur=curDiff-this.curDiffInitial;
-        let paramScale = 0;
-        if (scaleFacteur>0.2) { paramScale=0.05;}
-        if (scaleFacteur<0.2) { paramScale=-0.05;}
-        this.zoom(e,paramScale);
+        if(this.boolPremierScale)
+        {
+          this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+          this.scaleInit=this.scale;
+          this.boolPremierScale = false;
+          this.debugL(" cdf"+this.arrondirMillieme(this.vInit)+" ");
+        }
+        let Vt = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+        let coefScale = Vt/this.vInit;
+        let scale = this.scaleInit * coefScale;
+        // let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+        // let scaleFacteur=curDiff-this.curDiffInitial;
+        // let paramScale = 0;
+        // if (scaleFacteur>0.2) { paramScale=0.05;}
+        // if (scaleFacteur<0.2) { paramScale=-0.05;}
+        this.debugL(" vs:"+this.arrondirMillieme(this.scale)+" ");
+
+        //this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+        
+        this.zoom(e,scale);
 
       }
       if(e.touches.length == 1)
@@ -304,6 +321,7 @@ class PlanDeSalle{
       this.debugL(" *te* ");
         e.stopPropagation();
         e.preventDefault(); 
+        this.boolPremierScale = true;
         let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
         if(norme > this.sourisGlisseMax)
         {
@@ -426,20 +444,20 @@ stopGlisse(){
 zoom(e,scale)
 {
 
-  console.log("***ZOOM");
-  this.scale+=scale/3;
-  if(e.type != "wheel")
-  {
-    this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-  }
+
+  //this.scale+=scale;
+  // if(e.type != "wheel")
+  // {
+  //   this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+  // }
   // if(this.scale > 4){ this.scale = 4;} // xxxxxxxxxxxxxxx
+
+  this.scale = scale;
   if(this.scale < 0.1){ this.scale = 0.1;}
-  this.debug(this.scale);
-  console.log(e);
-  console.log("offsetWidth",this.domElement);
-  console.log("offsetHeight",this.domElement.offsetHeight);
+  this.debugL(" s:"+this.scale+" ");
+
   this.scaleDOM();
-  this.lastScale=this.scale;
+  //this.lastScale=this.scale;
 }
 
 
@@ -654,6 +672,10 @@ debugL(chaine)
   document.querySelector(".event").innerHTML += chaine;
 }
 
+arrondirMillieme(valeur){
+  let val = (Math.round(valeur*1000))/1000
+  return val;
+}
 
 
 
