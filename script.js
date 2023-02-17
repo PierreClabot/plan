@@ -2,6 +2,7 @@ class PlanDeSalle{
   constructor()
   {
   console.log("ini plan de salle");
+  this.debugL("A")
     const shape = document.querySelector("#IMG_PLANSALLE");
 
 
@@ -13,9 +14,12 @@ class PlanDeSalle{
     this.viewboxScale = 1.0;
 
     this.etatJeDeplace = false;
-    this.nom = "plan de salle"
+    this.nom = "plan de salle";
+    this.debugL("B");
     this.calculHauteur();
-    window.onresize = this.calculHauteur
+    this.debugL("C");
+    window.onresize = this.calculHauteur;
+    this.debugL("D");
     this.scale = 1;
     this.boolZoom = false;
     this.lastScale = 1;
@@ -43,33 +47,37 @@ class PlanDeSalle{
     this.coeffGlisse = 0.70;
     // this.coeffGlisseInitial = 0.95;
     this.scale = 1;
+    this.debugL("E");
     this.domElement=document.querySelector("#IMG_PLANSALLE");
+    this.debugL("F");
     this.premierAppui = {x:0,y:0};
     this.observers = [];
     this.t1 ;
     this.tt;
-    this.intervalAnimationMs = 5;
+    this.intervalAnimationMs = 1;
     this.tempsGlisse = 500;
-    this.sourisGlisseMax = 150;
+    this.sourisGlisseMax = 50;
     this.toleranceMouse = 5;
     this.toleranceTouch = 5;
-
+    this.debugL("G");
     const svg = document.querySelector("#IMG_PLANSALLE");
     const container = document.querySelector("div[data-name=PLAN-SALLE]");
-     console.log("contaner",container);
     //this.maxScale = 5;
     this.scaleWheelDeltaY = 1;
-    console.log(this.domElement);
+    this.debugL("H");
     this.domElement.onload = (e)=>{
-      console.log("onloadP425 "+this.domElement.offsetWidth);
+      this.debug("offsetWidth : "+this.domElement.offsetWidth);
+      //console.log("onloadP425 "+this.domElement.offsetWidth);
     };
+
+    
 
     document.addEventListener("touchmove",(e)=>{
       if(e.touches.length>1)
       {
         e.stopPropagation();
         e.preventDefault();
-        this.debug("zoom sur page");
+        this.debugL(" !tmd! ");
       }
     })
 
@@ -140,8 +148,8 @@ class PlanDeSalle{
       console.log(this.premierAppui.x);
       if((Math.abs(point.x-this.premierAppui.x)<this.toleranceTouch) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceTouch))
       {
-        let x = this.premierAppui.offsetX / svg.offsetWidth;
-        let y = this.premierAppui.offsetY / svg.offsetHeight;
+        let x = (this.premierAppui.offsetX/this.scale) / svg.offsetWidth;
+        let y = (this.premierAppui.offsetY/this.scale) / svg.offsetHeight;
         let data = { coefX:x , coefY:y };
         this.fire(data);
         this.debug(`data -> X: ${data.coefX} Y:${data.coefY}`);
@@ -217,7 +225,7 @@ class PlanDeSalle{
       this.appuiEn(e,e.clientX, e.clientY);
     })
     container.addEventListener("touchmove",(e)=>{
-      console.log("**TOUC MOV");
+      this.debugL(" *tm* ");
 
         
       e.stopPropagation();
@@ -241,6 +249,7 @@ class PlanDeSalle{
     })
     container.addEventListener("wheel", e=>{
       this.debug(`e wheel deltay=${e.wheelDeltaY}`);
+      console.log("wheel e",e)
       e.stopPropagation();
       e.preventDefault();
       // this.domElement.style.transformOrigin = `${this.transformOrigin.x}px ${this.transformOrigin.y}px `; //AJOUT
@@ -292,6 +301,7 @@ class PlanDeSalle{
     //@---
 
     container.addEventListener("touchend",(e)=>{
+      this.debugL(" *te* ");
         e.stopPropagation();
         e.preventDefault(); 
         let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
@@ -309,7 +319,6 @@ class PlanDeSalle{
         this.lever(e);   
     })
 
-    this.debug("Event handlers");
 
     
     //shape.addEventListener("mousemove", ()=>{this.mousemove});
@@ -639,6 +648,12 @@ debug(chaine)
   console.log(chaine);
   document.querySelector(".event").innerHTML += "<br>"+chaine;
 }
+debugL(chaine)
+{
+  console.log(chaine);
+  document.querySelector(".event").innerHTML += chaine;
+}
+
 
 
 
