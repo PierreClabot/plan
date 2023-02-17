@@ -443,8 +443,8 @@ appuiEn(e,x,y){
 
 bougerEn(event,x,y)
 {
-   this.debug("BOUGER EN x:"+x +" y"+y+" ")
-   this.debug("etatJeDeplace "+this.etatJeDeplace);
+   //this.debug("BOUGER EN x:"+x +" y"+y+" ")
+   //this.debug("etatJeDeplace "+this.etatJeDeplace);
   if(this.etatJeDeplace)
   {
 
