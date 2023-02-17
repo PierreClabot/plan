@@ -298,7 +298,7 @@ class PlanDeSalle{
 
         //this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         
-        this.zoom(e,scale);
+        //this.zoom(e,scale);
 
       }
       if(e.touches.length == 1)
