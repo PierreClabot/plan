@@ -72,7 +72,7 @@ class PlanDeSalle{
     this.scaleWheelDeltaY = 1;
     this.debugL("H");
     this.domElement.onload = (e)=>{
-      this.debug("offsetWidth : "+this.domElement.offsetWidth);
+      //this.debug("offsetWidth : "+this.domElement.offsetWidth);
       //console.log("onloadP425 "+this.domElement.offsetWidth);
     };
 
@@ -83,7 +83,7 @@ class PlanDeSalle{
       {
         e.stopPropagation();
         e.preventDefault();
-        this.debugL(" !tmd! ");
+        //this.debugL(" !tmd! ");
       }
     })
 
@@ -99,7 +99,7 @@ class PlanDeSalle{
       
       // dbg--
       let p=this.svgPositionDonne();
-      this.debug("pos svg="+this.pointVersChaine("Sbg pos_1=",p));
+      //this.debug("pos svg="+this.pointVersChaine("Sbg pos_1=",p));
       //--dbg
     });
     document.querySelector("#TEST-OFFSET").addEventListener("click",(e)=>{
@@ -107,7 +107,7 @@ class PlanDeSalle{
     });
 
     document.querySelector("#PLAN-CENTRER").addEventListener("click",(e)=>{
-      this.debug("Centrer !");   
+      //this.debug("Centrer !");   
       this.stopGlisse();   
       this.scale = 1;
       this.scaleDOM()
@@ -216,9 +216,9 @@ class PlanDeSalle{
       
       if (e.touches.length>1) {
         this.etatJeDeplace=false;
-        this.debug("initStart");
+        //this.debug("initStart");
         this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        this.debug("CUR DIF NINIT="+this.curDiffInitial);
+        //this.debug("CUR DIF NINIT="+this.curDiffInitial);
       }
 
       if (e.touches.length==1) {
@@ -253,8 +253,8 @@ class PlanDeSalle{
               y:e.touches[0].clientY
             }
             this.etatJeDeplace=true;
-            this.debugL(" -deplacement.x:"+deplacement.x);
-            this.debugL(" -deplacement.y:"+deplacement.y);
+            //this.debugL(" -deplacement.x:"+deplacement.x);
+            //this.debugL(" -deplacement.y:"+deplacement.y);
             this.bougerEn(e,deplacement.x,deplacement.y);
             // this.debug("JE ME DEPLACE");
             this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
@@ -263,7 +263,7 @@ class PlanDeSalle{
         else
         {
           this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
-          this.debug("JE VEUX ZOOM");
+          //this.debug("JE VEUX ZOOM");
           if(this.boolPremierScale)
           {
             this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
@@ -309,12 +309,12 @@ class PlanDeSalle{
 
     })
     container.addEventListener("wheel", e=>{
-      this.debug(`e wheel deltay=${e.wheelDeltaY}`);
+      //this.debug(`e wheel deltay=${e.wheelDeltaY}`);
       console.log("wheel e",e)
       e.stopPropagation();
       e.preventDefault();
       // this.domElement.style.transformOrigin = `${this.transformOrigin.x}px ${this.transformOrigin.y}px `; //AJOUT
-      this.debug("deltaY",e.wheelDeltaY);
+      //this.debug("deltaY",e.wheelDeltaY);
       this.zoom(e,e.wheelDeltaY/480);
       return;
       
