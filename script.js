@@ -40,6 +40,8 @@ class PlanDeSalle{
       X:0,
       Y:0
     };
+    this.boolPremierDeplacement = true;
+    this.pointReferenceInit = 0;
     this.maxY = 100;
     this.maxX = 200;
     this.clicSouris = false;
@@ -236,17 +238,41 @@ class PlanDeSalle{
 
       if(e.touches.length > 1) // Plusieurs doigts simultanés
       {
-        let pointReference = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
-        this.debugL(" pointReference:{x:"+pointReference.x+",y:"+pointReference.y+"} ")
-        if(this.boolPremierScale)
+        if(this.boolPremierDeplacement)
         {
-          this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-          this.scaleInit=this.scale;
-          this.boolPremierScale = false;
+          this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
+          this.boolPremierDeplacement = false;
         }
-        let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        let coefScale = vT/this.vInit;
-        let scale = this.scaleInit * coefScale;
+        let pointReference = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
+        if(Math.abs(pointReference.x-this.pointReferenceInit.x)<20 && Math.abs(pointReference.y-this.pointReferenceInit.y)<20) // Point de référence identique, on se déplace
+        {
+            // @TODO
+            this.bougerEn(e,Math.abs(e.touches[0].clientX-e.touches[1].clientX),Math.abs(e.touches[0].clientY-e.touches[1].clientY));
+            this.debug("JE ME DEPLACE");
+        }
+        else
+        {
+          this.debug("JE VEUX ZOOM");
+          if(this.boolPremierScale)
+          {
+            this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+            this.scaleInit=this.scale;
+            this.boolPremierScale = false;
+          }
+          let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+          let coefScale = vT/this.vInit;
+          let scale = this.scaleInit * coefScale;
+          this.zoom(e,scale);
+        }
+        // if(this.boolPremierScale)
+        // {
+        //   this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+        //   this.scaleInit=this.scale;
+        //   this.boolPremierScale = false;
+        // }
+        // let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+        // let coefScale = vT/this.vInit;
+        // let scale = this.scaleInit * coefScale;
 
 
         // let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
@@ -328,6 +354,7 @@ class PlanDeSalle{
         e.stopPropagation();
         e.preventDefault(); 
         this.boolPremierScale = true;
+        this.boolPremierDeplacement = true;
         let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
         if(norme > this.sourisGlisseMax)
         {
