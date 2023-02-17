@@ -233,7 +233,7 @@ class PlanDeSalle{
         
       e.stopPropagation();
       e.preventDefault(); 
-      
+
       if(e.touches.length > 1) // Plusieurs doigts simultanés
       {
         let pointReference = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
@@ -701,6 +701,8 @@ norme2Points(p1,p2) {
 }
 pointReference(p1,p2){
   let pointReference = { x:Math.abs(p1.x-p2.x), y:Math.abs(p1.y-p2.y) }
+  this.debug("pointReference.x"+pointReference.x)
+  this.debug("pointReference.y"+pointReference.y)
   return pointReference;
 }
 
