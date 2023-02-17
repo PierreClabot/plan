@@ -239,30 +239,6 @@ class PlanDeSalle{
 
       if(e.touches.length > 1) // Plusieurs doigts simultanés
       {
-        if(this.boolPremierDeplacement)
-        {
-          this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
-          this.boolPremierDeplacement = false;
-        }
-        let pointReference = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
-        if(Math.abs(pointReference.x-this.pointReferenceInit.x)<this.toleranceTouchMove && Math.abs(pointReference.y-this.pointReferenceInit.y)<this.toleranceTouchMove) // Point de référence identique, on se déplace
-        {
-            // @TODO
-            let deplacement = {
-              x:e.touches[0].clientX,
-              y:e.touches[0].clientY
-            }
-            this.etatJeDeplace=true;
-            //this.debugL(" -deplacement.x:"+deplacement.x);
-            //this.debugL(" -deplacement.y:"+deplacement.y);
-            this.bougerEn(e,deplacement.x,deplacement.y);
-            // this.debug("JE ME DEPLACE");
-            this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
-
-        }
-        else
-        {
-          this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
           //this.debug("JE VEUX ZOOM");
           if(this.boolPremierScale)
           {
@@ -273,8 +249,9 @@ class PlanDeSalle{
           let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
           let coefScale = vT/this.vInit;
           let scale = this.scaleInit * coefScale;
+          this.debug("Scale "+scale)
           this.zoom(e,scale);
-        }
+      
         // if(this.boolPremierScale)
         // {
         //   this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
