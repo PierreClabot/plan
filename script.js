@@ -255,6 +255,7 @@ class PlanDeSalle{
         this.debugL(" vT "+vT+" ");
         this.debugL(" scaleInit "+this.scaleInit+" ");
         this.debugL(" vs:"+this.arrondirMillieme(scale)+" ");
+        this.debug("");
 
         //this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         
