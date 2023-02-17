@@ -443,11 +443,12 @@ appuiEn(e,x,y){
 
 bougerEn(event,x,y)
 {
+  
    //this.debug("BOUGER EN x:"+x +" y"+y+" ")
    //this.debug("etatJeDeplace "+this.etatJeDeplace);
   if(this.etatJeDeplace)
   {
-
+    this.boolPremierScale = true;
     this.historiquePos[0]={
       X : this.historiquePos[1].X ,
       Y : this.historiquePos[1].Y
