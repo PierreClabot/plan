@@ -701,8 +701,6 @@ norme2Points(p1,p2) {
 }
 pointReference(p1,p2){
   let pointReference = { x:Math.abs(p1.x-p2.x), y:Math.abs(p1.y-p2.y) }
-  this.debug("pointReference.x"+pointReference.x)
-  this.debug("pointReference.y"+pointReference.y)
   return pointReference;
 }
 
