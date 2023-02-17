@@ -42,6 +42,7 @@ class PlanDeSalle{
     };
     this.boolPremierDeplacement = true;
     this.pointReferenceInit = 0;
+    this.toleranceTouchMove = 2; // A CHANGER
     this.maxY = 100;
     this.maxX = 200;
     this.clicSouris = false;
@@ -244,7 +245,7 @@ class PlanDeSalle{
           this.boolPremierDeplacement = false;
         }
         let pointReference = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
-        if(Math.abs(pointReference.x-this.pointReferenceInit.x)<10 && Math.abs(pointReference.y-this.pointReferenceInit.y)<10) // Point de référence identique, on se déplace
+        if(Math.abs(pointReference.x-this.pointReferenceInit.x)<this.toleranceTouchMove && Math.abs(pointReference.y-this.pointReferenceInit.y)<this.toleranceTouchMove) // Point de référence identique, on se déplace
         {
             // @TODO
             let deplacement = {
