@@ -251,6 +251,7 @@ class PlanDeSalle{
               x:e.touches[0].clientX,
               y:e.touches[0].clientY
             }
+            this.etatJeDeplace=true;
             this.debugL(" -deplacement.x:"+deplacement.x);
             this.debugL(" -deplacement.y:"+deplacement.y);
             this.bougerEn(e,deplacement.x,deplacement.y);
