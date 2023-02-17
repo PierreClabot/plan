@@ -244,11 +244,13 @@ class PlanDeSalle{
           this.boolPremierDeplacement = false;
         }
         let pointReference = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
-        if(Math.abs(pointReference.x-this.pointReferenceInit.x)<20 && Math.abs(pointReference.y-this.pointReferenceInit.y)<20) // Point de référence identique, on se déplace
+        if(Math.abs(pointReference.x-this.pointReferenceInit.x)<10 && Math.abs(pointReference.y-this.pointReferenceInit.y)<10) // Point de référence identique, on se déplace
         {
             // @TODO
             this.bougerEn(e,Math.abs(e.touches[0].clientX-e.touches[1].clientX),Math.abs(e.touches[0].clientY-e.touches[1].clientY));
             this.debug("JE ME DEPLACE");
+            this.pointReferenceInit = this.pointReference({x:e.touches[0].clientX,y:e.touches[0].clientY }, {x:e.touches[1].clientX,y:e.touches[1].clientY });
+
         }
         else
         {
