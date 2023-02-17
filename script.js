@@ -42,7 +42,7 @@ class PlanDeSalle{
     };
     this.boolPremierDeplacement = true;
     this.pointReferenceInit = 0;
-    this.toleranceTouchMove = 2; // A CHANGER
+    this.toleranceTouchMove = 5; // A CHANGER
     this.maxY = 100;
     this.maxX = 200;
     this.clicSouris = false;
