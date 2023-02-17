@@ -228,7 +228,7 @@ class PlanDeSalle{
       this.appuiEn(e,e.clientX, e.clientY);
     })
     container.addEventListener("touchmove",(e)=>{
-      this.debugL(" *tm* ");
+      //this.debugL(" *tm* ");
 
         
       e.stopPropagation();
@@ -241,7 +241,6 @@ class PlanDeSalle{
           this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
           this.scaleInit=this.scale;
           this.boolPremierScale = false;
-          this.debugL(" cdf"+this.arrondirMillieme(this.vInit)+" ");
         }
         let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
         let coefScale = vT/this.vInit;
@@ -322,7 +321,7 @@ class PlanDeSalle{
     //@---
 
     container.addEventListener("touchend",(e)=>{
-      this.debugL(" *te* ");
+      //this.debugL(" *te* ");
         e.stopPropagation();
         e.preventDefault(); 
         this.boolPremierScale = true;
@@ -458,7 +457,7 @@ zoom(e,scale)
 
   this.scale = scale;
   if(this.scale < 0.1){ this.scale = 0.1;}
-  this.debugL(" s:"+this.scale+" ");
+  //this.debugL(" s:"+this.scale+" ");
 
   this.scaleDOM();
   //this.lastScale=this.scale;
