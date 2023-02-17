@@ -248,8 +248,8 @@ class PlanDeSalle{
         {
             // @TODO
             let deplacement = {
-              x:Math.abs(e.touches[0].clientX-e.touches[1].clientX),
-              y:Math.abs(e.touches[0].clientY-e.touches[1].clientY)
+              x:e.touches[0].clientX,
+              y:e.touches[0].clientY
             }
             this.debugL(" deplacement.x:"+deplacement.x);
             this.debugL(" deplacement.y:"+deplacement.y);
