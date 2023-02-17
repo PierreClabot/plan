@@ -448,8 +448,8 @@ bougerEn(event,x,y)
    //this.debug("etatJeDeplace "+this.etatJeDeplace);
   if(this.etatJeDeplace)
   {
-    this.boolPremierScale = true;
-    this.debug("boolPremierScale"+this.boolPremierScale);
+    // this.boolPremierScale = true;
+    // this.debug("boolPremierScale"+this.boolPremierScale);
     this.historiquePos[0]={
       X : this.historiquePos[1].X ,
       Y : this.historiquePos[1].Y
