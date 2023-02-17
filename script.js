@@ -303,6 +303,7 @@ class PlanDeSalle{
       }
       if(e.touches.length == 1)
       {
+        this.etatJeDeplace=true;
         this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
       }
 
