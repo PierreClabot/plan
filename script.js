@@ -440,7 +440,7 @@ appuiEn(e,x,y){
 
 bougerEn(event,x,y)
 {
-   
+   this.debug("BOUGER EN x:"+x +" y"+y+" ")
   if(this.etatJeDeplace)
   {
 
