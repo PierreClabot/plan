@@ -265,10 +265,10 @@ class PlanDeSalle{
             touche2:e.touches[1].pageY - rect.top,
           }
 
-          // this.transformOrigin = {
-          //   X:(Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100,
-          //   Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
-          // }
+          this.transformOrigin = {
+            X:(Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100,
+            Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
+          }
 
           //this.debug(`this.transformOrigin(X:${this.transformOrigin.X}, Y:${this.transformOrigin.Y})`);
 
@@ -324,7 +324,7 @@ class PlanDeSalle{
             X:(e.offsetX*this.scale/(this.domElement.offsetWidth*this.scale))*100,
             Y:(e.offsetY*this.scale/(this.domElement.offsetHeight*this.scale))*100
           }
-          this.domElement.style.transformOrigin=`${posCurseur.X}% ${posCurseur.Y}%`;
+          //this.domElement.style.transformOrigin=`${posCurseur.X}% ${posCurseur.Y}%`;
         }
 
          this.bougerEn(e,e.clientX , e.clientY);
