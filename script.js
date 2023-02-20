@@ -251,26 +251,26 @@ class PlanDeSalle{
           }
           let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
           
-          var rect = e.target.getBoundingClientRect();
-          // var x = e.targetTouches[0].pageX - rect.left;
-          // var y = e.targetTouches[0].pageY - rect.top; 
+          // var rect = e.target.getBoundingClientRect();
+          // // var x = e.targetTouches[0].pageX - rect.left;
+          // // var y = e.targetTouches[0].pageY - rect.top; 
 
-          let offsetX = {
-            touche1:e.touches[0].pageX - rect.left,
-            touche2:e.touches[1].pageX - rect.left,
-          }
+          // let offsetX = {
+          //   touche1:e.touches[0].pageX - rect.left,
+          //   touche2:e.touches[1].pageX - rect.left,
+          // }
 
-          let offsetY = {
-            touche1:e.touches[0].pageY - rect.top,
-            touche2:e.touches[1].pageY - rect.top,
-          }
+          // let offsetY = {
+          //   touche1:e.touches[0].pageY - rect.top,
+          //   touche2:e.touches[1].pageY - rect.top,
+          // }
 
-          this.transformOrigin = {
-            X:(Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100,
-            Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
-          }
+          // this.transformOrigin = {
+          //   X:(Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100,
+          //   Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
+          // }
 
-          this.debug(`this.transformOrigin(X:${this.transformOrigin.X}, Y:${this.transformOrigin.Y})`);
+          // this.debug(`this.transformOrigin(X:${this.transformOrigin.X}, Y:${this.transformOrigin.Y})`);
 
           
           let coefScale = vT/this.vInit;
