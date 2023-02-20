@@ -324,7 +324,7 @@ class PlanDeSalle{
             X:(e.offsetX*this.scale/(this.domElement.offsetWidth*this.scale))*100,
             Y:(e.offsetY*this.scale/(this.domElement.offsetHeight*this.scale))*100
           }
-          //this.domElement.style.transformOrigin=`${posCurseur.X}% ${posCurseur.Y}%`;
+          this.domElement.style.transformOrigin=`${posCurseur.X}% ${posCurseur.Y}%`;
         }
 
          this.bougerEn(e,e.clientX , e.clientY);
