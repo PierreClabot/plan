@@ -1,10 +1,24 @@
 class PlanDeSalle{
-  constructor()
+  constructor(debug)
   {
   console.log("ini plan de salle");
-  this.debugL("A")
-    const shape = document.querySelector("#IMG_PLANSALLE");
 
+    const shape = document.querySelector("#IMG_PLANSALLE");
+    const globalContainer = document.querySelector("div[data-name=TB_PLAN_SVG]")
+    const container = document.querySelector("div[data-name=PLAN-SALLE]");
+    if(debug == true)
+    {
+      let contenu =  `<div Class="btn-plan-container">
+                      <div class="btn-plan-commande" id="PLAN-DEBUG-CLEAR">Clear Debug</div>
+                      <div Class="btn-plan-commande" id="PLAN Debug ON" onClick="document.querySelector('#PLAN-DBG').style.display='block';">Dbg ON</div>
+                      <div class="btn-plan-commande" id="PLAN Debug OFF" onClick="document.querySelector('#PLAN-DBG').style.display='none';">Dbg Off</div>
+                    </div>`;
+                    console.log(globalContainer);
+      globalContainer.insertAdjacentHTML("afterbegin", contenu );
+      // container.insertBefore(newNode,contenu)
+      // document.querySelector(".btn-plan-container").remove();
+    }
+    
 
     this.mouseStartPosition = {x: 0, y: 0};
     this.mousePosition = {x: 0, y: 0};
@@ -15,11 +29,11 @@ class PlanDeSalle{
 
     this.etatJeDeplace = false;
     this.nom = "plan de salle";
-    this.debugL("B");
+
     this.calculHauteur();
-    this.debugL("C");
+
     window.onresize = this.calculHauteur;
-    this.debugL("D");
+
     this.scale = 1;
     this.boolZoom = false;
     this.lastScale = 1;
@@ -51,9 +65,9 @@ class PlanDeSalle{
     this.coeffGlisse = 0.70;
     // this.coeffGlisseInitial = 0.95;
     this.scale = 1;
-    this.debugL("E");
+
     this.domElement=document.querySelector("#IMG_PLANSALLE");
-    this.debugL("F");
+
     this.premierAppui = {x:0,y:0};
     this.observers = [];
     this.t1 ;
@@ -65,18 +79,21 @@ class PlanDeSalle{
     this.sourisGlisseMax = 50;
     this.toleranceMouse = 5;
     this.toleranceTouch = 5;
-    this.debugL("G");
+
     const svg = document.querySelector("#IMG_PLANSALLE");
-    const container = document.querySelector("div[data-name=PLAN-SALLE]");
+    
     //this.maxScale = 5;
     this.scaleWheelDeltaY = 1;
-    this.debugL("H");
+
     this.domElement.onload = (e)=>{
       //this.debug("offsetWidth : "+this.domElement.offsetWidth);
       //console.log("onloadP425 "+this.domElement.offsetWidth);
     };
 
     
+    window.addEventListener("mouseup", (e)=>{
+      this.etatJeDeplace = false;
+    });
 
     document.addEventListener("touchmove",(e)=>{
       if(e.touches.length>1)
@@ -88,25 +105,15 @@ class PlanDeSalle{
     })
 
     //@MODIF
-    document.querySelector("#PLAN-DEBUG-CLEAR").addEventListener("click",(e)=>{
-      this.debugClear();
-    });
-
-    //@MODIF
-    document.querySelector("#TEST-POSITION").addEventListener("click",(e)=>{
-      console.log("TST POS");
-      this.svgPosition({X:50,Y:50});
+    if(debug != false)
+    {
+      document.querySelector("#PLAN-DEBUG-CLEAR").addEventListener("click",(e)=>{
+        this.debugClear();
+      });
       
-      // dbg--
-      let p=this.svgPositionDonne();
-      //this.debug("pos svg="+this.pointVersChaine("Sbg pos_1=",p));
-      //--dbg
-    });
-    document.querySelector("#TEST-OFFSET").addEventListener("click",(e)=>{
-      console.log(this.domElement.offsetWidth);
-    });
-
-    document.querySelector("#PLAN-CENTRER").addEventListener("click",(e)=>{
+      
+    }
+    document.querySelector("#PLAN-CENTRER").addEventListener("click",(e)=>{ 
       //this.debug("Centrer !");   
       this.stopGlisse();   
       this.scale = 1;
@@ -121,6 +128,8 @@ class PlanDeSalle{
       this.lastScale = 1;
 
     });
+
+
     svg.addEventListener("mousedown",e=>{
       this.premierAppui = {
         x:e.clientX,
@@ -128,7 +137,7 @@ class PlanDeSalle{
         offsetX : e.offsetX,
         offsetY : e.offsetY
       }
-      console.log("premierAPpui",this.premierAppui);
+      //console.log("premierAPpui",this.premierAppui);
     })
 
     svg.addEventListener("touchstart",e=>{
@@ -158,6 +167,7 @@ class PlanDeSalle{
         let y = (this.premierAppui.offsetY/this.scale) / svg.offsetHeight;
         let data = { coefX:x , coefY:y };
         this.fire(data);
+        this.stopGlisse();
         this.debug(`data -> X: ${data.coefX} Y:${data.coefY}`);
       }
     })
@@ -287,14 +297,14 @@ class PlanDeSalle{
     })
     container.addEventListener("wheel", e=>{
       //this.debug(`e wheel deltay=${e.wheelDeltaY}`);
-      console.log("wheel e",e)
+      //console.log("wheel e",e)
       e.stopPropagation();
       e.preventDefault();
       // this.domElement.style.transformOrigin = `${this.transformOrigin.x}px ${this.transformOrigin.y}px `; //AJOUT
       //this.debug("deltaY",e.wheelDeltaY);
-      this.zoom(e,e.wheelDeltaY/480);
-      return;
-      
+      // this.zoom(e,e.wheelDeltaY/480);
+      // return;
+      let scaleWheelDeltaY = this.scale;
       if(e.wheelDeltaY < 0) // DZZOOM
       {
         scaleWheelDeltaY -= 0.1;
@@ -303,7 +313,10 @@ class PlanDeSalle{
       {
         scaleWheelDeltaY += 0.1;
       }
-
+      // console.log(scaleWheelDeltaY);
+      // console.log(this.scale);
+      // this.scale += scaleWheelDeltaY;
+      // console.log(this.scale);
       this.zoom(e,scaleWheelDeltaY);
     })
 
@@ -313,6 +326,7 @@ class PlanDeSalle{
          e.stopPropagation();
          e.preventDefault(); 
          // this.afficheHeure(); debug ralentissement firefox au chargement
+        //console.log("offsetWidth container",this.arrondirMillieme(shape.offsetWidth*this.scale));
          this.bougerEn(e,e.clientX , e.clientY);
     });
 
@@ -446,6 +460,26 @@ bougerEn(event,x,y)
     
     posActuelle.X+=this.vecteur.X;
     posActuelle.Y+=this.vecteur.Y;
+
+    // TEST LIMITE
+    // console.log("posX",posActuelle.X);
+    //console.log(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2);
+    console.log("posX",posActuelle.X);
+    console.log("this.scale",this.scale)
+    console.log("offsetWidth",this.domElement.offsetWidth*this.scale);
+    if(Math.abs(posActuelle.X)>this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)
+    {
+      console.log("****** LIMITE X *****");
+      posActuelle.X = (this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)*(posActuelle.X/Math.abs(posActuelle.X));
+    }
+
+
+    if(Math.abs(posActuelle.Y)>this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)
+    {
+      console.log("****** LIMITE *****");
+      posActuelle.Y = (this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)*(posActuelle.Y/Math.abs(posActuelle.Y));
+    }
+
     this.svgPosition(posActuelle);
   }
 
@@ -457,7 +491,7 @@ stopGlisse(){
   {
     clearInterval(this.myInterval)
     this.myInterval = 0;
-    console.log("stopGlisse");
+    //console.log("stopGlisse");
     this.vecteur = {
       X:0,
       Y:0
@@ -510,7 +544,7 @@ lever(e)
   // mémoriser la position du svg
   this.stopGlisse();
   // this.coeffGlisse = this.coeffGlisseInitial;
-  console.log("startGlisse");
+  //console.log("startGlisse");
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),this.intervalAnimationMs);
 
   this.boolZoom = true;
