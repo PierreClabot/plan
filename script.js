@@ -270,7 +270,7 @@ class PlanDeSalle{
           //   Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
           // }
 
-          this.debug(`this.transformOrigin(X:${this.transformOrigin.X}, Y:${this.transformOrigin.Y})`);
+          //this.debug(`this.transformOrigin(X:${this.transformOrigin.X}, Y:${this.transformOrigin.Y})`);
 
           
           let coefScale = vT/this.vInit;
