@@ -48,7 +48,7 @@ class PlanDeSalle{
         Y:0
     }
     this.historiquePos=[{x:0,y:0},{x:0,y:0}];
-    // this.transformOrigin = {x:0,y:0}; // Ajout
+    this.transformOrigin = {x:0,y:0}; // Ajout
     this.myInterval = 0 ;
     this.dernierePositionSVG = {
       X:0,
@@ -115,18 +115,12 @@ class PlanDeSalle{
     }
     document.querySelector("#PLAN-CENTRER").addEventListener("click",(e)=>{ 
       //this.debug("Centrer !");   
-      this.stopGlisse();   
-      this.scale = 1;
-      this.scaleDOM()
-      this.positionSVG = {
-        X : 0,
-        Y : 0
-      }
+      this.reset();
+    });
 
-      this.svgPosition({X:0,Y:0});
-      this.scale = 1
-      this.lastScale = 1;
-
+    document.querySelector("#PLAN-CENTRER").addEventListener("touchstart",(e)=>{ 
+      //this.debug("Centrer !");   
+      this.reset();
     });
 
 
@@ -249,7 +243,6 @@ class PlanDeSalle{
 
       if(e.touches.length > 1) // Plusieurs doigts simultanés
       {
-          //this.debug("JE VEUX ZOOM");
           if(this.boolPremierScale)
           {
             this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
@@ -257,39 +250,37 @@ class PlanDeSalle{
             this.boolPremierScale = false;
           }
           let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+          
+          var rect = e.target.getBoundingClientRect();
+          // var x = e.targetTouches[0].pageX - rect.left;
+          // var y = e.targetTouches[0].pageY - rect.top; 
+
+          let offsetX = {
+            touche1:e.touches[0].pageX - rect.left,
+            touche2:e.touches[1].pageX - rect.left,
+          }
+
+          let offsetY = {
+            touche1:e.touches[0].pageY - rect.top,
+            touche2:e.touches[1].pageY - rect.top,
+          }
+
+          this.transformOrigin = {
+            X:(Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100,
+            Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
+          }
+
+          
           let coefScale = vT/this.vInit;
           let scale = this.scaleInit * coefScale;
           this.debug("Scale "+scale)
           this.zoom(e,scale);
-      
-        // if(this.boolPremierScale)
-        // {
-        //   this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        //   this.scaleInit=this.scale;
-        //   this.boolPremierScale = false;
-        // }
-        // let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        // let coefScale = vT/this.vInit;
-        // let scale = this.scaleInit * coefScale;
-
-
-        // let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        // let scaleFacteur=curDiff-this.curDiffInitial;
-        // let paramScale = 0;
-        // if (scaleFacteur>0.2) { paramScale=0.05;}
-        // if (scaleFacteur<0.2) { paramScale=-0.05;}
-        // this.debugL(" vInit "+this.vInit+" ");
-        // this.debugL(" vT "+vT+" ");
-        // this.debugL(" scaleInit "+this.scaleInit+" ");
-        // this.debugL(" vs:"+this.arrondirMillieme(scale)+" ");
-
-        //this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        
-        //this.zoom(e,scale);
 
       }
       if(e.touches.length == 1)
       {
+
+        console.log(x);
         this.etatJeDeplace=true;
         this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
       }
@@ -327,6 +318,17 @@ class PlanDeSalle{
          e.preventDefault(); 
          // this.afficheHeure(); debug ralentissement firefox au chargement
         //console.log("offsetWidth container",this.arrondirMillieme(shape.offsetWidth*this.scale));
+
+
+        if(e.target.id == "IMG_PLANSALLE")
+        {
+          this.transformOrigin = {
+            X:(e.offsetX*this.scale/(this.domElement.offsetWidth*this.scale))*100,
+            Y:(e.offsetY*this.scale/(this.domElement.offsetHeight*this.scale))*100
+          }
+          //this.domElement.style.transformOrigin=`${posCurseur.X}% ${posCurseur.Y}%`;
+        }
+
          this.bougerEn(e,e.clientX , e.clientY);
     });
 
@@ -439,6 +441,7 @@ bougerEn(event,x,y)
    //this.debug("etatJeDeplace "+this.etatJeDeplace);
   if(this.etatJeDeplace)
   {
+    console.log("JE DEPLACE");
     // this.boolPremierScale = true;
     // this.debug("boolPremierScale"+this.boolPremierScale);
     this.historiquePos[0]={
@@ -622,6 +625,8 @@ defilementScroll()
 }
 
 scaleDOM(){
+  this.domElement.style.transformOrigin = `${this.transformOrigin.X}% ${this.transformOrigin.Y}%`
+  
   this.domElement.style.transform = `scale(${this.scale})`;
   // console.log(this.domElement.offsetWidth);
   // console.log(this.domElement.offsetHeight);
@@ -731,6 +736,20 @@ chercheElement(point){
   //console.log(point);
   let container = document.querySelector("div[data-name=PLAN-SALLE]");
   // console.log(container.getBoundingClientRect()); @TODO
+}
+
+reset(){
+  this.stopGlisse();   
+  this.scale = 1;
+  this.scaleDOM()
+  this.positionSVG = {
+    X : 0,
+    Y : 0
+  }
+
+  this.svgPosition({X:0,Y:0});
+  this.scale = 1
+  this.lastScale = 1;
 }
 
 debug(chaine)
