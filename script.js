@@ -265,10 +265,10 @@ class PlanDeSalle{
             touche2:e.touches[1].pageY - rect.top,
           }
 
-          this.transformOrigin = {
-            X:(Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100,
-            Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
-          }
+          // this.transformOrigin = {
+          //   X:(Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100,
+          //   Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
+          // }
 
           this.debug(`this.transformOrigin(X:${this.transformOrigin.X}, Y:${this.transformOrigin.Y})`);
 
@@ -288,8 +288,6 @@ class PlanDeSalle{
 
     })
     container.addEventListener("wheel", e=>{
-      //this.debug(`e wheel deltay=${e.wheelDeltaY}`);
-      //console.log("wheel e",e)
       e.stopPropagation();
       e.preventDefault();
       // this.domElement.style.transformOrigin = `${this.transformOrigin.x}px ${this.transformOrigin.y}px `; //AJOUT
