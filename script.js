@@ -467,25 +467,38 @@ bougerEn(event,x,y)
     console.log("posX",posActuelle.X);
     console.log("this.scale",this.scale)
     console.log("offsetWidth",this.domElement.offsetWidth*this.scale);
-    if(Math.abs(posActuelle.X)>this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)
-    {
-      console.log("****** LIMITE X *****");
-      posActuelle.X = (this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)*(posActuelle.X/Math.abs(posActuelle.X));
-    }
 
-
-    if(Math.abs(posActuelle.Y)>this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)
-    {
-      console.log("****** LIMITE *****");
-      posActuelle.Y = (this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)*(posActuelle.Y/Math.abs(posActuelle.Y));
-    }
+    posActuelle = this.limiteDeplacement(posActuelle);
 
     this.svgPosition(posActuelle);
   }
 
 }
 
+limiteDeplacement(position)
+{
+  let posActuelle = {
+    X:position.X,
+    Y:position.Y
+  };
 
+  if(Math.abs(posActuelle.X)>this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)
+  {
+    console.log("****** LIMITE X *****");
+    posActuelle.X = (this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)*(posActuelle.X/Math.abs(posActuelle.X));
+    this.stopGlisse();
+  }
+
+
+  if(Math.abs(posActuelle.Y)>this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)
+  {
+    console.log("****** LIMITE *****");
+    posActuelle.Y = (this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)*(posActuelle.Y/Math.abs(posActuelle.Y));
+    this.stopGlisse();
+  }
+
+  return posActuelle;
+}
 stopGlisse(){
   if(this.myInterval)
   {
@@ -595,7 +608,7 @@ defilementScroll()
   }
   // this.coeffGlisse = this.coeffGlisse * 0.95;
   
-
+  SVGPos = this.limiteDeplacement(SVGPos);
   this.svgPosition(SVGPos);
   
   // let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y))
