@@ -113,6 +113,7 @@ class PlanDeSalle{
       }
     });
 
+  
     document.querySelector("#PLAN-DEZOOM").addEventListener("click",(e)=>{
       e.stopPropagation();
       e.preventDefault();
@@ -147,7 +148,7 @@ class PlanDeSalle{
       {
         e.stopPropagation();
         e.preventDefault();
-        //this.debugL(" !tmd! ");
+        this.debugL(" !tmd! ");
       }
     })
 
@@ -349,24 +350,24 @@ class PlanDeSalle{
     });
 
     container.addEventListener("mouseup",(e)=>{
-         // --return;
-         e.stopPropagation();
-         e.preventDefault(); 
+        // --return;
+        e.stopPropagation();
+        e.preventDefault(); 
 
-         let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
-         if(norme > this.sourisGlisseMax)
-         {
-           this.vecteur.X = this.vecteur.X/norme;
-           this.vecteur.Y = this.vecteur.Y/norme;
-           this.vecteur.X = this.vecteur.X * this.sourisGlisseMax;
-           this.vecteur.Y = this.vecteur.Y * this.sourisGlisseMax;
-         }
-         this.vInit = {
+        let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
+        if(norme > this.sourisGlisseMax)
+        {
+          this.vecteur.X = this.vecteur.X/norme;
+          this.vecteur.Y = this.vecteur.Y/norme;
+          this.vecteur.X = this.vecteur.X * this.sourisGlisseMax;
+          this.vecteur.Y = this.vecteur.Y * this.sourisGlisseMax;
+        }
+        this.vInit = {
           x:this.vecteur.X,
           y:this.vecteur.Y
-         }
+        }
 
-         this.lever(e);
+        this.lever(e);
     });
     //@---
 
@@ -511,7 +512,8 @@ limiteDeplacement(position)
       Y : 0
     } 
   }
-
+  console.log("posActuelleX",Math.abs(posActuelle.X)*this.scale);
+  console.log("domElement",this.domElement.offsetWidth*this.scale);
   if(Math.abs(posActuelle.X)>(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)+objTransformOrigin.X)
   {
     posActuelle.X = (this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)*(posActuelle.X/Math.abs(posActuelle.X));
