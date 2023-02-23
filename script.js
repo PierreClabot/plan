@@ -143,6 +143,14 @@ class PlanDeSalle{
       this.etatJeDeplace = false;
     });
 
+    document.addEventListener("touchstart",(e)=>{
+      if(e.touches.length>1)
+      {
+        e.stopPropagation();
+        e.preventDefault();
+        this.debugL(" !touchemovedocument! ");
+      }
+    })
     document.addEventListener("touchmove",(e)=>{
       if(e.touches.length>1)
       {
@@ -151,6 +159,7 @@ class PlanDeSalle{
         this.debugL(" !touchemovedocument! ");
       }
     })
+
 
     //@MODIF
     if(debug != false)
