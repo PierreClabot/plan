@@ -148,7 +148,7 @@ class PlanDeSalle{
       {
         e.stopPropagation();
         e.preventDefault();
-        this.debugL(" !tmd! ");
+        this.debugL(" !touchemovedocument! ");
       }
     })
 
