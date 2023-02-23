@@ -158,7 +158,11 @@ class PlanDeSalle{
         e.preventDefault();
         this.debugL(" !touchemovedocument! ");
       }
-    })
+    });
+    /* TEST APPLE */
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+  });
 
 
     //@MODIF
