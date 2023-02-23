@@ -90,7 +90,54 @@ class PlanDeSalle{
       //console.log("onloadP425 "+this.domElement.offsetWidth);
     };
 
-    
+    document.querySelector("#PLAN-ZOOM").addEventListener("click",(e)=>{
+      console.log(" ***************** ZOOM");
+      let zoom = true;
+      let scaleWheelDeltaY = this.scale*2;
+
+      if(scaleWheelDeltaY>8)
+      {
+        scaleWheelDeltaY = 8;
+        zoom = false;
+      }
+
+      if(zoom)
+      {
+        this.transformOrigin = {
+          X:50,
+          Y:50
+        }
+        // this.domElement.style.left = "0";
+        // this.domElement.style.top = "0";
+        this.zoom(e,scaleWheelDeltaY);
+      }
+    });
+
+    document.querySelector("#PLAN-DEZOOM").addEventListener("click",(e)=>{
+      e.stopPropagation();
+      e.preventDefault();
+      console.log(" ***************** DEZOOM");
+      let zoom = true;
+      let scaleWheelDeltaY = this.scale/2;
+
+      if(scaleWheelDeltaY<0.5)
+      {
+        scaleWheelDeltaY = 8;
+        zoom = false;
+      }
+
+      if(zoom)
+      {
+        this.transformOrigin = { // Dezoom par rapport au centre
+          X:50,
+          Y:50
+        }
+        this.domElement.style.left = "0";
+        this.domElement.style.top = "0";
+        this.zoom(e,scaleWheelDeltaY);
+      }
+    })
+
     window.addEventListener("mouseup", (e)=>{
       this.etatJeDeplace = false;
     });
@@ -110,8 +157,6 @@ class PlanDeSalle{
       document.querySelector("#PLAN-DEBUG-CLEAR").addEventListener("click",(e)=>{
         this.debugClear();
       });
-      
-      
     }
     document.querySelector("#PLAN-CENTRER").addEventListener("click",(e)=>{ 
       //this.debug("Centrer !");   
@@ -181,38 +226,6 @@ class PlanDeSalle{
       }
     })
     
-    // svg.addEventListener("touchend",e=>{
-    //   let point = {
-    //     x : e.clientX,
-    //     y: e.clientY
-    //   }
-
-    //   if((Math.abs(point.x-this.premierAppui.x)<this.toleranceMouse) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceMouse))
-    //   {
-    //     let x = e.offsetX / svg.offsetWidth;
-    //     let y = e.offsetY / svg.offsetHeight;
-    //     let data = { coefX:x , coefY:y };
-    //     this.fire(data);
-    //   }
-    // })
-    // svg.addEventListener("click",e=>{
-    //   // Calcul position
-    //   // let x = e.offsetX / svg.offsetWidth;
-    //   // let y = e.offsetY / svg.offsetHeight;
-    //   // let data = { coefX:x , coefY:y };
-    //   // this.fire(data);
-    //   //console.log("x :"+x+" y :"+y);
-
-    //   // console.log("width img * scale "+svg.offsetWidth*this.scale);
-    //   // console.log("height img * scale "+svg.offsetHeight*this.scale);
-    //   // console.log(x*this.scale, y*this.scale);
-    //   //console.log(e);
-    // })
-    // AJOUT
-    // svg.addEventListener("mousemove",e=>{
-    //   // this.transformOrigin = {x:e.offsetX,y:e.offsetY}
-    //   // console.log(this.transformOrigin);
-    // })
     container.addEventListener("touchstart",e=>{
       
       e.stopPropagation();
@@ -229,7 +242,6 @@ class PlanDeSalle{
          this.appuiEn(e,e.clientX,e.clientY)
       }
     })
-
 
     container.addEventListener("mousedown", e =>{
       this.appuiEn(e,e.clientX, e.clientY);
@@ -289,24 +301,33 @@ class PlanDeSalle{
     container.addEventListener("wheel", e=>{
       e.stopPropagation();
       e.preventDefault();
-      // this.domElement.style.transformOrigin = `${this.transformOrigin.x}px ${this.transformOrigin.y}px `; //AJOUT
-      //this.debug("deltaY",e.wheelDeltaY);
-      // this.zoom(e,e.wheelDeltaY/480);
-      // return;
+      console.log("wheel e",e)
+      let zoom = true;
       let scaleWheelDeltaY = this.scale;
       if(e.wheelDeltaY < 0) // DZZOOM
       {
-        scaleWheelDeltaY -= 0.1;
+        scaleWheelDeltaY = scaleWheelDeltaY / 2;
       }
       else // ZOOM
       {
-        scaleWheelDeltaY += 0.1;
+        scaleWheelDeltaY = scaleWheelDeltaY * 2;
       }
-      // console.log(scaleWheelDeltaY);
-      // console.log(this.scale);
-      // this.scale += scaleWheelDeltaY;
-      // console.log(this.scale);
-      this.zoom(e,scaleWheelDeltaY);
+      if(scaleWheelDeltaY<0.5)
+      {
+        scaleWheelDeltaY = 0.5;
+        zoom = false;
+      }
+      else if(scaleWheelDeltaY>8)
+      {
+        scaleWheelDeltaY = 8;
+        zoom = false;
+      }
+
+      if(zoom)
+      {
+        this.zoom(e,scaleWheelDeltaY);
+
+      }
     })
 
     //@MODIF
@@ -314,9 +335,6 @@ class PlanDeSalle{
          // --return;
          e.stopPropagation();
          e.preventDefault(); 
-         // this.afficheHeure(); debug ralentissement firefox au chargement
-        //console.log("offsetWidth container",this.arrondirMillieme(shape.offsetWidth*this.scale));
-
 
         if(e.target.id == "IMG_PLANSALLE")
         {
@@ -374,14 +392,7 @@ class PlanDeSalle{
     })
 
 
-    
-    //shape.addEventListener("mousemove", ()=>{this.mousemove});
-    //shape.addEventListener("mousedown", ()=>{this.mousedown});
-    //shape.addEventListener("wheel", ()=>{this.wheel});
-
   }
-
-
 
 
   mousedown(e) {
@@ -393,8 +404,6 @@ class PlanDeSalle{
     viewboxStartPosition.y = viewboxPosition.y;
 
     window.addEventListener("mouseup", this.mouseup);
-
-    
 }
 
 afficheHeure(){
@@ -427,9 +436,6 @@ appuiEn(e,x,y){
     this.etatJeDeplace=true;
     this.stopGlisse();
 }
-
-
-
 
 
 bougerEn(event,x,y)
@@ -468,9 +474,9 @@ bougerEn(event,x,y)
     console.log("posX",posActuelle.X);
     console.log("this.scale",this.scale)
     console.log("offsetWidth",this.domElement.offsetWidth*this.scale);
-
+    console.log("BOUGER EN");
     posActuelle = this.limiteDeplacement(posActuelle);
-
+    
     this.svgPosition(posActuelle);
   }
 
@@ -482,21 +488,54 @@ limiteDeplacement(position)
     X:position.X,
     Y:position.Y
   };
+  console.log("LIMITEDEPLACEMENT")
+  let style = getComputedStyle(this.domElement);
+  let chaTransformOrigin = style.getPropertyValue('transform-origin');
+  let tabTransformOrigin = chaTransformOrigin.split(" ");
+  let transformOrigin = "";
 
-  if(Math.abs(posActuelle.X)>this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)
+  for(const text of tabTransformOrigin)
   {
-    console.log("****** LIMITE X *****");
+    let transform = text.replace("px","");
+    transformOrigin += transform+" ";
+  }
+  let objTransformOrigin = {
+    X : this.arrondirMillieme(parseInt(transformOrigin.split(" ")[0],10)),
+    Y : this.arrondirMillieme(parseInt(transformOrigin.split(" ")[1],10))
+  }
+  //console.log(objTransformOrigin);
+  if(!this.domElement.style.transformOrigin)
+  {
+    objTransformOrigin = {
+      X : 0,
+      Y : 0
+    } 
+  }
+
+  if(Math.abs(posActuelle.X)>(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)+objTransformOrigin.X)
+  {
     posActuelle.X = (this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)*(posActuelle.X/Math.abs(posActuelle.X));
     this.stopGlisse();
   }
-
-
-  if(Math.abs(posActuelle.Y)>this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)
+  if(Math.abs(posActuelle.Y) >(this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)+ objTransformOrigin.Y)
   {
-    console.log("****** LIMITE *****");
-    posActuelle.Y = (this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)*(posActuelle.Y/Math.abs(posActuelle.Y));
+    posActuelle.Y = (this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)*(posActuelle.Y/Math.abs(posActuelle.Y))+objTransformOrigin.Y;
     this.stopGlisse();
   }
+  // if(Math.abs(posActuelle.X)>(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2))
+  // {
+  //   console.log("****** LIMITE X *****");
+  //   posActuelle.X = (this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)*(posActuelle.X/Math.abs(posActuelle.X));
+  //   this.stopGlisse();
+  // }
+
+
+  // if(Math.abs(posActuelle.Y) >(this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2))
+  // {
+  //   console.log("****** LIMITE Y *****");
+  //   posActuelle.Y = (this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)*(posActuelle.Y/Math.abs(posActuelle.Y));
+  //   this.stopGlisse();
+  // }
 
   return posActuelle;
 }
@@ -505,7 +544,6 @@ stopGlisse(){
   {
     clearInterval(this.myInterval)
     this.myInterval = 0;
-    //console.log("stopGlisse");
     this.vecteur = {
       X:0,
       Y:0
@@ -543,27 +581,21 @@ lever(e)
 {
   //@MODIF
   //--this.dernierePositionSVG=this.positionSVG;
-  
+  console.log(e);
   this.etatJeDeplace=false;
-  this.t1 = Date.now();
-  // let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
-  // if(norme > 10)
-  // {
-  //   this.vecteur.X = this.vecteur.X/norme;
-  //   this.vecteur.Y = this.vecteur.Y/norme;
-  //   this.vecteur.X = this.vecteur.X * 10;
-  //   this.vecteur.Y = this.vecteur.Y * 10;
-  // }
-  // Calculer le vecteur vitesse
-  // mémoriser la position du svg
-  this.stopGlisse();
-  // this.coeffGlisse = this.coeffGlisseInitial;
-  //console.log("startGlisse");
-  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),this.intervalAnimationMs);
-
   this.boolZoom = true;
   this.lastScale = 1;
   this.clicSouris = false;
+
+  if(e.target == document.querySelector("#PLAN-ZOOM") || e.target == document.querySelector("#PLAN-DEZOOM"))
+  {
+    return;
+  }
+  this.t1 = Date.now();
+  this.stopGlisse();
+  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),this.intervalAnimationMs);
+
+
   //console.log(e);
   // let point = {X : , Y: }
   // this.chercheElement(point)
@@ -608,7 +640,7 @@ defilementScroll()
     this.myInterval = 0;
   }
   // this.coeffGlisse = this.coeffGlisse * 0.95;
-  
+  console.log("DEFILEMENT SCROLL");
   SVGPos = this.limiteDeplacement(SVGPos);
   this.svgPosition(SVGPos);
   

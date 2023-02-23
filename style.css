@@ -6,12 +6,20 @@
 }
 
 .btn-plan-commande {
- border:solid 1px green;
- background-color:lightblue;
-  padding: 0.25rem 0.25rem;
- background-color:#D0FFD0;
-color:#006000;
- cursor: pointer;
+
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
+}
+.btn-plan-commande div{
+    z-index: 1;
+    border:solid 1px green;
+    background-color:lightblue;
+    padding: 0.25rem 0.25rem;
+    background-color:#D0FFD0;
+    color:#006000;
+    cursor: pointer;
     border-radius: 0.4rem;
 }
 
@@ -37,10 +45,5 @@ color:#006000;
 display: none;
 }
 
-#PLAN-CENTRER{
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1;
-}
+
 /*---- plan de salle ----*/
