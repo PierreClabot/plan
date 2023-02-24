@@ -693,8 +693,9 @@ defilementScroll()
 }
 
 scaleDOM(){
-  console.debug("transformOriginX",this.transformOrigin.X);
-  console.debug("transformOriginY",this.transformOrigin.Y);
+  // console.debug("transformOriginX",this.transformOrigin.X);
+  // console.debug("transformOriginY",this.transformOrigin.Y);
+  this.debug("scaleDOM");
   this.domElement.style.transformOrigin = `${this.transformOrigin.X}% ${this.transformOrigin.Y}%`
   
   this.domElement.style.transform = `scale(${this.scale})`;
