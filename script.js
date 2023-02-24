@@ -311,6 +311,9 @@ class PlanDeSalle{
             touche2:e.touches[1].pageY - rect.top,
           }
 
+          this.debug("offsettouche1 : { X : "+offsetX.touche1 + ", Y : "+offsetY.touche1+" }");
+          this.debug("offsettouche2 : { X : "+offsetX.touche2 + ", Y : "+offsetY.touche2+" }");
+
           this.transformOrigin = {
             X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
             Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
@@ -565,18 +568,20 @@ limiteDeplacement(position)
       Y : 0
     } 
   }
-  console.log("posActuelleX",Math.abs(posActuelle.X)*this.scale);
-  console.log("domElement",this.domElement.offsetWidth*this.scale);
-  if(Math.abs(posActuelle.X)>(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)+objTransformOrigin.X)
-  {
-    posActuelle.X = (this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)*(posActuelle.X/Math.abs(posActuelle.X));
-    this.stopGlisse();
-  }
-  if(Math.abs(posActuelle.Y) >(this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)+ objTransformOrigin.Y)
-  {
-    posActuelle.Y = (this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)*(posActuelle.Y/Math.abs(posActuelle.Y))+objTransformOrigin.Y;
-    this.stopGlisse();
-  }
+  // console.log("posActuelleX",Math.abs(posActuelle.X)*this.scale);
+  // console.log("domElement",this.domElement.offsetWidth*this.scale);
+  // if(Math.abs(posActuelle.X)>(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)+objTransformOrigin.X)
+  // {
+  //   posActuelle.X = (this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2)*(posActuelle.X/Math.abs(posActuelle.X));
+  //   this.stopGlisse();
+  // }
+  // if(Math.abs(posActuelle.Y) >(this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)+ objTransformOrigin.Y)
+  // {
+  //   posActuelle.Y = (this.arrondirMillieme(this.domElement.offsetHeight*this.scale)/2)*(posActuelle.Y/Math.abs(posActuelle.Y))+objTransformOrigin.Y;
+  //   this.stopGlisse();
+  // }
+
+
   // if(Math.abs(posActuelle.X)>(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2))
   // {
   //   console.log("****** LIMITE X *****");
@@ -648,22 +653,11 @@ lever(e)
   this.stopGlisse();
   this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),this.intervalAnimationMs);
 
-
-  //console.log(e);
-  // let point = {X : , Y: }
-  // this.chercheElement(point)
 }
-
-
-
-
-
 
 
 defilementScroll()
 {
-  //console.log("*=",this.vecteur);
-
   let SVGPos=this.svgPositionDonne();
   
   SVGPos = {
@@ -675,24 +669,18 @@ defilementScroll()
   //console.log(this.vInit)
   let t = (this.tt-this.t1)/this.tempsGlisse;
   let sinus = Math.sin((Math.PI/4)*(1-t))
-  // this.vecteur = {
-  //   X : this.vInit.x * (1-t),
-  //   Y : this.vInit.y * (1-t)
-  // }
+
   this.vecteur = {
     X : this.vInit.x * sinus * this.coeffGlisse,
     Y : this.vInit.y * sinus * this.coeffGlisse
   }
-  // this.vecteur = {
-  //   X : this.vecteur.X * this.coeffGlisse, // 0.95
-  //   Y : this.vecteur.Y * this.coeffGlisse  // 0.95
-  // }
+
   if(this.tt-this.t1 >= this.tempsGlisse)
   {
     clearInterval(this.myInterval);
     this.myInterval = 0;
   }
-  // this.coeffGlisse = this.coeffGlisse * 0.95;
+
   console.log("DEFILEMENT SCROLL");
   SVGPos = this.limiteDeplacement(SVGPos);
   this.svgPosition(SVGPos);
