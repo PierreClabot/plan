@@ -315,7 +315,22 @@ class PlanDeSalle{
             X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
             Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
           }
-
+          if(this.transformOrigin.X>100)
+          {
+            this.transformOrigin.X = 100;
+          }
+          if(this.transformOrigin.X<0)
+          {
+            this.transformOrigin.X = 0;
+          }
+          if(this.transformOrigin.Y>100)
+          {
+            this.transformOrigin.Y = 100;
+          }
+          if(this.transformOrigin.Y<0)
+          {
+            this.transformOrigin.Y= 0;
+          }
           // this.transformOrigin = {
           //   X:((Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100),
           //   Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
