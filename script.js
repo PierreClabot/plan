@@ -312,8 +312,8 @@ class PlanDeSalle{
           }
 
           this.transformOrigin = {
-            X:((Math.abs((offsetX.touche1 - offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
-            Y:((Math.abs((offsetY.touche1 - offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
+            X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
+            Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
           }
 
           // this.transformOrigin = {
@@ -329,7 +329,7 @@ class PlanDeSalle{
           this.debug("Scale "+scale)
           this.debug("this.transformOriginX"+this.transformOrigin.X);
           this.debug("this.transformOriginY"+this.transformOrigin.Y);
-          this.zoom(e,scale);
+          //this.zoom(e,scale);
 
       }
       if(e.touches.length == 1)
@@ -695,7 +695,6 @@ defilementScroll()
 scaleDOM(){
   // console.debug("transformOriginX",this.transformOrigin.X);
   // console.debug("transformOriginY",this.transformOrigin.Y);
-  this.debug("scaleDOM");
   this.domElement.style.transformOrigin = `${this.transformOrigin.X}% ${this.transformOrigin.Y}%`
   
   this.domElement.style.transform = `scale(${this.scale})`;
