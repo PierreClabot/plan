@@ -310,7 +310,7 @@ class PlanDeSalle{
             touche1:e.touches[0].pageY - rect.top,
             touche2:e.touches[1].pageY - rect.top,
           }
-
+          this.debug("rect.left"+rect.left);
           this.debug("offsettouche1 : { X : "+offsetX.touche1 + ", Y : "+offsetY.touche1+" }");
           this.debug("offsettouche2 : { X : "+offsetX.touche2 + ", Y : "+offsetY.touche2+" }");
 
