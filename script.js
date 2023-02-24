@@ -281,9 +281,7 @@ class PlanDeSalle{
       this.appuiEn(e,e.clientX, e.clientY);
     })
     container.addEventListener("touchmove",(e)=>{
-      //this.debugL(" *tm* ");
 
-        
       e.stopPropagation();
       e.preventDefault(); 
 
@@ -311,6 +309,9 @@ class PlanDeSalle{
             touche2:e.touches[1].pageY - rect.top,
           }
           this.debug("rect.left"+rect.left);
+          this.debug("rect.top"+rect.top);
+          this.debug("touches1 : { page X : "+e.touches[0].pageX+" ,Y : "+e.touches[0].pageY+" }");
+          this.debug("touches1 : { page X : "+e.touches[1].pageX+" ,Y : "+e.touches[1].pageY+" }");
           this.debug("offsettouche1 : { X : "+offsetX.touche1 + ", Y : "+offsetY.touche1+" }");
           this.debug("offsettouche2 : { X : "+offsetX.touche2 + ", Y : "+offsetY.touche2+" }");
 
@@ -352,6 +353,7 @@ class PlanDeSalle{
       }
       if(e.touches.length == 1)
       {
+        // console.log(e);
         this.etatJeDeplace=true;
         this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
       }
