@@ -329,7 +329,7 @@ class PlanDeSalle{
           this.debug("Scale "+scale)
           this.debug("this.transformOriginX"+this.transformOrigin.X);
           this.debug("this.transformOriginY"+this.transformOrigin.Y);
-          //this.zoom(e,scale);
+          this.zoom(e,scale);
 
       }
       if(e.touches.length == 1)
