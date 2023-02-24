@@ -164,6 +164,11 @@ class PlanDeSalle{
         offsetX : offsetX,
         offsetY : offsetY
       }
+      /* AJOUT */
+      this.transformOrigin = {
+        X:0,
+        Y:0
+      }
       console.log("premierAPpui",this.premierAppui);
     })
 

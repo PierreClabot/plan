@@ -9,9 +9,9 @@ class PlanDeSalle{
     if(debug == true)
     {
       let contenu =  `<div Class="btn-plan-container">
-                      <div class="btn-plan-commande" id="PLAN-DEBUG-CLEAR">Clear Debug</div>
-                      <div Class="btn-plan-commande" id="PLAN Debug ON" onClick="document.querySelector('#PLAN-DBG').style.display='block';">Dbg ON</div>
-                      <div class="btn-plan-commande" id="PLAN Debug OFF" onClick="document.querySelector('#PLAN-DBG').style.display='none';">Dbg Off</div>
+                      <div class="btn-plan-debug" id="PLAN-DEBUG-CLEAR">Clear Debug</div>
+                      <div Class="btn-plan-debug" id="PLAN Debug ON" onClick="document.querySelector('#PLAN-DBG').style.display='block';">Dbg ON</div>
+                      <div class="btn-plan-debug" id="PLAN Debug OFF" onClick="document.querySelector('#PLAN-DBG').style.display='none';">Dbg Off</div>
                     </div>`;
                     console.log(globalContainer);
       globalContainer.insertAdjacentHTML("afterbegin", contenu );
@@ -90,6 +90,26 @@ class PlanDeSalle{
       //console.log("onloadP425 "+this.domElement.offsetWidth);
     };
 
+    document.addEventListener("touchstart",(e)=>{
+      if(e.touches.length>1)
+      {
+        e.stopPropagation();
+        e.preventDefault();
+        this.debugL(" !touchemovedocument! ");
+      }
+    })
+    document.addEventListener("touchmove",(e)=>{
+      if(e.touches.length>1)
+      {
+        e.stopPropagation();
+        e.preventDefault();
+        this.debugL(" !touchemovedocument! ");
+      }
+    });
+    /* TEST APPLE AJOUT */
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+  });
     document.querySelector("#PLAN-ZOOM").addEventListener("click",(e)=>{
       console.log(" ***************** ZOOM");
       let zoom = true;
@@ -292,9 +312,14 @@ class PlanDeSalle{
           }
 
           this.transformOrigin = {
-            X:(Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100,
-            Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
+            X:((Math.abs((offsetX.touche1 - offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
+            Y:((Math.abs((offsetY.touche1 - offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
           }
+
+          // this.transformOrigin = {
+          //   X:((Math.abs(offsetX.touche1 - offsetX.touche2)/(this.domElement.offsetWidth*this.scale))*100),
+          //   Y:(Math.abs(offsetY.touche1 - offsetY.touche2)/(this.domElement.offsetWidth*this.scale))*100
+          // }
 
           //this.debug(`this.transformOrigin(X:${this.transformOrigin.X}, Y:${this.transformOrigin.Y})`);
 
