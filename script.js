@@ -513,9 +513,7 @@ bougerEn(event,x,y)
     console.log("posX",posActuelle.X);
     console.log("this.scale",this.scale)
     console.log("offsetWidth",this.domElement.offsetWidth*this.scale);
-    console.log("BOUGER EN");
     posActuelle = this.limiteDeplacement(posActuelle);
-    
     this.svgPosition(posActuelle);
   }
 
@@ -605,8 +603,6 @@ zoom(e,scale)
 
   this.scale = scale;
   if(this.scale < 0.1){ this.scale = 0.1;}
-  //this.debugL(" s:"+this.scale+" ");
-
   this.scaleDOM();
   //this.lastScale=this.scale;
 }
