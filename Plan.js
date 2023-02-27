@@ -40,8 +40,8 @@ class Plan {
                 
         this.abortController=null;
         this.objClient.debug("3");
-        // console.log(Quadtree);
-        // console.log(window.Quadtree);
+        this.debug(Quadtree);
+        this.debug(window.Quadtree);
         this.qt=new Quadtree(this.bounds,150,4);
         this.objClient.debug("4");
         window.URL = window.URL || window.webkitURL;
