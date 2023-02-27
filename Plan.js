@@ -68,7 +68,7 @@ class Plan {
             //console.log("**Datas worker zoom=",e.data[3]);
             //console.log("**Datas QTObs=",e.data[4]);
             
-            if(e.data[0]=='hello') {
+            if(e.data[0]=='Hello') {
                 self.postMessage(['hello']);
                 return;
             }
@@ -142,12 +142,6 @@ class Plan {
 
             //console.log('Message received from worker',e.data);
             
-            if (e.data[0]=='hello') {
-                //console.log("woerker respond hello!");
-                //this.worker.terminate();
-                //this.worker=null;
-                return;
-            }
             if (e.data[0]=='cancel') {
                 console.log("CLIENT worked has cancelled treatùet");
                 this.worker=null;
@@ -212,12 +206,17 @@ class Plan {
     prepare() {
         // Buff
         // Quad Tree
+        this.objClient.debug("Z");
         for (var i=0; i<this.objets.length; i++) {
             this.qt.insert(this.objets[i]);      
         }
+        this.objClient.debug("A");
         this.recentre();
+        this.objClient.debug("B");
         this.calculeViewPort();
+        this.objClient.debug("C");
         this.dessinePlanB1();
+        this.objClient.debug("D");
     }
 
     update() {
@@ -233,6 +232,7 @@ class Plan {
     }
 
     dessinePlanB1() {
+        this.objClient.debug("0");
         this.workerPrepare();
         console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
         // let qtObjs=this.qt.retrieve(this.viewPort);
