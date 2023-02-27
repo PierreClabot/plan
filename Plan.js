@@ -22,8 +22,9 @@ class Plan {
         this.canvasBHR.width=largeur;
         this.canvasBHR.height=hauteur;
         this.ctx2dBHR=this.canvasBHR.getContext('2d');
-                
+        this.debug("AVANT TEST");
         this.test();
+        this.debug("APRES TEST");
         
         this.bounds={
             x:0,y:0,width:this.canvas.width,height:this.canvas.height
