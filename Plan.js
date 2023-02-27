@@ -139,7 +139,7 @@ class Plan {
         this.objClient.debug("WP1");
         this.worker = new Worker(URL.createObjectURL(this.blob));
         this.objClient.debug("WP2");
-        this.worker.onmessage= ()=> {
+        this.worker.onmessage= (e)=> {
             this.objClient.debug("ONMESSAGE");
             this.objClient.debug(e);
             //console.log('Message received from worker',e.data);
