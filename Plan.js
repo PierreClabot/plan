@@ -23,7 +23,7 @@ class Plan {
         this.canvasBHR.height=hauteur;
         this.ctx2dBHR=this.canvasBHR.getContext('2d');
                 
-        this.testOFF();
+        this.test();
         
         this.bounds={
             x:0,y:0,width:this.canvas.width,height:this.canvas.height
@@ -43,26 +43,18 @@ class Plan {
   
         window.URL = window.URL || window.webkitURL;
         let response2=this.workerJob.toString().replace('workerJob()', '');
-        this.debug(response2);
         try {
            this.blob = new Blob([response2], {type: 'application/javascript'});
            console.log(this.blob);
-            this.debug("blobSize : "+this.blob.size);
-            this.debug("blobType : "+this.blob.type);
+            // this.debug("blobSize : "+this.blob.size);
+            // this.debug("blobType : "+this.blob.type);
         } catch (e) { // Backwards-compatibility
-            this.debug("CATCH 1");
             window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-            this.debug("CATCH 2");
             this.blob = new BlobBuilder();
-            this.debug("CATCH 3");
             this.blob.append(response2);
-            this.debug("CATCH 4");
             this.blob = this.blob.getBlob();
-            this.debug("CATCH 5");
         }
-        this.debug("PREPARE 1");
         this.prepare();
-        this.debug("PREPARE 2");
     }
 
     /* ne pas modifier le nom de cette fonction Cf : let response2=this.workerJob.toString().replace('workerJob()', ''); */
@@ -77,8 +69,12 @@ class Plan {
             width : this.canvasBHR.width,
             height : this.canvasBHR.height
         };
-        this.debug("canvasB1 { width : "+canvasB1.width+", height : "+canvasB1.height+" }");
-        this.debug("canvasBHR { width : "+canvasBHR.width+", height : "+canvasBHR.height+" }");
+    }
+    test(){
+        let offCan=new OffscreenCanvas(500,500);
+        this.debug(offCan);
+        this.debug("offCan Width : ",offCan.width);
+        this.debug("offCan Height : ",offCan.height);
     }
     workerJob() {
         let nbObjDessines=0;
@@ -159,14 +155,14 @@ class Plan {
     workerPrepare() {
         //console.log("preapring wrker");
         this.worker = new Worker(URL.createObjectURL(this.blob));
-        this.debug("workPrepare");
-        this.debug("Worker "+this.worker)
-        this.debug("workerOnMessage",this.worker.onmessage);
-        this.debug("workerOnError",this.worker.onerror);
+        // this.debug("workPrepare");
+        // this.debug("Worker "+this.worker)
+        // this.debug("workerOnMessage",this.worker.onmessage);
+        // this.debug("workerOnError",this.worker.onerror);
         this.worker.onmessage= (e)=> {
-            this.debug("e.data[0] : "+e.data[0]);
-            this.debug("e.data[1] : "+e.data[1]);
-            this.debug("e.data[2] : "+e.data[2]);
+            // this.debug("e.data[0] : "+e.data[0]);
+            // this.debug("e.data[1] : "+e.data[1]);
+            // this.debug("e.data[2] : "+e.data[2]);
             //console.log('Message received from worker',e.data);
             
             if (e.data[0]=='hello') {
