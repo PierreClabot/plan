@@ -642,6 +642,7 @@ initPlan()
         this.debug("a-b");
         let canva=document.querySelector("#PLAN");
         this.debug(canva.tagName);
+        console.log(this);
         let plan=new Plan(canva,ob,1080,1080,this);
         this.debug("b");
         return plan;        

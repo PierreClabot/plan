@@ -9,6 +9,7 @@ class Plan {
         this.objets=objets;
         this.zoomBuffer=1;
         this.zoom=1;
+        this.objClient = objClient;
         this.objClient.debug("1");
         this.canvas=canvas;
         this.ctx2d=canvas.getContext('2d');
