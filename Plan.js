@@ -237,8 +237,11 @@ class Plan {
         console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
         // let qtObjs=this.qt.retrieve(this.viewPort);
         console.log("QtObs=",qtObjs);
-        this.worker.postMessage(['Hello',null,0,0]);
+        this.objClient.debug("1");
+        this.worker.postMessage(['Hello',this.objets,this.boundsB1,1]);
+        this.objClient.debug("2");
         this.worker.postMessage(['Init',this.objets,this.boundsB1,1]);
+        this.objClient.debug("3");
     }
     
     dessineThread () {
