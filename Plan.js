@@ -162,9 +162,9 @@ class Plan {
         this.debug("workerOnMessage",this.worker.onmessage);
         this.debug("workerOnError",this.worker.onerror);
         this.worker.onmessage= (e)=> {
-            this.debug(e.data[0]);
-            this.debug(e.data[1]);
-            this.debug(e.data[2]);
+            this.debug("e.data[0] : "+e.data[0]);
+            this.debug("e.data[1] : "+e.data[1]);
+            this.debug("e.data[2] : "+e.data[2]);
             //console.log('Message received from worker',e.data);
             
             if (e.data[0]=='hello') {
