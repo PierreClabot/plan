@@ -46,13 +46,18 @@ class Plan {
         this.debug(response2);
         try {
            this.blob = new Blob([response2], {type: 'application/javascript'});
-        //    this.debug("blobSize : "+this.blob.size);
-        //    this.debug("blobType : "+this.blob.type);
+            this.debug("blobSize : "+this.blob.size);
+            this.debug("blobType : "+this.blob.type);
         } catch (e) { // Backwards-compatibility
+            this.debug("CATCH 1");
             window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+            this.debug("CATCH 2");
             this.blob = new BlobBuilder();
+            this.debug("CATCH 3");
             this.blob.append(response2);
+            this.debug("CATCH 4");
             this.blob = this.blob.getBlob();
+            this.debug("CATCH 5");
         }
         
         this.prepare();
