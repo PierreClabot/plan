@@ -136,8 +136,9 @@ class Plan {
 
     workerPrepare() {
         //console.log("preapring wrker");
+        this.objClient.debug("WP1");
         this.worker = new Worker(URL.createObjectURL(this.blob));
-
+        this.objClient.debug("WP2");
         this.worker.onmessage= (e)=> {
 
             //console.log('Message received from worker',e.data);
