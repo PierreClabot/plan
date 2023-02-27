@@ -40,13 +40,9 @@ class Plan {
         
         this.qt=new Quadtree(this.bounds,150,4);
         window.URL = window.URL || window.webkitURL;
-        this.objClient.debug("R");
         let response2=this.workerJob.toString().replace('workerJob()', '');
-        this.objClient.debug(response2);
         try {
-            this.objClient.debug("R1");
            this.blob = new Blob([response2], {type: 'application/javascript'});
-           this.objClient.debug("R2");
         } catch (e) { // Backwards-compatibility
             this.objClient.debug("R3");
             window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
@@ -214,16 +210,18 @@ class Plan {
     prepare() {
         // Buff
         // Quad Tree
+        this.objClient.debug("prepare1");
+        this.objClient.debug(this.qt);
         for (var i=0; i<this.objets.length; i++) {
             this.qt.insert(this.objets[i]);      
         }
-
+        this.objClient.debug("prepare2")
         this.recentre();
-
+        this.objClient.debug("prepare3")
         this.calculeViewPort();
-
+        this.objClient.debug("prepare4")
         this.dessinePlanB1();
-
+        this.objClient.debug("prepare5")
     }
 
     update() {
