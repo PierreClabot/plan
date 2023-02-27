@@ -74,7 +74,6 @@ class Plan {
             }
 
             if(e.data[0]=='Draw' || e.data[0]=='Init' ) {
-                drw_plan_cancel=false;
                 let workerResult=dessineOffLine(e.data);
                 if (workerResult!=null) {
                     dd=[e.data[0],workerResult,e.data[1].length];
