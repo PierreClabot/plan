@@ -8,7 +8,6 @@ class Plan {
         this.zoomBuffer=1;
         this.zoom=1;
         this.objClient = objClient;
-        this.objClient.debug("1");
         this.canvas=canvas;
         this.ctx2d=canvas.getContext('2d');
         
@@ -24,7 +23,6 @@ class Plan {
                 
         this.domDbg=document.getElementById('DBG');
         
-        this.objClient.debug("2");
         this.bounds={
             x:0,y:0,width:this.canvas.width,height:this.canvas.height
         }
@@ -39,13 +37,8 @@ class Plan {
         this.viewPort=new DOMRect(0,0,this.boundsB1.width,this.boundsB1.height);
                 
         this.abortController=null;
-        this.objClient.debug("3");
         
-        this.objClient.debug(window.Quadtree);
-        this.objClient.debug("Quadtree")
-        this.objClient.debug(Quadtree);
         this.qt=new Quadtree(this.bounds,150,4);
-        this.objClient.debug("4");
         window.URL = window.URL || window.webkitURL;
         let response2=this.workerJob.toString().replace('workerJob()', '');
         try {
@@ -57,9 +50,7 @@ class Plan {
             this.blob = this.blob.getBlob();
         }
         
-        this.objClient.debug("5");
         this.prepare();
-        this.objClient.debug("6");
     }
 
     /* ne pas modifier le nom de cette fonction Cf : let response2=this.workerJob.toString().replace('workerJob()', ''); */
@@ -218,10 +209,13 @@ class Plan {
         for (var i=0; i<this.objets.length; i++) {
             this.qt.insert(this.objets[i]);      
         }
-
+        this.debug("a");
         this.recentre();
+        this.debug("b");
         this.calculeViewPort();
+        this.debug("c");
         this.dessinePlanB1();
+        this.debug("d");
     }
 
     update() {
