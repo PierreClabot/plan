@@ -59,6 +59,15 @@ class Plan {
 
     /* ne pas modifier le nom de cette fonction Cf : let response2=this.workerJob.toString().replace('workerJob()', ''); */
     /* Routine utilisée par le worker */
+    testOFF(){
+        let canva=document.getElementById("PLAN");
+        let OffscreenCanvas = {
+            width : canva.width,
+            height : canva.height
+        };
+        this.debug("OffscreenCanvas Width : "+OffscreenCanvas.width);
+        this.debug("OffscreenCanvas Height : "+OffscreenCanvas.height);
+    }
     workerJob() {
         let nbObjDessines=0;
         onmessage = (e) => {
@@ -172,7 +181,9 @@ class Plan {
             }
             if (e.data[0]=='Init') {
                 console.log("WRK RET INIt");
+                this.testOFF();
                 this.worker=null;
+                
                 //console.log("IMG finalized");
                 this.ctx2dB1.putImageData(e.data[1],0,0);
                 this.planReady=true;
