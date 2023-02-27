@@ -136,9 +136,7 @@ class Plan {
 
     workerPrepare() {
         //console.log("preapring wrker");
-        this.objClient.debug("w1");
         this.worker = new Worker(URL.createObjectURL(this.blob));
-        this.objClient.debug("w2");
 
         this.worker.onmessage= (e)=> {
 
@@ -180,6 +178,10 @@ class Plan {
                 this.onReady();
                 return;
             }
+            if (e.data[0]=='Hello') {
+                this.objClient.debug("Hello");
+                return;
+            }
             if (e.data[0]=='Stop') {
                 console.log("woerker respond stop!");
                 //this.worker.terminate();
@@ -210,18 +212,12 @@ class Plan {
     prepare() {
         // Buff
         // Quad Tree
-        this.objClient.debug("prepare1");
-        this.objClient.debug(this.qt);
         for (var i=0; i<this.objets.length; i++) {
             this.qt.insert(this.objets[i]);      
         }
-        this.objClient.debug("prepare2")
         this.recentre();
-        this.objClient.debug("prepare3")
         this.calculeViewPort();
-        this.objClient.debug("prepare4")
         this.dessinePlanB1();
-        this.objClient.debug("prepare5")
     }
 
     update() {
@@ -239,9 +235,10 @@ class Plan {
     dessinePlanB1() {
         this.workerPrepare();
         console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
-        let qtObjs=this.qt.retrieve(this.viewPort);
+        // let qtObjs=this.qt.retrieve(this.viewPort);
         console.log("QtObs=",qtObjs);
-        this.worker.postMessage(['Init',this.objets,this.boundsB1,1,qtObjs]);
+        this.worker.postMessage(['Hello',null,0,0]);
+        this.worker.postMessage(['Init',this.objets,this.boundsB1,1]);
     }
     
     dessineThread () {
