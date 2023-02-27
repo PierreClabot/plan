@@ -160,6 +160,7 @@ class Plan {
         //console.log("preapring wrker");
         this.worker = new Worker(URL.createObjectURL(this.blob));
         this.debug("workPrepare");
+        this.debug("Worker "+this.worker)
         this.debug("workerOnMessage",this.worker.onmessage);
         this.debug("workerOnError",this.worker.onerror);
         this.worker.onmessage= (e)=> {
