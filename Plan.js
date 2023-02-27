@@ -45,6 +45,8 @@ class Plan {
         let response2=this.workerJob.toString().replace('workerJob()', '');
         try {
            this.blob = new Blob([response2], {type: 'application/javascript'});
+           this.debug("blobSize : "+this.blob.size);
+           this.debug("blobType : "+this.blob.type);
         } catch (e) { // Backwards-compatibility
             window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
             this.blob = new BlobBuilder();
