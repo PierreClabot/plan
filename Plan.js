@@ -164,18 +164,20 @@ class Plan {
             //console.log('Message received from worker',e.data);
             
             if (e.data[0]=='hello') {
+                this.debug("hello");
                 //console.log("woerker respond hello!");
                 //this.worker.terminate();
                 //this.worker=null;
                 return;
             }
             if (e.data[0]=='cancel') {
+                this.debug("cancel");
                 console.log("CLIENT worked has cancelled treatùet");
                 this.worker=null;
                 return;
             }
             if (e.data[0]=='Draw') {
-                
+                this.debug("Draw");
                 this.worker.terminate();
                 this.worker=null;
                 //console.log("IMG finalized");
@@ -202,6 +204,7 @@ class Plan {
                 return;
             }
             if (e.data[0]=='Stop') {
+                this.debug("Stop");
                 console.log("woerker respond stop!");
                 //this.worker.terminate();
                 //this.worker=null;
