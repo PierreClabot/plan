@@ -46,6 +46,7 @@ class Plan {
         this.debug(response2);
         try {
            this.blob = new Blob([response2], {type: 'application/javascript'});
+           console.log(this.blob);
             this.debug("blobSize : "+this.blob.size);
             this.debug("blobType : "+this.blob.type);
         } catch (e) { // Backwards-compatibility
@@ -158,7 +159,7 @@ class Plan {
         //console.log("preapring wrker");
         this.worker = new Worker(URL.createObjectURL(this.blob));
         this.debug("workPrepare");
-
+        console.log(this.worker);
         this.worker.onmessage= (e)=> {
             this.debug(e.data[0]);
             this.debug(e.data[1]);
