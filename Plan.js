@@ -43,6 +43,7 @@ class Plan {
   
         window.URL = window.URL || window.webkitURL;
         let response2=this.workerJob.toString().replace('workerJob()', '');
+        this.debug(response2);
         try {
            this.blob = new Blob([response2], {type: 'application/javascript'});
         //    this.debug("blobSize : "+this.blob.size);
