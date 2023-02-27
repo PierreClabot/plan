@@ -1,13 +1,15 @@
+
+
 class Plan {
 
-    constructor(canvas,objets,largeur,hauteur,objClient) {
+    constructor(canvas,objets,largeur,hauteur) {
         
         this.planReady=false;
 
         this.objets=objets;
         this.zoomBuffer=1;
         this.zoom=1;
-        this.objClient = objClient;
+
         this.canvas=canvas;
         this.ctx2d=canvas.getContext('2d');
         
@@ -37,19 +39,17 @@ class Plan {
         this.viewPort=new DOMRect(0,0,this.boundsB1.width,this.boundsB1.height);
                 
         this.abortController=null;
-        
         this.qt=new Quadtree(this.bounds,150,4);
+  
         window.URL = window.URL || window.webkitURL;
         let response2=this.workerJob.toString().replace('workerJob()', '');
         try {
            this.blob = new Blob([response2], {type: 'application/javascript'});
         } catch (e) { // Backwards-compatibility
-            this.objClient.debug("R3");
             window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
             this.blob = new BlobBuilder();
             this.blob.append(response2);
             this.blob = this.blob.getBlob();
-            this.objClient.debug("R4");
         }
         
         this.prepare();
@@ -68,7 +68,7 @@ class Plan {
             //console.log("**Datas worker zoom=",e.data[3]);
             //console.log("**Datas QTObs=",e.data[4]);
             
-            if(e.data[0]=='Hello') {
+            if(e.data[0]=='hello') {
                 self.postMessage(['hello']);
                 return;
             }
@@ -136,21 +136,26 @@ class Plan {
 
     workerPrepare() {
         //console.log("preapring wrker");
-        this.objClient.debug("WP1");
         this.worker = new Worker(URL.createObjectURL(this.blob));
-        this.objClient.debug("WP2");
+        
+
         this.worker.onmessage= (e)=> {
-            this.objClient.debug("ONMESSAGE");
-            this.objClient.debug(e);
+
             //console.log('Message received from worker',e.data);
             
+            if (e.data[0]=='hello') {
+                //console.log("woerker respond hello!");
+                //this.worker.terminate();
+                //this.worker=null;
+                return;
+            }
             if (e.data[0]=='cancel') {
                 console.log("CLIENT worked has cancelled treatùet");
                 this.worker=null;
                 return;
             }
             if (e.data[0]=='Draw') {
-                this.objClient.debug("onDraw");
+                
                 this.worker.terminate();
                 this.worker=null;
                 //console.log("IMG finalized");
@@ -165,17 +170,12 @@ class Plan {
                 return;
             }
             if (e.data[0]=='Init') {
-                this.objClient.debug("onInit");
                 console.log("WRK RET INIt");
                 this.worker=null;
                 //console.log("IMG finalized");
                 this.ctx2dB1.putImageData(e.data[1],0,0);
                 this.planReady=true;
                 this.onReady();
-                return;
-            }
-            if (e.data[0]=='Hello') {
-                this.objClient.debug("Hello");
                 return;
             }
             if (e.data[0]=='Stop') {
@@ -194,7 +194,7 @@ class Plan {
     }
 
     onReady() {
-        this.objClient.debug("onReady");
+
         this.dessineThread();
     }
 
@@ -208,17 +208,13 @@ class Plan {
     prepare() {
         // Buff
         // Quad Tree
-        this.objClient.debug("Z");
         for (var i=0; i<this.objets.length; i++) {
             this.qt.insert(this.objets[i]);      
         }
-        this.objClient.debug("A");
+
         this.recentre();
-        this.objClient.debug("B");
         this.calculeViewPort();
-        this.objClient.debug("C");
         this.dessinePlanB1();
-        this.objClient.debug("D");
     }
 
     update() {
@@ -234,16 +230,11 @@ class Plan {
     }
 
     dessinePlanB1() {
-        this.objClient.debug("0");
         this.workerPrepare();
-        // console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
-        // let qtObjs=this.qt.retrieve(this.viewPort);
-        // console.log("QtObs=",qtObjs);
-        this.objClient.debug("1");
-        this.worker.postMessage(['Hello',this.objets,this.boundsB1,1]);
-        this.objClient.debug("2");
-        this.worker.postMessage(['Init',this.objets,this.boundsB1,1]);
-        this.objClient.debug("3");
+        console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
+        let qtObjs=this.qt.retrieve(this.viewPort);
+        console.log("QtObs=",qtObjs);
+        this.worker.postMessage(['Init',this.objets,this.boundsB1,1,qtObjs]);
     }
     
     dessineThread () {

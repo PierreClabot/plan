@@ -1,77 +1,333 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<style>
-    .row-legende{
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.2rem;
+<html>
+   <head>
+   <style>
+    body {
+    margin: 0;
+
+    padding: 0;
     }
-    .row-legende span{
-        margin-left: 0.2rem;
-    }
+   </style> 
+  </head> 
+ <body>
 
-</style>
-<body>
+    <div>
+	  <div id="cont" style="width:1080px; padding:0; margin:0; border:none; height:1080px; position:relative; overflow:hidden;">
+        <canvas id="PLAN" style="position:absolute; border:none; padding:0; margin:0; " height="1080px" width="1080px" id="canvas"></canvas>
+      </div>  
+      
+      <!--
+        <canvas id="PLANB1" style="border:solid 2px purple;" height="300px" width="300px" id="canvas"></canvas>
+      -->  
+      <!--
+      <canvas id="PLANBHR" style="border:solid 2px purple;" height="300px" width="300px" id="canvas"></canvas>
+    -->
+      
+    </div>
+    
+    <div style="position:absolute; top:0; right:0; cursor:pointer" id="ZABORT" style="">abort</div>
 
-    <div class="row-legende">
-        <svg xmlns="http://www.w3.org/2000/svg" class="img-fluid" height="18" width="18" viewBox="0 0 18 18" version="1.1">
-            <circle class="place" cx="9" cy="9" r="8" stroke="#AA0000" stroke-width="1" fill="#FF0000" fill-opacity="0.5"/>
-        </svg>
-        <span class="libelle-legende">Place déjà vendue</span>
-    </div>
-    <div class="row-legende">
-        <svg xmlns="http://www.w3.org/2000/svg" class="img-fluid" height="18" width="18" viewBox="0 0 18 18" version="1.1">
-            <circle class="place" cx="9" cy="9" r="8" stroke="black" stroke-width="1" fill="#ffffff" fill-opacity="0.8"/>
-        </svg>
-        <span class="libelle-legende">Place non réservable en ligne</span>
-    </div>
-    <div class="row-legende">
-        <svg xmlns="http://www.w3.org/2000/svg" class="img-fluid" height="18" width="18" viewBox="0 0 18 18" version="1.1">
-            <circle class="place" cx="9" cy="9" r="8" stroke="#777700" stroke-width="1" fill="#CCCC00 " fill-opacity="0.8"/>
-        </svg>
-        <span class="libelle-legende">Place que vous avez choisie</span>
-    </div>
-    <div class="row-legende">
-        <svg xmlns="http://www.w3.org/2000/svg" class="img-fluid" height="18" width="18" viewBox="0 0 18 18" version="1.1">
-            <circle class="place" cx="9" cy="9" r="8" stroke="#4040FF" stroke-width="1" fill="#0000FF" fill-opacity="0.8"/>
-        </svg>
-        <span class="libelle-legende">Place disponible</span>
-    </div>
+    <output style="border:solid 1px blue; height:100px; position:relative;">
+    </output>
 
-    <svg width="500" height="200">
-        <rect x="50" y="100" width="300" height="100" stroke="red" stroke-width="3px" fill="white"/>
-        <text x="200" y="150" font-family="Open Sans" dominant-baseline="middle" text-anchor="middle">TEXT</text>    
-    </svg>
-</body>
+    <script src="Quadtree.js">
+    </script>
+
+
+    <script src="Plan.js">
+    </script>
+
+    <script>
+
+
+
+        //----------------------------------------------------------------------
+
+        ob=[];
+        for (let i=0; i<10000; i++) {
+            
+
+            ob.push( { name : 'objet '+i,
+                      x :Math.floor(Math.random() * 1008)+2,
+                      y : Math.floor(Math.random() * 1008)+2,
+                    //  x : Math.floor(Math.random() * 1000),
+                    //  y : Math.floor(Math.random() * 1000),
+                     width:  Math.floor(Math.random() * 18)+2,
+                     height : Math.floor(Math.random() *18)+2
+
+            }
+            );
+        }
+
+            ob.push( { name : 'test',
+                      x :40,
+                      y : 40,
+                    //  x : Math.floor(Math.random() * 1000),
+                    //  y : Math.floor(Math.random() * 1000),
+                     width:  40,
+                     height : 40
+                    //  width:  18,
+                    //  height : 18
+                   }
+            );
+
+           
+        
+
+
+        let canva=document.getElementById("PLAN");
+        //let canvaB1=document.getElementById("PLANB1");
+        //let canvaBHR=document.getElementById("PLANBHR");
+        
+        
+        //let plan=new Plan(canva,canvaB1,canvaBHR,ob);
+        let plan=new Plan(canva,ob,1080,1080);
+        canvas_bouge=false;
+        canvas_from={x:0,y:0};
+        canvas_to={x:0,y:0};
+
+
+
+        //----------------------------------------------------------------------
+
+
+
+
+
+
+
+        // Global vars to cache event state
+        let evCache = [];
+        let prevDiff = -1;
+        // Log events flag
+        let logEvents = true;
+
+        log("Her..",null);
+        log("Her.2.",null);
+        
+
+        function init() {
+            // Install event handlers for the pointer target
+            const el = document.getElementById("cont");
+            el.onpointerdown = pointerdownHandler;
+            el.onpointermove = pointermoveHandler;
+
+            // Use same handler for pointer{up,cancel,out,leave} events since
+            // the semantics for these events - in this app - are the same.
+            el.onpointerup = pointerupHandler;
+            el.onpointercancel = pointerupHandler;
+            el.onpointerout = pointerupHandler;
+            el.onpointerleave = pointerupHandler;
+
+            document.onpointerdown = pointerDocNone;
+            document.onpointermove = pointerDocNone;
+            document = pointerDocNone;
+            document = pointerDocNone;
+            document = pointerDocNone;
+            document = pointerDocNone;
+            } 
+
+
+            function pointerDocNone(ev) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+             
+
+            function pointerdownHandler(ev) {
+            // The pointerdown event signals the start of a touch interaction.
+            // This event is cached to support 2-finger gestures
+            evCache.push(ev);
+            log("pointerDown", ev);
+
+            console.log(ev);
+
+            canvas_from={x:ev.clientX,y:ev.clientY};
+            canvas_to={x:canvas_from.x,y:canvas_from.y};
+
+        }
+
+        function pointermoveHandler(ev) {
+            // This function implements a 2-pointer horizontal pinch/zoom gesture.
+            //
+            // If the distance between the two pointers has increased (zoom in),
+            // the target element's background is changed to "pink" and if the
+            // distance is decreasing (zoom out), the color is changed to "lightblue".
+            //
+            // This function sets the target element's border to "dashed" to visually
+            // indicate the pointer's target received a move event.
+            log("pointerMove", ev);
+            //ev.target.style.border = "dashed";
+
+            // Find this event in the cache and update its record with this event
+            const index = evCache.findIndex((cachedEv) => cachedEv.pointerId === ev.pointerId);
+            evCache[index] = ev;
+
+            // If two pointers are down, check for pinch gestures
+            if (evCache.length === 2) {
+                // Calculate the distance between the two pointers
+                const curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
+
+                if (prevDiff > 0) {
+                if (curDiff > prevDiff) {
+                    // The distance between the two pointers has increased
+                    log("Pinch moving OUT -> Zoom in", ev);
+                    this.plan.ezoom(2);
+                }
+                if (curDiff < prevDiff) {
+                    // The distance between the two pointers has decreased
+                    log("Pinch moving IN -> Zoom out",ev);
+                    this.plan.ezoom(0.5);
+                    
+                }
+                }
+
+                // Cache the distance for the next move event
+                prevDiff = curDiff;
+            }
+
+
+            if (evCache.length == 1) {
+                // Calculate the distance between the two pointers
+                
+                canvas_to={x:ev.clientX,y:ev.clientY};
+                plan.bouge({
+                    x:(-canvas_to.x+canvas_from.x),
+                    y:(-canvas_to.y+canvas_from.y)
+                });
+                canvas_from={
+                    x:canvas_to.x,
+                    y:canvas_to.y
+                }
+            }
+
+
+        }
+
+        function pointerupHandler(ev) {
+            
+            if (evCache.length==1) {
+                plan.aim(ev.clientX,ev.clientY);
+            }
+            // Remove this pointer from the cache and reset the target's
+            // background and border
+            removeEvent(ev);
+ 
+
+            // If the number of pointers down is less than two then reset diff tracker
+            if (evCache.length < 2) {
+                prevDiff = -1;
+            }
+        }
+
+
+   
+        function removeEvent(ev) {
+            //Remove this event from the target's cache
+            const index = evCache.findIndex((cachedEv) => cachedEv.pointerId === ev.pointerId);
+            evCache.splice(index, 1);
+        }
+
+
+
+    
+
+        // Logging/debugging functions
+        function enableLog(ev) {
+        // logEvents = !logEvents;
+        }
+
+        function log(prefix, ev) {
+            if (!logEvents) return;
+            const o = document.getElementsByTagName('output')[0];
+            
+            if (typeof ev==='undefined' || ev==null) {
+                console.log(prefix);
+                o.innerHTML += prefix;    
+                return;
+            }
+            
+            const s = `${prefix}:<br>`
+                + `  pointerID   = ${ev.pointerId}<br>`
+                + `  pointerType = ${ev.pointerType}<br>`
+                + `  isPrimary   = ${ev.isPrimary}`;
+            o.innerHTML = `${s}<br>`;
+        }
+
+        function clearLog(event) {
+            const o = document.getElementsByTagName('output')[0];
+            o.innerHTML = "";
+        }
+
+
+
+
+        init();
+
+
+
+
+        //----------------------------------------------------------------------
+
+
+
+
+
+    
+        document.getElementById("cont").addEventListener("wheel",(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // document.getElementById("cont").addEventListener("mousemove",(e)=>{
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     if (!canvas_bouge) { 
+        //         plan.aim(e.offsetX,e.offsetY);
+        //         return; 
+        //     }
+        //     canvas_to={x:e.offsetX,y:e.offsetY};
+        //     plan.bouge({
+        //         x:(-canvas_to.x+canvas_from.x),
+        //         y:(-canvas_to.y+canvas_from.y)
+        //     });
+        //     canvas_from={
+        //         x:canvas_to.x,
+        //         y:canvas_to.y
+        //     }
+        // });
+
+        // document.getElementById("cont").addEventListener("mousedown",(e)=>{
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     canvas_from={x:e.offsetX,y:e.offsetY};
+        //     canvas_to={x:canvas_from.x,y:canvas_from.y};
+        //     canvas_bouge=true;
+        // });
+
+        // document.addEventListener("mouseup",(e)=>{
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     canvas_bouge=false;
+        // });
+
+        document.getElementById("cont").addEventListener("wheel",async (e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+
+            letvzzom=1;
+            if (Math.sign(e.deltaY)>0) {
+                vzzom=2;
+            } else {
+                vzzom=0.5;
+               }
+            
+            console.log(vzzom);
+            plan.ezoom(vzzom);
+        });
+
+        
+    </script>
+ </body>
+
+
 </html>
-
-<div class="row-legende">
-        <svg xmlns="http://www.w3.org/2000/svg" class="img-fluid" height="18" width="18" viewBox="0 0 18 18" version="1.1">
-            <circle class="place" cx="9" cy="9" r="8" stroke="#AA0000" stroke-width="1" fill="#FF0000" fill-opacity="0.5"/>
-        </svg>
-        <span class="libelle-legende">Vendue</span>
-    </div>
-    <div class="row-legende">
-        <svg xmlns="http://www.w3.org/2000/svg" class="img-fluid" height="18" width="18" viewBox="0 0 18 18" version="1.1">
-            <circle class="place" cx="9" cy="9" r="8" stroke="black" stroke-width="1" fill="#ffffff" fill-opacity="0.8"/>
-        </svg>
-        <span class="libelle-legende">Non réservable</span>
-    </div>
-    <div class="row-legende">
-        <svg xmlns="http://www.w3.org/2000/svg" class="img-fluid" height="18" width="18" viewBox="0 0 18 18" version="1.1">
-            <circle class="place" cx="9" cy="9" r="8" stroke="#777700" stroke-width="1" fill="#CCCC00 " fill-opacity="0.8"/>
-        </svg>
-        <span class="libelle-legende">Sélectionnée</span>
-    </div>
-    <div class="row-legende">
-        <svg xmlns="http://www.w3.org/2000/svg" class="img-fluid" height="18" width="18" viewBox="0 0 18 18" version="1.1">
-            <circle class="place" cx="9" cy="9" r="8" stroke="#4040FF" stroke-width="1" fill="#0000FF" fill-opacity="0.8"/>
-        </svg>
-        <span class="libelle-legende">Disponible</span>
-    </div>
