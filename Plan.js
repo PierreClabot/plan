@@ -9,7 +9,7 @@ class Plan {
         this.objets=objets;
         this.zoomBuffer=1;
         this.zoom=1;
-
+        this.domDbg=document.getElementById('DBG');
         this.canvas=canvas;
         this.ctx2d=canvas.getContext('2d');
         
@@ -17,13 +17,13 @@ class Plan {
         this.canvasB1.width=largeur;
         this.canvasB1.height=hauteur;
         this.ctx2dB1=this.canvasB1.getContext('2d');
-
+        
         this.canvasBHR=document.createElement('canvas');
         this.canvasBHR.width=largeur;
         this.canvasBHR.height=hauteur;
         this.ctx2dBHR=this.canvasBHR.getContext('2d');
                 
-        this.domDbg=document.getElementById('DBG');
+        this.testOFF();
         
         this.bounds={
             x:0,y:0,width:this.canvas.width,height:this.canvas.height
@@ -45,8 +45,8 @@ class Plan {
         let response2=this.workerJob.toString().replace('workerJob()', '');
         try {
            this.blob = new Blob([response2], {type: 'application/javascript'});
-           this.debug("blobSize : "+this.blob.size);
-           this.debug("blobType : "+this.blob.type);
+        //    this.debug("blobSize : "+this.blob.size);
+        //    this.debug("blobType : "+this.blob.type);
         } catch (e) { // Backwards-compatibility
             window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
             this.blob = new BlobBuilder();
@@ -60,13 +60,17 @@ class Plan {
     /* ne pas modifier le nom de cette fonction Cf : let response2=this.workerJob.toString().replace('workerJob()', ''); */
     /* Routine utilisée par le worker */
     testOFF(){
-        let canva=document.getElementById("PLAN");
-        let OffscreenCanvas = {
-            width : canva.width,
-            height : canva.height
+
+        let canvasB1 = {
+            width : this.canvasB1.width,
+            height : this.canvasB1.height
         };
-        this.debug("OffscreenCanvas Width : "+OffscreenCanvas.width);
-        this.debug("OffscreenCanvas Height : "+OffscreenCanvas.height);
+        let canvasBHR = {
+            width : this.canvasBHR.width,
+            height : this.canvasBHR.height
+        };
+        this.debug("canvasB1 { width : "+canvasB1.width+", height : "+canvasB1.height+" }");
+        this.debug("canvasBHR { width : "+canvasBHR.width+", height : "+canvasBHR.height+" }");
     }
     workerJob() {
         let nbObjDessines=0;
@@ -181,6 +185,7 @@ class Plan {
             }
             if (e.data[0]=='Init') {
                 console.log("WRK RET INIt");
+                this.debug("Init");
                 this.testOFF();
                 this.worker=null;
                 
