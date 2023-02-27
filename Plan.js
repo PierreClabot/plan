@@ -203,7 +203,7 @@ class Plan {
         this.domDbg.innerHTML='';
     }
     debug(cha) {
-        this.domDbg.innerHTML=`<pre>${cha}</pre>`;
+        this.domDbg.innerHTML+=`<pre>${cha}</pre>`;
     }
 
     prepare() {
