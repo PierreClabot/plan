@@ -640,8 +640,9 @@ initPlan()
                 }
         );
         this.debug("a-b");
-        let canva=document.getElementById("PLAN");
-        let plan=new Plan(canva,ob,1080,1080);
+        let canva=document.querySelector("#PLAN");
+        this.debug(canva.tagName);
+        let plan=new Plan(canva,ob,1080,1080,this);
         this.debug("b");
         return plan;        
   }
