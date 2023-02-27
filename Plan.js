@@ -72,10 +72,14 @@ class Plan {
         };
     }
     test(){
-        let offCan=new OffscreenCanvas(500,500);
-        this.debug(offCan);
-        this.debug("offCan Width : ",offCan.width);
-        this.debug("offCan Height : ",offCan.height);
+        // let offCan=new OffscreenCanvas(500,500);
+        // this.debug(offCan);
+        // this.debug("offCan Width : ",offCan.width);
+        // this.debug("offCan Height : ",offCan.height);
+        let canvas =document.createElement('canvas');
+        canvas.width=500;
+        canvas.height=500;
+        canvas.getContext('2d');
     }
     workerJob() {
         let nbObjDessines=0;
