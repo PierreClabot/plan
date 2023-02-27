@@ -140,7 +140,8 @@ class Plan {
         this.worker = new Worker(URL.createObjectURL(this.blob));
         this.objClient.debug("WP2");
         this.worker.onmessage= (e)=> {
-
+            this.objClient.debug("ONMESSAGE");
+            this.objClient.debug(e);
             //console.log('Message received from worker',e.data);
             
             if (e.data[0]=='cancel') {
