@@ -157,7 +157,7 @@ class Plan {
     workerPrepare() {
         //console.log("preapring wrker");
         this.worker = new Worker(URL.createObjectURL(this.blob));
-        
+        this.debug("workPrepare");
 
         this.worker.onmessage= (e)=> {
 
