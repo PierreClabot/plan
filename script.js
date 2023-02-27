@@ -625,8 +625,6 @@ initPlan()
             ob.push( { name : 'objet '+i,
                       x :Math.floor(Math.random() * 1008)+2,
                       y : Math.floor(Math.random() * 1008)+2,
-                    //  x : Math.floor(Math.random() * 1000),
-                    //  y : Math.floor(Math.random() * 1000),
                      width:  Math.floor(Math.random() * 18)+2,
                      height : Math.floor(Math.random() *18)+2
 
@@ -637,15 +635,11 @@ initPlan()
         ob.push( { name : 'test',
                   x :40,
                   y : 40,
-                //  x : Math.floor(Math.random() * 1000),
-                //  y : Math.floor(Math.random() * 1000),
                   width:  40,
                   height : 40
-                //  width:  18,
-                //  height : 18
                 }
         );
-
+        this.debug("a-b");
         let canva=document.getElementById("PLAN");
         let plan=new Plan(canva,ob,1080,1080);
         this.debug("b");
