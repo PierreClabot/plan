@@ -134,8 +134,9 @@ class Plan {
 
     workerPrepare() {
         //console.log("preapring wrker");
+        this.objClient.debug("w1");
         this.worker = new Worker(URL.createObjectURL(this.blob));
-        
+        this.objClient.debug("w2");
 
         this.worker.onmessage= (e)=> {
 
@@ -153,7 +154,7 @@ class Plan {
                 return;
             }
             if (e.data[0]=='Draw') {
-                
+                this.objClient.debug("onDraw");
                 this.worker.terminate();
                 this.worker=null;
                 //console.log("IMG finalized");
@@ -168,6 +169,7 @@ class Plan {
                 return;
             }
             if (e.data[0]=='Init') {
+                this.objClient.debug("onInit");
                 console.log("WRK RET INIt");
                 this.worker=null;
                 //console.log("IMG finalized");
@@ -192,7 +194,7 @@ class Plan {
     }
 
     onReady() {
-
+        this.objClient.debug("onReady");
         this.dessineThread();
     }
 
@@ -209,13 +211,13 @@ class Plan {
         for (var i=0; i<this.objets.length; i++) {
             this.qt.insert(this.objets[i]);      
         }
-        this.debug("a");
+
         this.recentre();
-        this.debug("b");
+
         this.calculeViewPort();
-        this.debug("c");
+
         this.dessinePlanB1();
-        this.debug("d");
+
     }
 
     update() {
