@@ -234,9 +234,9 @@ class Plan {
     dessinePlanB1() {
         this.objClient.debug("0");
         this.workerPrepare();
-        console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
+        // console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
         // let qtObjs=this.qt.retrieve(this.viewPort);
-        console.log("QtObs=",qtObjs);
+        // console.log("QtObs=",qtObjs);
         this.objClient.debug("1");
         this.worker.postMessage(['Hello',this.objets,this.boundsB1,1]);
         this.objClient.debug("2");
