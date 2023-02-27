@@ -81,6 +81,23 @@ class Plan {
         canvas.height=500;
         canvas.getContext('2d');
     }
+    
+    async workerCanvas(tabData) {
+        if( tabData[0]=='Hello' ){
+            self.postMessage(['Hello',0])
+        }
+        if(tabData[0]=='Draw' || tabData[0] == 'Init' )
+        {
+            let canvas = document.createElement("canvas");
+            canvas.width = 500;
+            canvas.height = 500;
+            let ctx=canvas.getContext('2d');
+            ctx.fillRect(25, 25, 100, 100);
+            return[tabData[0],ctx.getImageData(0,0,500,500),0]
+        }  
+
+    }
+
     workerJob() {
         let nbObjDessines=0;
         onmessage = (e) => {
@@ -120,8 +137,11 @@ class Plan {
             
             let lar=Math.floor(domRect.width*zoom);
             let hau=Math.floor(domRect.height*zoom);
-            
-            let offCan=new OffscreenCanvas(lar,hau);
+            console.log(this);
+            // let offCan=new OffscreenCanvas(lar,hau);
+            let offCan = document.createElement('canvas');
+            offCan.width = lar;
+            offCan.height = hau;
             let ctx=offCan.getContext('2d');
             
                         
@@ -263,6 +283,15 @@ class Plan {
     }
 
     dessinePlanB1() {
+        
+        
+        console.log(" dessine B1="+this.zoom,this.boundsB1);
+
+        this.workerCanvas(['Init',this.objets,this.boundsB1,1]);
+
+    }
+
+    dessinePlanB1_OLD() {
         this.workerPrepare();
         console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
         let qtObjs=this.qt.retrieve(this.viewPort);
@@ -271,6 +300,10 @@ class Plan {
     }
     
     dessineThread () {
+        
+    }
+
+    dessineThread2 () {
       
 
         if (this.worker==null) {
