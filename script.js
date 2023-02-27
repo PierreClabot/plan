@@ -5,7 +5,7 @@ class PlanDeSalle{
 
     const shape = document.querySelector("#IMG_PLANSALLE");
     const globalContainer = document.querySelector("div[data-name=TB_PLAN_SVG]")
-    const container = document.querySelector("div[data-name=PLAN-SALLE]");
+    const container = document.querySelector("#CONT_PLAN");
     if(debug == true)
     {
       let contenu =  `<div Class="btn-plan-container">
@@ -29,7 +29,7 @@ class PlanDeSalle{
 
     this.etatJeDeplace = false;
     this.nom = "plan de salle";
-
+    this.plan = this.initPlan();
     this.calculHauteur();
 
     window.onresize = this.calculHauteur;
@@ -66,7 +66,7 @@ class PlanDeSalle{
     // this.coeffGlisseInitial = 0.95;
     this.scale = 1;
 
-    this.domElement=document.querySelector("#IMG_PLANSALLE");
+    this.domElement=document.querySelector("#CONT_PLAN");
 
     this.premierAppui = {x:0,y:0};
     this.observers = [];
@@ -80,15 +80,15 @@ class PlanDeSalle{
     this.toleranceMouse = 5;
     this.toleranceTouch = 5;
 
-    const svg = document.querySelector("#IMG_PLANSALLE");
+    const svg = document.querySelector("#PLAN");
     
     //this.maxScale = 5;
     this.scaleWheelDeltaY = 1;
 
-    this.domElement.onload = (e)=>{
-      //this.debug("offsetWidth : "+this.domElement.offsetWidth);
-      //console.log("onloadP425 "+this.domElement.offsetWidth);
-    };
+    // this.domElement.onload = (e)=>{
+    //   //this.debug("offsetWidth : "+this.domElement.offsetWidth);
+    //   //console.log("onloadP425 "+this.domElement.offsetWidth);
+    // };
 
     document.addEventListener("touchstart",(e)=>{
       if(e.touches.length>1)
@@ -153,8 +153,8 @@ class PlanDeSalle{
           X:50,
           Y:50
         }
-        this.domElement.style.left = "0";
-        this.domElement.style.top = "0";
+        // this.domElement.style.left = "0";
+        // this.domElement.style.top = "0";
         this.zoom(e,scaleWheelDeltaY);
       }
     })
@@ -311,14 +311,14 @@ class PlanDeSalle{
           this.debug("rect.left"+rect.left);
           this.debug("rect.top"+rect.top);
           this.debug("touches1 : { page X : "+e.touches[0].pageX+" ,Y : "+e.touches[0].pageY+" }");
-          this.debug("touches1 : { page X : "+e.touches[1].pageX+" ,Y : "+e.touches[1].pageY+" }");
+          this.debug("touches2 : { page X : "+e.touches[1].pageX+" ,Y : "+e.touches[1].pageY+" }");
           this.debug("offsettouche1 : { X : "+offsetX.touche1 + ", Y : "+offsetY.touche1+" }");
           this.debug("offsettouche2 : { X : "+offsetX.touche2 + ", Y : "+offsetY.touche2+" }");
 
-          this.transformOrigin = {
-            X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
-            Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
-          }
+          // this.transformOrigin = {
+          //   X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
+          //   Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
+          // }
           if(this.transformOrigin.X>100)
           {
             this.transformOrigin.X = 100;
@@ -504,6 +504,7 @@ bougerEn(event,x,y)
   
    //this.debug("BOUGER EN x:"+x +" y"+y+" ")
    //this.debug("etatJeDeplace "+this.etatJeDeplace);
+  
   if(this.etatJeDeplace)
   {
     console.log("JE DEPLACE");
@@ -523,20 +524,20 @@ bougerEn(event,x,y)
       Y:this.historiquePos[1].Y - this.historiquePos[0].Y,
     }
     
+    this.plan.bouge({x:this.vecteur.X,y:this.vecteur.Y});
+    // let posActuelle=this.svgPositionDonne();
     
-    let posActuelle=this.svgPositionDonne();
-    
-    posActuelle.X+=this.vecteur.X;
-    posActuelle.Y+=this.vecteur.Y;
+    // posActuelle.X+=this.vecteur.X;
+    // posActuelle.Y+=this.vecteur.Y;
 
-    // TEST LIMITE
+    // // TEST LIMITE
+    // // console.log("posX",posActuelle.X);
+    // //console.log(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2);
     // console.log("posX",posActuelle.X);
-    //console.log(this.arrondirMillieme(this.domElement.offsetWidth*this.scale)/2);
-    console.log("posX",posActuelle.X);
-    console.log("this.scale",this.scale)
-    console.log("offsetWidth",this.domElement.offsetWidth*this.scale);
-    posActuelle = this.limiteDeplacement(posActuelle);
-    this.svgPosition(posActuelle);
+    // console.log("this.scale",this.scale)
+    // console.log("offsetWidth",this.domElement.offsetWidth*this.scale);
+    // posActuelle = this.limiteDeplacement(posActuelle);
+    // this.svgPosition(posActuelle);
   }
 
 }
@@ -612,7 +613,40 @@ stopGlisse(){
     }
   }
 }
+initPlan()
+{
+  let ob=[];
+        for (let i=0; i<5000; i++) {
+            
 
+            ob.push( { name : 'objet '+i,
+                      x :Math.floor(Math.random() * 1008)+2,
+                      y : Math.floor(Math.random() * 1008)+2,
+                    //  x : Math.floor(Math.random() * 1000),
+                    //  y : Math.floor(Math.random() * 1000),
+                     width:  Math.floor(Math.random() * 18)+2,
+                     height : Math.floor(Math.random() *18)+2
+
+            }
+            );
+        }
+
+        ob.push( { name : 'test',
+                  x :40,
+                  y : 40,
+                //  x : Math.floor(Math.random() * 1000),
+                //  y : Math.floor(Math.random() * 1000),
+                  width:  40,
+                  height : 40
+                //  width:  18,
+                //  height : 18
+                }
+        );
+
+        let canva=document.getElementById("PLAN");
+        let plan=new Plan(canva,ob,1080,1080);
+        return plan;        
+  }
 
 zoom(e,scale)
 {
@@ -626,8 +660,15 @@ zoom(e,scale)
   // if(this.scale > 4){ this.scale = 4;} // xxxxxxxxxxxxxxx
 
   this.scale = scale;
-  if(this.scale < 0.1){ this.scale = 0.1;}
-  this.scaleDOM();
+  if(this.scale<1)
+  {
+    this.plan.ezoom(0.5)
+  }
+  else{
+    this.plan.ezoom(2);
+  }
+  // if(this.scale < 0.1){ this.scale = 0.1;}
+  // this.scaleDOM();
   //this.lastScale=this.scale;
 }
 
