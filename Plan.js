@@ -40,14 +40,20 @@ class Plan {
         
         this.qt=new Quadtree(this.bounds,150,4);
         window.URL = window.URL || window.webkitURL;
+        this.objClient.debug("R");
         let response2=this.workerJob.toString().replace('workerJob()', '');
+        this.objClient.debug(response2);
         try {
+            this.objClient.debug("R1");
            this.blob = new Blob([response2], {type: 'application/javascript'});
+           this.objClient.debug("R2");
         } catch (e) { // Backwards-compatibility
+            this.objClient.debug("R3");
             window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
             this.blob = new BlobBuilder();
             this.blob.append(response2);
             this.blob = this.blob.getBlob();
+            this.objClient.debug("R4");
         }
         
         this.prepare();
