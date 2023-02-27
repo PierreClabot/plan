@@ -89,7 +89,7 @@ class PlanDeSalle{
     //   //this.debug("offsetWidth : "+this.domElement.offsetWidth);
     //   //console.log("onloadP425 "+this.domElement.offsetWidth);
     // };
-
+    this.debug("c");
     document.addEventListener("touchstart",(e)=>{
       if(e.touches.length>1)
       {
@@ -212,6 +212,7 @@ class PlanDeSalle{
       }
       //console.log("premierAPpui",this.premierAppui);
     })
+    this.debug("d");
 
     svg.addEventListener("touchstart",e=>{
       console.log(e);
@@ -226,7 +227,7 @@ class PlanDeSalle{
       }
       console.log("premierAPpui",this.premierAppui);
     })
-
+    this.debug("e");
     svg.addEventListener("touchend",e=>{
 
       let point = {
@@ -244,7 +245,7 @@ class PlanDeSalle{
         this.debug(`data -> X: ${data.coefX} Y:${data.coefY}`);
       }
     })
-
+    this.debug("f");
     svg.addEventListener("mouseup",e=>{
       let point = {
         x : e.clientX,
@@ -259,7 +260,7 @@ class PlanDeSalle{
         this.fire(data);
       }
     })
-    
+    this.debug("g");
     container.addEventListener("touchstart",e=>{
       
       e.stopPropagation();
@@ -276,10 +277,11 @@ class PlanDeSalle{
          this.appuiEn(e,e.clientX,e.clientY)
       }
     })
-
+    this.debug("h");
     container.addEventListener("mousedown", e =>{
       this.appuiEn(e,e.clientX, e.clientY);
     })
+    this.debug("i");
     container.addEventListener("touchmove",(e)=>{
 
       e.stopPropagation();
@@ -615,6 +617,7 @@ stopGlisse(){
 }
 initPlan()
 {
+  this.debug("initPlan");
   let ob=[];
         for (let i=0; i<5000; i++) {
             
@@ -645,6 +648,7 @@ initPlan()
 
         let canva=document.getElementById("PLAN");
         let plan=new Plan(canva,ob,1080,1080);
+        this.debug("b");
         return plan;        
   }
 
