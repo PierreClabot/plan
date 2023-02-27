@@ -60,8 +60,9 @@ class Plan {
             this.blob = this.blob.getBlob();
             this.debug("CATCH 5");
         }
-        
+        this.debug("PREPARE 1");
         this.prepare();
+        this.debug("PREPARE 2");
     }
 
     /* ne pas modifier le nom de cette fonction Cf : let response2=this.workerJob.toString().replace('workerJob()', ''); */
