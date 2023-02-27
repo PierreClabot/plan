@@ -160,7 +160,9 @@ class Plan {
         this.debug("workPrepare");
 
         this.worker.onmessage= (e)=> {
-
+            this.debug(e.data[0]);
+            this.debug(e.data[1]);
+            this.debug(e.data[2]);
             //console.log('Message received from worker',e.data);
             
             if (e.data[0]=='hello') {
