@@ -1,340 +1,60 @@
-<html>
-   <head>
-   <style>
-    body {
-    margin: 0;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
 
-    padding: 0;
-    }
-   </style> 
-  </head> 
- <body>
-
-    <div>
-	  <div id="cont" 
-       
-       style="width:1024px; height:1024px; padding:0; margin:0; border:solid 1px red;
-        position:relative; overflow:hidden;">
-        <canvas id="PLAN"
-         style="width:1024px; height:1024px; position:absolute; border:solid 1px green; padding:0; margin:0; "
-         height="1024px" width="1024px" id="canvas"></canvas>
-
-      </div>  
-      <!--<canvas 
-       id="TT" style="width:200px; height:200px;  border:solid 1px blue; padding:0; margin:0; " 
-      height="200px" width="200px" id="canvas"></canvas>
-      <canvas 
-       id="B1" style="width:200px; height:200px; border:solid 1px pink; padding:0; margin:0; " 
-      height="200px" width="200px" id="canvas"></canvas>
-      -->
-      
-      <!--
-        <canvas id="PLANB1" style="border:solid 2px purple;" height="300px" width="300px" id="canvas"></canvas>
-      -->  
-      <!--
-      <canvas id="PLANBHR" style="border:solid 2px purple;" height="300px" width="300px" id="canvas"></canvas>
-    -->
-      
-    </div>
-    
-    <div style="position:absolute; top:0; right:0; cursor:pointer" id="ZABORT" style="">abort</div>
-
-    <output style="border:solid 1px blue; height:100px; position:relative;">
-    </output>
-
-    <script src="QuadTree.js?v=1">
-    </script>
-
-
-    <script src="Plan.js?v=1">
-    </script>
-
-    <script>
-
-
-
-        //----------------------------------------------------------------------
-
-        ob=[];
-        for (let i=0; i<10000; i++) {
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>V1.6j</h1>
+    <div class="container-fluid">
+        <div class="row">
             
 
-            ob.push( { name : 'objet '+i,
-                      x :Math.floor(Math.random() * 1000)+2,
-                      y : Math.floor(Math.random() * 1000)+2,
-                     width:  Math.floor(Math.random() * 10)+2,
-                     height : Math.floor(Math.random() *10)+2
-
-            }
-            );
-        }
-
-            ob.push( { name : 'test',
-                      x :40,
-                      y : 40,
-                     width:  40,
-                     height : 40
-                   }
-            );
-
-           
-        
-
-
-        let canva=document.getElementById("PLAN");
-        //let canvaB1=document.getElementById("PLANB1");
-        //let canvaBHR=document.getElementById("PLANBHR");
-        
-        
-        //let plan=new Plan(canva,canvaB1,canvaBHR,ob);
-        let plan=new Plan(canva,ob,1024,1024);
-        canvas_bouge=false;
-        canvas_from={x:0,y:0};
-        canvas_to={x:0,y:0};
-
-
-
-        //----------------------------------------------------------------------
-
-
-
-
-
-
-
-        // Global vars to cache event state
-        let evCache = [];
-        let prevDiff = -1;
-        // Log events flag
-        let logEvents = true;
-
-        log("Her..",null);
-        log("Her.2.",null);
-        
-
-        function init() {
-            // Install event handlers for the pointer target
-            const el = document.getElementById("cont");
-            el.onpointerdown = pointerdownHandler;
-            el.onpointermove = pointermoveHandler;
-
-            // Use same handler for pointer{up,cancel,out,leave} events since
-            // the semantics for these events - in this app - are the same.
-            el.onpointerup = pointerupHandler;
-            el.onpointercancel = pointerupHandler;
-            el.onpointerout = pointerupHandler;
-            el.onpointerleave = pointerupHandler;
-
-            document.onpointerdown = pointerDocNone;
-            document.onpointermove = pointerDocNone;
-            document = pointerDocNone;
-            document = pointerDocNone;
-            document = pointerDocNone;
-            document = pointerDocNone;
-            } 
-
-
-            function pointerDocNone(ev) {
-                ev.preventDefault();
-                ev.stopPropagation();
-            }
-             
-
-            function pointerdownHandler(ev) {
-            // The pointerdown event signals the start of a touch interaction.
-            // This event is cached to support 2-finger gestures
-            evCache.push(ev);
-            log("pointerDown", ev);
-
-            //console.log(ev);
-
-            canvas_from={x:ev.clientX,y:ev.clientY};
-            canvas_to={x:canvas_from.x,y:canvas_from.y};
-
-        }
-
-        function pointermoveHandler(ev) {
-            // This function implements a 2-pointer horizontal pinch/zoom gesture.
-            //
-            // If the distance between the two pointers has increased (zoom in),
-            // the target element's background is changed to "pink" and if the
-            // distance is decreasing (zoom out), the color is changed to "lightblue".
-            //
-            // This function sets the target element's border to "dashed" to visually
-            // indicate the pointer's target received a move event.
-            log("pointerMove", ev);
-            //ev.target.style.border = "dashed";
-
-            // Find this event in the cache and update its record with this event
-            const index = evCache.findIndex((cachedEv) => cachedEv.pointerId === ev.pointerId);
-            evCache[index] = ev;
-
-            // If two pointers are down, check for pinch gestures
-            if (evCache.length === 2) {
-                // Calculate the distance between the two pointers
-                const curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
-
-                if (prevDiff > 0) {
-                if (curDiff > prevDiff) {
-                    // The distance between the two pointers has increased
-                    log("Pinch moving OUT -> Zoom in", ev);
-                    this.plan.ezoom(2);
-                }
-                if (curDiff < prevDiff) {
-                    // The distance between the two pointers has decreased
-                    log("Pinch moving IN -> Zoom out",ev);
-                    this.plan.ezoom(0.5);
-                    
-                }
-                }
-
-                // Cache the distance for the next move event
-                prevDiff = curDiff;
-            }
-
-
-            if (evCache.length == 1) {
-                // Calculate the distance between the two pointers
-                
-                canvas_to={x:ev.clientX,y:ev.clientY};
-                plan.bouge({
-                    x:(-canvas_to.x+canvas_from.x),
-                    y:(-canvas_to.y+canvas_from.y)
-                });
-                canvas_from={
-                    x:canvas_to.x,
-                    y:canvas_to.y
-                }
-            }
-
-
-        }
-
-        function pointerupHandler(ev) {
-            
-            if (evCache.length==1) {
-                plan.aim(ev.clientX,ev.clientY);
-            }
-            // Remove this pointer from the cache and reset the target's
-            // background and border
-            removeEvent(ev);
- 
-
-            // If the number of pointers down is less than two then reset diff tracker
-            if (evCache.length < 2) {
-                prevDiff = -1;
-            }
-        }
-
-
+    <div class="col-12" data-name="TB_PLAN_SVG">
    
-        function removeEvent(ev) {
-            //Remove this event from the target's cache
-            const index = evCache.findIndex((cachedEv) => cachedEv.pointerId === ev.pointerId);
-            evCache.splice(index, 1);
-        }
+<script language="javascript" type="text/javascript">
+function pcdClic(elem) {
+alert('Clic '+elem);
+}
 
 
+</script>
+<style>
 
-    
-
-        // Logging/debugging functions
-        function enableLog(ev) {
-        // logEvents = !logEvents;
-        }
-
-        function log(prefix, ev) {
-            if (!logEvents) return;
-            const o = document.getElementsByTagName('output')[0];
-            
-            if (typeof ev==='undefined' || ev==null) {
-                console.log(prefix);
-                o.innerHTML += prefix;    
-                return;
-            }
-            
-            const s = `${prefix}:<br>`
-                + `  pointerID   = ${ev.pointerId}<br>`
-                + `  pointerType = ${ev.pointerType}<br>`
-                + `  isPrimary   = ${ev.isPrimary}`;
-            o.innerHTML = `${s}<br>`;
-        }
-
-        function clearLog(event) {
-            const o = document.getElementsByTagName('output')[0];
-            o.innerHTML = "";
-        }
+</style>
+<div id="PLAN-DBG" class="event"><br>Event handlers</div>
 
 
+<div data-name="PLAN-SALLE" style="text-align:center">
+  <div class="btn-plan-commande" id="PLAN-CENTRER">Centrer</div>
+  <div style="position: relative; width: 800px; height: 800px;border: black solid 1px;">
+    <canvas id="canvas" style="position: absolute;left: 0;width: 800px; height: 800px; border: red solid 1px;" width="800px" height="800px"></canvas>
+  </div>
+</div>
+<script src="QuadTree.js"></script>
+<script src="Plan.js"></script>
+<script src="PlanDeSalle.js"></script>
+<script>
+  let ecouteur = {
+    onClick(data){
+      console.log("data",data);
+      // console.log("coefX", data.coefX)
+      // console.log("coefY",data.coefY)
+    }
+  }
+  const planDeSalle = new PlanDeSalle(false); // btn debug : false
+  planDeSalle.subscribe(ecouteur);
+</script>
 
-
-        init();
-
-
-
-
-        //----------------------------------------------------------------------
-
-
-
-
-
-    
-        document.getElementById("cont").addEventListener("wheel",(e)=>{
-            e.preventDefault();
-            e.stopPropagation();
-        });
-
-        // document.getElementById("cont").addEventListener("mousemove",(e)=>{
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //     if (!canvas_bouge) { 
-        //         plan.aim(e.offsetX,e.offsetY);
-        //         return; 
-        //     }
-        //     canvas_to={x:e.offsetX,y:e.offsetY};
-        //     plan.bouge({
-        //         x:(-canvas_to.x+canvas_from.x),
-        //         y:(-canvas_to.y+canvas_from.y)
-        //     });
-        //     canvas_from={
-        //         x:canvas_to.x,
-        //         y:canvas_to.y
-        //     }
-        // });
-
-        // document.getElementById("cont").addEventListener("mousedown",(e)=>{
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //     canvas_from={x:e.offsetX,y:e.offsetY};
-        //     canvas_to={x:canvas_from.x,y:canvas_from.y};
-        //     canvas_bouge=true;
-        // });
-
-        // document.addEventListener("mouseup",(e)=>{
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //     canvas_bouge=false;
-        // });
-
-        document.getElementById("cont").addEventListener("wheel",async (e)=>{
-            e.preventDefault();
-            e.stopPropagation();
-
-            letvzzom=1;
-            if (Math.sign(e.deltaY)>0) {
-                vzzom=2;
-            } else {
-                vzzom=0.5;
-               }
-            
-            console.log(vzzom);
-            plan.ezoom(vzzom);
-        });
-
-        
-    </script>
- </body>
-
-
+</body> 
 </html>
