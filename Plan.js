@@ -9,22 +9,25 @@ class Plan {
         this.objets=objets;
         this.zoomBuffer=1;
         this.zoom=1;
-        this.domDbg=document.getElementById('DBG');
+
         this.canvas=canvas;
         this.ctx2d=canvas.getContext('2d');
         
-        this.canvasB1=document.createElement('canvas');
+        //this.canvasB1=document.getElementById('B1'); //createElement('canvas');
+        this.canvasB1=document.createElement("canvas");
         this.canvasB1.width=largeur;
         this.canvasB1.height=hauteur;
         this.ctx2dB1=this.canvasB1.getContext('2d');
-        
-        this.canvasBHR=document.createElement('canvas');
+
+        //this.canvasBHR=document.getElementById('TT'); //createElement('canvas');
+        this.canvasBHR=document.createElement("canvas");
         this.canvasBHR.width=largeur;
         this.canvasBHR.height=hauteur;
+        this.canvasBHR.sca
         this.ctx2dBHR=this.canvasBHR.getContext('2d');
-        this.debug("AVANT TEST");
-        this.test();
-        this.debug("APRES TEST");
+        console.log("this.ctx2dBHR=",this.ctx2dBHR.width);
+                
+        this.domDbg=document.getElementById('DBG');
         
         this.bounds={
             x:0,y:0,width:this.canvas.width,height:this.canvas.height
@@ -42,63 +45,24 @@ class Plan {
         this.abortController=null;
         this.qt=new Quadtree(this.bounds,150,4);
   
-        window.URL = window.URL || window.webkitURL;
-        let response2=this.workerJob.toString().replace('workerJob()', '');
-        try {
-           this.blob = new Blob([response2], {type: 'application/javascript'});
-           console.log(this.blob);
-            // this.debug("blobSize : "+this.blob.size);
-            // this.debug("blobType : "+this.blob.type);
-        } catch (e) { // Backwards-compatibility
-            window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-            this.blob = new BlobBuilder();
-            this.blob.append(response2);
-            this.blob = this.blob.getBlob();
-        }
+        // window.URL = window.URL || window.webkitURL;
+        // let response2=this.workerJob.toString().replace('workerJob()', '');
+        // try {
+        //    this.blob = new Blob([response2], {type: 'application/javascript'});
+        //    console.log(this.blob);
+        // } catch (e) { // Backwards-compatibility
+        //     window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+        //     this.blob = new BlobBuilder();
+        //     this.blob.append(response2);
+        //     this.blob = this.blob.getBlob();
+        // }
+        
         this.prepare();
     }
 
     /* ne pas modifier le nom de cette fonction Cf : let response2=this.workerJob.toString().replace('workerJob()', ''); */
     /* Routine utilisée par le worker */
-    testOFF(){
-
-        let canvasB1 = {
-            width : this.canvasB1.width,
-            height : this.canvasB1.height
-        };
-        let canvasBHR = {
-            width : this.canvasBHR.width,
-            height : this.canvasBHR.height
-        };
-    }
-    test(){
-        // let offCan=new OffscreenCanvas(500,500);
-        // this.debug(offCan);
-        // this.debug("offCan Width : ",offCan.width);
-        // this.debug("offCan Height : ",offCan.height);
-        let canvas =document.createElement('canvas');
-        canvas.width=500;
-        canvas.height=500;
-        canvas.getContext('2d');
-    }
-    
-    async workerCanvas(tabData) {
-        if( tabData[0]=='Hello' ){
-            self.postMessage(['Hello',0])
-        }
-        if(tabData[0]=='Draw' || tabData[0] == 'Init' )
-        {
-            let canvas = document.createElement("canvas");
-            canvas.width = 500;
-            canvas.height = 500;
-            let ctx=canvas.getContext('2d');
-            ctx.fillRect(25, 25, 100, 100);
-            return[tabData[0],ctx.getImageData(0,0,500,500),0]
-        }  
-
-    }
-
-    workerJob() {
+    ____workerJob() {
         let nbObjDessines=0;
         onmessage = (e) => {
             //console.log('**Message received from main script');
@@ -115,6 +79,7 @@ class Plan {
             }
 
             if(e.data[0]=='Draw' || e.data[0]=='Init' ) {
+                
                 let workerResult=dessineOffLine(e.data);
                 if (workerResult!=null) {
                     dd=[e.data[0],workerResult,e.data[1].length];
@@ -129,7 +94,7 @@ class Plan {
         }
     
     
-        dessineOffLine=function(datas) {
+       ____dessineOffLine=function(datas) {
             
             let objets=datas[1];
             let domRect=datas[2];
@@ -137,11 +102,8 @@ class Plan {
             
             let lar=Math.floor(domRect.width*zoom);
             let hau=Math.floor(domRect.height*zoom);
-            console.log(this);
-            // let offCan=new OffscreenCanvas(lar,hau);
-            let offCan = document.createElement('canvas');
-            offCan.width = lar;
-            offCan.height = hau;
+            
+            let offCan=new OffscreenCanvas(lar,hau);
             let ctx=offCan.getContext('2d');
             
                         
@@ -177,34 +139,28 @@ class Plan {
         }
     }
 
-    workerPrepare() {
+    ____workerPrepare() {
         //console.log("preapring wrker");
         this.worker = new Worker(URL.createObjectURL(this.blob));
-        // this.debug("workPrepare");
-        // this.debug("Worker "+this.worker)
-        // this.debug("workerOnMessage",this.worker.onmessage);
-        // this.debug("workerOnError",this.worker.onerror);
+        
+
         this.worker.onmessage= (e)=> {
-            // this.debug("e.data[0] : "+e.data[0]);
-            // this.debug("e.data[1] : "+e.data[1]);
-            // this.debug("e.data[2] : "+e.data[2]);
+
             //console.log('Message received from worker',e.data);
             
             if (e.data[0]=='hello') {
-                this.debug("hello");
                 //console.log("woerker respond hello!");
                 //this.worker.terminate();
                 //this.worker=null;
                 return;
             }
             if (e.data[0]=='cancel') {
-                this.debug("cancel");
                 console.log("CLIENT worked has cancelled treatùet");
                 this.worker=null;
                 return;
             }
             if (e.data[0]=='Draw') {
-                this.debug("Draw");
+                
                 this.worker.terminate();
                 this.worker=null;
                 //console.log("IMG finalized");
@@ -220,10 +176,7 @@ class Plan {
             }
             if (e.data[0]=='Init') {
                 console.log("WRK RET INIt");
-                this.debug("Init");
-                this.testOFF();
                 this.worker=null;
-                
                 //console.log("IMG finalized");
                 this.ctx2dB1.putImageData(e.data[1],0,0);
                 this.planReady=true;
@@ -231,7 +184,6 @@ class Plan {
                 return;
             }
             if (e.data[0]=='Stop') {
-                this.debug("Stop");
                 console.log("woerker respond stop!");
                 //this.worker.terminate();
                 //this.worker=null;
@@ -255,7 +207,7 @@ class Plan {
         this.domDbg.innerHTML='';
     }
     debug(cha) {
-        this.domDbg.innerHTML+=`<pre>${cha}</pre>`;
+        this.domDbg.innerHTML=`<pre>${cha}</pre>`;
     }
 
     prepare() {
@@ -282,16 +234,148 @@ class Plan {
         
     }
 
-    dessinePlanB1() {
-        
-        
-        console.log(" dessine B1="+this.zoom,this.boundsB1);
+    ____dessineOffLine2(datas) {
+        dessineOffLine=function(datas) {
+            
+            let objets=datas[1];
+            let domRect=datas[2];
+            let zoom=datas[3];
+            
+            let lar=Math.floor(domRect.width*zoom);
+            let hau=Math.floor(domRect.height*zoom);
+            
+            let offCan=document.createElement('canvas');
+            let ctx=offCan.getContext('2d');
+                        
+            ctx.clearRect(0,0,lar,hau);
+    
+            ctx.fillStyle = "#D0D0D0";
+            ctx.strokeStyle = "#808080";
+            ctx.font = (Math.floor(48*zoom))+"px serif";
+            
+            //ctx.fillText("Hello world "+objets.length, 10*zoom, 50*zoom);
+             
+            // objet trouvé dans le viewport
+            //         let bb={x:e.offsetX/this.zoom,y:e.offsetY/this.zoom,width:0,height:0};
+            //         
+            //         this.dessineTrouve(rs,this.zoom);
+            nbObjDessines=0;
+            if (objets!=null && objets.length>0) {
+                    for (var i=0; (i<objets.length) ; i++) {
+                        ctx.fillRect  ((objets[i].x-domRect.x)*zoom,(objets[i].y-domRect.y)*zoom,objets[i].width*zoom,objets[i].height*zoom);
+                        ctx.strokeRect((objets[i].x-domRect.x)*zoom,(objets[i].y-domRect.y)*zoom,objets[i].width*zoom,objets[i].height*zoom);
+                        nbObjDessines++;
+                        //   for (var z=1; (z<200) && (drw_plan_cancel==false); z++) {
+                        //       for (var xx=1; (xx<500) && (drw_plan_cancel==false); xx++) {
+                        //   }
+                        //   }
+                    }
+            }
+            //console.log("finishen the job");
 
-        this.workerCanvas(['Init',this.objets,this.boundsB1,1]);
+                      
+             return ctx.getImageData(0,0,lar,hau);
+             
+        }
+    
+    }
+
+    dessineXX(ctx,datas) {
+        
+        ctx.fillStyle='#FF0';
+        ctx.fillRect(0,0,128,128);
+
+        let objets=datas[1];
+        let domRect=datas[2];
+        let tzoom=datas[3];
+        
+        let lar=Math.floor(domRect.width*tzoom);
+        let hau=Math.floor(domRect.height*tzoom);
+
+        // console.log("dess lar="+lar);
+        // console.log("dess lar="+hau);
+                            
+        ctx.clearRect(0,0,lar,hau);
+
+        ctx.fillStyle = "#D0FFD0";
+        ctx.strokeStyle = "#4080FF";
+        ctx.font = (Math.floor(48*tzoom))+"px serif";
+        
+        
+        if (objets!=null && objets.length>0) {
+                for (var i=0; (i<objets.length) ; i++) {
+                    ctx.fillRect  ((objets[i].x-domRect.x)*tzoom,(objets[i].y-domRect.y)*tzoom,objets[i].width*tzoom,objets[i].height*tzoom);
+                    ctx.strokeRect((objets[i].x-domRect.x)*tzoom,(objets[i].y-domRect.y)*tzoom,objets[i].width*tzoom,objets[i].height*tzoom);
+                }
+        }
+        //console.log("finishen the job");
+        let ii=ctx.getImageData(0,0,lar,hau);
+        return ii
+
+
+
+    }
+    
+    workerC(datas) {
+         //console.log('**Message received from main script');
+            // console.log("**Datas worker datas=",datas);
+            // console.log("**Datas commabd=",datas[0]);
+            // console.log("**Datas worker obj len="+datas[1].length);
+            // console.log("**Datas worker view=",datas[2]);
+            // console.log("**Datas worker zoom=",datas[3]);
+         
+            return new Promise((resolve, reject) => {
+                let c =  document.createElement('canvas');
+                c.width=this.bounds.width;
+                c.height=this.bounds.height;
+                
+                //c=document.createCanvas(512,512);
+                if (c==null) {
+                    reject(['Fail',null]);
+                } else
+                {
+                    let ctx=c.getContext('2d');
+
+                    setTimeout(() => {
+                        let ret=this.dessineXX(ctx,datas);
+                        //this.renderFinal();
+                        resolve(['Draw',ret]);
+                        
+                      }, 0)
+                    
+
+
+                    
+
+                }
+            });
 
     }
 
-    dessinePlanB1_OLD() {
+
+    async dessinePlanB1() {
+        try{
+            const test1 = this.workerC(['Init',this.objets,this.boundsB1,1]);
+            test1.then( (datas)=> {
+                console.log('INT0:=',datas[0]);
+                console.log('INT1:=',datas[1]);
+                //this.ctx2dBHR.putImageData(datas[1],0,0);
+                this.ctx2dB1.putImageData(datas[1],0,0);
+                this.planReady=true;
+                this.onReady();
+                    //     console.log("K");
+                    this.renderFinal();
+            }
+            );
+            console.log('INit:',test1);
+            
+        }catch(err){
+            console.log(err);
+            alert(err);
+        }
+    }
+
+    ___dessinePlanB1_OLD() {
         this.workerPrepare();
         console.log(" request init thread with zoom="+this.zoom,this.boundsB1);
         let qtObjs=this.qt.retrieve(this.viewPort);
@@ -299,11 +383,55 @@ class Plan {
         this.worker.postMessage(['Init',this.objets,this.boundsB1,1,qtObjs]);
     }
     
-    dessineThread () {
+    dessineThread() {
+        try{
+
+        //let view=new DOMRect(0,0,this.bounds.width/this.zoom,this.bounds.height/this.zoom);
+        //console.log(" request draw thread with zoom="+this.zoom,this.viewPort);
+        let vport={
+            x:this.viewPort.x,
+            y:this.viewPort.y,
+            width:this.viewPort.width,
+            height:this.viewPort.height
+        }
+
+        let dats=['Draw',this.objets,vport,this.zoom];
+
+        const test1 = this.workerC(dats);
+            
+            test1.then( (datas)=> {
+                //console.log('DRA0:=',datas[0]); -->'Draw'
+                //console.log('DRAW1:=',datas[1]); -->ImageData d'un ctx
+                this.ctx2dBHR.putImageData(datas[1],0,0);
+            
+
+        //         this.ctx2dBHR.beginPath(); 
+        //         this.ctx2dBHR.strokeStyle="#F0F";
+        //         this.ctx2dBHR.lineWidth=4;
+        // this.ctx2dBHR.moveTo(this.viewPort.x, 0); 
+        // this.ctx2dBHR.lineTo (this.bounds.width,this.bounds.height);
+        // this.ctx2dBHR.stroke();
+        // this.ctx2dBHR.beginPath(); 
+        // this.ctx2dBHR.moveTo(this.bounds.width, 0); 
+        // this.ctx2dBHR.lineTo (0,this.bounds.height);
+        // this.ctx2dBHR.stroke();
+        setTimeout(() => {
+            this.renderFinal();
+            
+          }, 1)
+          
         
+                
+            }
+            )
+            //console.log('Draw:',test1);
+        }catch(err){
+            console.log(err);
+            alert(err);
+        }
     }
 
-    dessineThread2 () {
+    ____dessineThread_OLD () {
       
 
         if (this.worker==null) {
@@ -378,6 +506,7 @@ class Plan {
     }
 
     dessineObjet(rs,fill,stroke) {
+        
         this.ctx2d.fillStyle = stroke;
         this.ctx2d.fillStyle = fill;
         this.ctx2d.strokeStyle = stroke;
@@ -410,6 +539,7 @@ class Plan {
         }
         this.ctx2d.strokeStyle = "#DD0";
         this.ctx2d.beginPath(); 
+        this.ctx2dBHR.lineWidth=1;
         this.ctx2d.moveTo(0, y); 
         this.ctx2d.lineTo (this.bounds.width,y);
         this.ctx2d.stroke();
@@ -420,17 +550,8 @@ class Plan {
     }
 
     dessineTrouve(rs,zzoom) {
-        //this.ctx2d.fillStyle = "blue";
-        //this.ctx2d.strokeStyle = "#4040FF";
         for (var i=0; i<rs.length; i++) {
             this.dessineObjet(rs[i],"blue","cyan");
-            // let xshape=(rs[i].x-this.viewPort.x)*this.zoom;
-            // let yshape=(rs[i].y-this.viewPort.y)*this.zoom;
-            // let wshape=rs[i].width*this.zoom;
-            // let hshape=rs[i].height*this.zoom;
-            
-            // this.ctx2d.fillRect  (xshape,yshape,wshape,hshape);
-            // this.ctx2d.strokeRect(xshape,yshape,wshape,hshape);
         }
         this.renderQuad();
 
@@ -438,10 +559,10 @@ class Plan {
 
     recentre() {
        this.zoom=this.bounds.width/this.boundsB1.width;
-       console.log("eoom reccenre=",this.zoom);
-       console.log("this.bounds",this.bounds);
-       console.log("this.boundB1",this.boundsB1);
-       console.log("zoom=",this.zoom);
+    //    console.log("eoom reccenre=",this.zoom);
+    //    console.log("this.bounds",this.bounds);
+    //    console.log("this.boundB1",this.boundsB1);
+    //    console.log("zoom=",this.zoom);
        this.viewPort=new DOMRect(
         0,
         0,
