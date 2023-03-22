@@ -281,6 +281,13 @@ class PlanDeSalle{
 
       e.stopPropagation();
       e.preventDefault(); 
+      for(let i=0;i<this.appuis.length;i++)
+      {
+        if(this.appuis[i].pointerId == e.pointerId)
+        {
+          this.appuis[i] = e;
+        }
+      }
       // this.debug("nb Appuis "+this.appuis.length);
       if(this.appuis.length > 1) // Plusieurs doigts simultanés
       {
@@ -292,7 +299,6 @@ class PlanDeSalle{
             this.boolPremierScale = false;
           }
           let vT = this.norme2Points( {X:this.appuis[0].clientX,Y:this.appuis[0].clientY }, {X:this.appuis[1].clientX,Y:this.appuis[1].clientY } );
-     
           var rect = e.target.getBoundingClientRect();
 
           let offsetX = {
