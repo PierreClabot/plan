@@ -75,11 +75,13 @@ class PlanDeSalle{
     this.sourisGlisseMax = 50;
     this.toleranceMouse = 5;
     this.toleranceTouch = 5;
+
+    this.appuis=[];
     const svg = document.querySelector("#IMG_PLANSALLE");
     this.scaleWheelDeltaY = 1;
 
     document.addEventListener("pointerdown",(e)=>{
-      if(e.touches.length>1)
+      if(this.appuis.length>1)
       {
         e.stopPropagation();
         e.preventDefault();
@@ -87,12 +89,12 @@ class PlanDeSalle{
       }
     })
     document.addEventListener("pointermove",(e)=>{
-      if(e.touches.length>1)
-      {
-        e.stopPropagation();
-        e.preventDefault();
-        this.debugL(" !touchemovedocument! ");
-      }
+      // if(e.touches.length>1)
+      // {
+      //   e.stopPropagation();
+      //   e.preventDefault();
+      //   this.debugL(" !touchemovedocument! ");
+      // }
     });
     /* TEST APPLE AJOUT */
     document.addEventListener('gesturestart', function (e) {
@@ -156,21 +158,20 @@ class PlanDeSalle{
       this.etatJeDeplace = false;
     });
 
-    document.addEventListener("pointerdown",(e)=>{
-      if(e.touches.length>1)
-      {
-        e.stopPropagation();
-        e.preventDefault();
-        this.debugL(" !touchemovedocument! ");
-      }
-    })
+    // document.addEventListener("pointerdown",(e)=>{
+    //     this.appuis.push(e);
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //     this.debugL(" !touchemovedocument! ");
+    
+    // })
     document.addEventListener("pointermove",(e)=>{
-      if(e.touches.length>1)
-      {
-        e.stopPropagation();
-        e.preventDefault();
-        this.debugL(" !touchemovedocument! ");
-      }
+      // if(e.touches.length>1)
+      // {
+      //   e.stopPropagation();
+      //   e.preventDefault();
+      //   this.debugL(" !touchemovedocument! ");
+      // }
     });
     /* TEST APPLE */
     document.addEventListener('gesturestart', function (e) {
@@ -206,12 +207,13 @@ class PlanDeSalle{
 
     svg.addEventListener("pointerdown",e=>{
 
+      this.appuis.push(e);
       var rect = e.target.getBoundingClientRect();
-      var offsetX = e.targetTouches[0].pageX - rect.left;
-      var offsetY = e.targetTouches[0].pageY - rect.top;
+      var offsetX = e.pageX - rect.left;
+      var offsetY = e.pageY - rect.top;
       this.premierAppui = {
-        x:e.touches[0].clientX,
-        y:e.touches[0].clientY,
+        x:e.clientX,
+        y:e.clientY,
         offsetX : offsetX,
         offsetY : offsetY
       }
@@ -219,10 +221,11 @@ class PlanDeSalle{
     })
 
     svg.addEventListener("pointerup",e=>{
+      // pointerId
 
       let point = {
-        x : e.changedTouches[0].clientX,
-        y: e.changedTouches[0].clientY
+        x : e.clientX,
+        y: e.clientY
       }
 
       if((Math.abs(point.x-this.premierAppui.x)<this.toleranceTouch) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceTouch))
@@ -256,12 +259,12 @@ class PlanDeSalle{
       e.stopPropagation();
       e.preventDefault(); 
       
-      if (e.touches.length>1) {
+      if (this.appuis.length>1) {
         this.etatJeDeplace=false;
         this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
       }
 
-      if (e.touches.length==1) {
+      if (this.appuis.length==1) {
           this.appuiEn(e,e.clientX,e.clientY)
       }
     })
@@ -274,62 +277,62 @@ class PlanDeSalle{
 
       e.stopPropagation();
       e.preventDefault(); 
-
-      if(e.touches.length > 1) // Plusieurs doigts simultanés
-      {
-          if(this.boolPremierScale)
-          {
-            this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-            this.scaleInit=this.scale;
-            this.boolPremierScale = false;
-          }
-          let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+      this.debug("nb Appuis "+this.appuis.length);
+      // if(e.touches.length > 1) // Plusieurs doigts simultanés
+      // {
+      //     if(this.boolPremierScale)
+      //     {
+      //       this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+      //       this.scaleInit=this.scale;
+      //       this.boolPremierScale = false;
+      //     }
+      //     let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
           
-          var rect = e.target.getBoundingClientRect();
+      //     var rect = e.target.getBoundingClientRect();
 
-          let offsetX = {
-            touche1:e.touches[0].pageX - rect.left,
-            touche2:e.touches[1].pageX - rect.left,
-          }
+      //     let offsetX = {
+      //       touche1:e.touches[0].pageX - rect.left,
+      //       touche2:e.touches[1].pageX - rect.left,
+      //     }
 
-          let offsetY = {
-            touche1:e.touches[0].pageY - rect.top,
-            touche2:e.touches[1].pageY - rect.top,
-          }
+      //     let offsetY = {
+      //       touche1:e.touches[0].pageY - rect.top,
+      //       touche2:e.touches[1].pageY - rect.top,
+      //     }
 
-          this.transformOrigin = {
-            X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
-            Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
-          }
-          if(this.transformOrigin.X>100)
-          {
-            this.transformOrigin.X = 100;
-          }
-          if(this.transformOrigin.X<0)
-          {
-            this.transformOrigin.X = 0;
-          }
-          if(this.transformOrigin.Y>100)
-          {
-            this.transformOrigin.Y = 100;
-          }
-          if(this.transformOrigin.Y<0)
-          {
-            this.transformOrigin.Y= 0;
-          }
+      //     this.transformOrigin = {
+      //       X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
+      //       Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
+      //     }
+      //     if(this.transformOrigin.X>100)
+      //     {
+      //       this.transformOrigin.X = 100;
+      //     }
+      //     if(this.transformOrigin.X<0)
+      //     {
+      //       this.transformOrigin.X = 0;
+      //     }
+      //     if(this.transformOrigin.Y>100)
+      //     {
+      //       this.transformOrigin.Y = 100;
+      //     }
+      //     if(this.transformOrigin.Y<0)
+      //     {
+      //       this.transformOrigin.Y= 0;
+      //     }
 
-          let coefScale = vT/this.vInit;
-          let scale = this.scaleInit * coefScale;
-          this.debug("Scale "+scale)
-          this.debug("this.transformOriginX"+this.transformOrigin.X);
-          this.debug("this.transformOriginY"+this.transformOrigin.Y);
-          this.zoom(e,scale);
-      }
-      if(e.touches.length == 1)
-      {
-        this.etatJeDeplace=true;
-        this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
-      }
+      //     let coefScale = vT/this.vInit;
+      //     let scale = this.scaleInit * coefScale;
+      //     this.debug("Scale "+scale)
+      //     this.debug("this.transformOriginX"+this.transformOrigin.X);
+      //     this.debug("this.transformOriginY"+this.transformOrigin.Y);
+      //     this.zoom(e,scale);
+      // }
+      // if(e.touches.length == 1)
+      // {
+      //   this.etatJeDeplace=true;
+      //   this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
+      // }
 
     })
     container.addEventListener("wheel", e=>{
@@ -413,6 +416,14 @@ class PlanDeSalle{
     container.addEventListener("pointerup",(e)=>{
       e.stopPropagation();
       e.preventDefault(); 
+      for(let i = 0;i<this.appuis.length;i++)
+      {
+        if(this.appuis[i].pointerId == e.pointerId)
+        {
+          console.log("******** DELETE *******")
+          this.appuis.splice(i,1);
+        }
+      }
       this.boolPremierScale = true;
       this.boolPremierDeplacement = true;
       let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
