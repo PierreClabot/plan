@@ -11,7 +11,9 @@
     <meta http-equiv="pragma" content="no-cache" />
 
     <title>Document</title>
+    
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -30,16 +32,18 @@ alert('Clic '+elem);
 
 </script>
 <style>
-
+  
 </style>
 <div id="PLAN-DBG" class="event"><br>Event handlers</div>
 
 
 <div data-name="PLAN-SALLE" style="text-align:center">
-  <div class="btn-plan-commande" id="PLAN-CENTRER">Centrer</div>
-  <div style="position: relative; width: 800px; height: 800px;border: black solid 1px;">
-    <canvas id="canvas" style="position: absolute;left: 0;width: 800px; height: 800px; border: red solid 1px;" width="800px" height="800px"></canvas>
+  <div class="btn-plan-commande">
+    <div class="btn" id="PLAN-CENTRER"><i class="fas fa-crosshairs fa-2x"></i></div>
+    <div class="btn" id="PLAN-ZOOM"><i class="fas fa-plus fa-xl"></i></div>
+    <div class="btn" id="PLAN-DEZOOM"><i class="fas fa-minus fa-xl"></i></div>
   </div>
+  <img class="img-fluid" id="IMG_PLANSALLE" src="svg.svg" alt="" draggable="false">
 </div>
 <script src="QuadTree.js?v=1"></script>
 <script src="Plan.js?v=1"></script>
