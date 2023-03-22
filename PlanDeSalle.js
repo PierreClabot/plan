@@ -261,6 +261,7 @@ class PlanDeSalle{
       
       if (this.appuis.length>1) {
         this.etatJeDeplace=false;
+        this.debug("JE ZOOM");
         this.curDiffInitial=this.norme2Points( {X:this.appuis[0].clientX,Y:this.appuis[0].clientY }, {X:this.appuis[1].clientX,Y:this.appuis[1].clientY } );
       }
 
