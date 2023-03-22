@@ -78,7 +78,7 @@ class PlanDeSalle{
     const svg = document.querySelector("#IMG_PLANSALLE");
     this.scaleWheelDeltaY = 1;
 
-    document.addEventListener("touchstart",(e)=>{
+    document.addEventListener("pointerdown",(e)=>{
       if(e.touches.length>1)
       {
         e.stopPropagation();
@@ -86,7 +86,7 @@ class PlanDeSalle{
         this.debugL(" !touchemovedocument! ");
       }
     })
-    document.addEventListener("touchmove",(e)=>{
+    document.addEventListener("pointermove",(e)=>{
       if(e.touches.length>1)
       {
         e.stopPropagation();
@@ -156,7 +156,7 @@ class PlanDeSalle{
       this.etatJeDeplace = false;
     });
 
-    document.addEventListener("touchstart",(e)=>{
+    document.addEventListener("pointerdown",(e)=>{
       if(e.touches.length>1)
       {
         e.stopPropagation();
@@ -164,7 +164,7 @@ class PlanDeSalle{
         this.debugL(" !touchemovedocument! ");
       }
     })
-    document.addEventListener("touchmove",(e)=>{
+    document.addEventListener("pointermove",(e)=>{
       if(e.touches.length>1)
       {
         e.stopPropagation();
@@ -189,7 +189,7 @@ class PlanDeSalle{
       this.reset();
     });
 
-    document.querySelector("#PLAN-CENTRER").addEventListener("touchstart",(e)=>{ 
+    document.querySelector("#PLAN-CENTRER").addEventListener("pointerdown",(e)=>{ 
       this.reset();
     });
 
@@ -204,7 +204,7 @@ class PlanDeSalle{
       
     })
 
-    svg.addEventListener("touchstart",e=>{
+    svg.addEventListener("pointerdown",e=>{
 
       var rect = e.target.getBoundingClientRect();
       var offsetX = e.targetTouches[0].pageX - rect.left;
@@ -218,7 +218,7 @@ class PlanDeSalle{
 
     })
 
-    svg.addEventListener("touchend",e=>{
+    svg.addEventListener("pointerup",e=>{
 
       let point = {
         x : e.changedTouches[0].clientX,
@@ -251,7 +251,7 @@ class PlanDeSalle{
       }
     })
     
-    container.addEventListener("touchstart",e=>{
+    container.addEventListener("pointerdown",e=>{
       
       e.stopPropagation();
       e.preventDefault(); 
@@ -270,7 +270,7 @@ class PlanDeSalle{
       this.appuiEn(e,e.clientX, e.clientY);
       return;
     })
-    container.addEventListener("touchmove",(e)=>{
+    container.addEventListener("pointermove",(e)=>{
 
       e.stopPropagation();
       e.preventDefault(); 
@@ -410,7 +410,7 @@ class PlanDeSalle{
     });
     
 
-    container.addEventListener("touchend",(e)=>{
+    container.addEventListener("pointerup",(e)=>{
       e.stopPropagation();
       e.preventDefault(); 
       this.boolPremierScale = true;
