@@ -424,7 +424,7 @@ class PlanDeSalle{
       {
         if(this.appuis[i].pointerId == e.pointerId)
         {
-          console.log("******** DELETE *******")
+          this.debug("******** DELETE *******")
           this.appuis.splice(i,1);
         }
       }
