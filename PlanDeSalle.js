@@ -255,45 +255,22 @@ class PlanDeSalle{
           else{
             this.plan.ezoom(this.plan.getZoom()*1.5)
           }
-      
-        // if(this.boolPremierScale)
-        // {
-        //   this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        //   this.scaleInit=this.scale;
-        //   this.boolPremierScale = false;
-        // }
-        // let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        // let coefScale = vT/this.vInit;
-        // let scale = this.scaleInit * coefScale;
-
-
-        // let curDiff=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        // let scaleFacteur=curDiff-this.curDiffInitial;
-        // let paramScale = 0;
-        // if (scaleFacteur>0.2) { paramScale=0.05;}
-        // if (scaleFacteur<0.2) { paramScale=-0.05;}
-        // this.debugL(" vInit "+this.vInit+" ");
-        // this.debugL(" vT "+vT+" ");
-        // this.debugL(" scaleInit "+this.scaleInit+" ");
-        // this.debugL(" vs:"+this.arrondirMillieme(scale)+" ");
-
-        //this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-        
-        //this.zoom(e,scale);
 
       }
       if(e.touches.length == 1)
       {
         this.etatJeDeplace=true;
-        let v = {
-          x:2,
-          y:0
-        }
+        // let v = {
+        //   x:2,
+        //   y:0
+        // }
         // let v = {
         //   x:e.touches[0].clientX,
         //   y:e.touches[0].clientY
         // }
-        this.plan.bouge(v);
+        // this.plan.bouge(v);
+        console.log(e.touches[0]);
+        this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
       }
 
     })
@@ -326,16 +303,22 @@ class PlanDeSalle{
          // --return;
          e.stopPropagation();
          e.preventDefault(); 
-         let v = {
-          x:2,
-          y:0
-        }
-        // let v={
-        //   x:e.clientX,
-        //   y:e.clientY
+        //  let v = {
+        //   x:2,
+        //   y:0
         // }
-         // this.afficheHeure(); debug ralentissement firefox au chargement
-         this.plan.bouge(v);
+        if(this.etatJeDeplace)
+        {
+          console.log(this.vecteur);
+          // let v={
+          //   x:e.clientX,
+          //   y:e.clientY
+          // }
+          //console.log(v);
+          // this.plan.bouge(v);
+          this.bougerEn(e,e.clientX,e.clientY)
+        }
+
     });
 
     container.addEventListener("mouseup",(e)=>{
@@ -457,11 +440,13 @@ bougerEn(event,x,y)
       X : x,
       Y : y
     }
-
+    console.log("historiquePos",this.historiquePos);
     this.vecteur={
       X:this.historiquePos[1].X - this.historiquePos[0].X,
       Y:this.historiquePos[1].Y - this.historiquePos[0].Y,
     }
+    this.plan.bouge({x:this.vecteur.X,y:this.vecteur.Y})
+    console.log(this.vecteur);
     
     
     let posActuelle={X : this.plan.getPosition().x,Y : this.plan.getPosition().y};
@@ -509,7 +494,7 @@ lever(e)
   this.stopGlisse();
   // this.coeffGlisse = this.coeffGlisseInitial;
   //console.log("startGlisse");
-  this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),this.intervalAnimationMs);
+  //this.myInterval = setInterval(this.defilementScroll.bind(planDeSalle),this.intervalAnimationMs);
 
   this.boolZoom = true;
   this.lastScale = 1;
@@ -529,8 +514,9 @@ defilementScroll()
 {
   //console.log("*=",this.vecteur);
 
-  let SVGPos={X:this.plan.getPosition().x,Y:this.plan.getPosition().Y};
-  
+  let SVGPos={X:this.plan.getPosition().x,Y:this.plan.getPosition().y};
+  console.log(SVGPos);
+  console.log("defilementScroll");
   SVGPos = {
     X : this.vecteur.X + SVGPos.X,
     Y : this.vecteur.Y + SVGPos.Y
