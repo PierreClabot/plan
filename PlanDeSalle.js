@@ -205,7 +205,7 @@ class PlanDeSalle{
       
     })
 
-    svg.addEventListener("pointerdown",e=>{
+    container.addEventListener("pointerdown",e=>{
 
       this.appuis.push(e);
       var rect = e.target.getBoundingClientRect();
