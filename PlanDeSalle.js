@@ -273,6 +273,10 @@ class PlanDeSalle{
       this.appuiEn(e,e.clientX, e.clientY);
       return;
     })
+    container.addEventListener("touchmove",(e)=>{
+      e.stopPropagation();
+      e.preventDefault(); // ??????????
+    })
     container.addEventListener("pointermove",(e)=>{
 
       e.stopPropagation();
