@@ -89,12 +89,12 @@ class PlanDeSalle{
       }
     })
     document.addEventListener("pointermove",(e)=>{
-      // if(e.touches.length>1)
-      // {
-      //   e.stopPropagation();
-      //   e.preventDefault();
-      //   this.debugL(" !touchemovedocument! ");
-      // }
+      if(this.appuis.length>1)
+      {
+        e.stopPropagation();
+        e.preventDefault();
+        this.debugL(" !touchemovedocument! ");
+      }
     });
     /* TEST APPLE AJOUT */
     document.addEventListener('gesturestart', function (e) {
@@ -166,12 +166,12 @@ class PlanDeSalle{
     
     // })
     document.addEventListener("pointermove",(e)=>{
-      // if(e.touches.length>1)
-      // {
-      //   e.stopPropagation();
-      //   e.preventDefault();
-      //   this.debugL(" !touchemovedocument! ");
-      // }
+      if(this.appuis.length>1)
+      {
+        e.stopPropagation();
+        e.preventDefault();
+        this.debugL(" !touchemovedocument! ");
+      }
     });
     /* TEST APPLE */
     document.addEventListener('gesturestart', function (e) {
@@ -261,7 +261,7 @@ class PlanDeSalle{
       
       if (this.appuis.length>1) {
         this.etatJeDeplace=false;
-        this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+        this.curDiffInitial=this.norme2Points( {X:this.appuis[0].clientX,Y:e.appuis[0].clientY }, {X:e.appuis[1].clientX,Y:e.touches[1].clientY } );
       }
 
       if (this.appuis.length==1) {
@@ -282,61 +282,61 @@ class PlanDeSalle{
       e.stopPropagation();
       e.preventDefault(); 
       this.debug("nb Appuis "+this.appuis.length);
-      // if(e.touches.length > 1) // Plusieurs doigts simultanés
-      // {
-      //     if(this.boolPremierScale)
-      //     {
-      //       this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-      //       this.scaleInit=this.scale;
-      //       this.boolPremierScale = false;
-      //     }
-      //     let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
-          
-      //     var rect = e.target.getBoundingClientRect();
+      if(e.touches.length > 1) // Plusieurs doigts simultanés
+      {
+          if(this.boolPremierScale)
+          {
+            this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+            this.scaleInit=this.scale;
+            this.boolPremierScale = false;
+          }
+          let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+     
+          var rect = e.target.getBoundingClientRect();
 
-      //     let offsetX = {
-      //       touche1:e.touches[0].pageX - rect.left,
-      //       touche2:e.touches[1].pageX - rect.left,
-      //     }
+          let offsetX = {
+            touche1:e.touches[0].pageX - rect.left,
+            touche2:e.touches[1].pageX - rect.left,
+          }
 
-      //     let offsetY = {
-      //       touche1:e.touches[0].pageY - rect.top,
-      //       touche2:e.touches[1].pageY - rect.top,
-      //     }
+          let offsetY = {
+            touche1:e.touches[0].pageY - rect.top,
+            touche2:e.touches[1].pageY - rect.top,
+          }
 
-      //     this.transformOrigin = {
-      //       X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
-      //       Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
-      //     }
-      //     if(this.transformOrigin.X>100)
-      //     {
-      //       this.transformOrigin.X = 100;
-      //     }
-      //     if(this.transformOrigin.X<0)
-      //     {
-      //       this.transformOrigin.X = 0;
-      //     }
-      //     if(this.transformOrigin.Y>100)
-      //     {
-      //       this.transformOrigin.Y = 100;
-      //     }
-      //     if(this.transformOrigin.Y<0)
-      //     {
-      //       this.transformOrigin.Y= 0;
-      //     }
+          this.transformOrigin = {
+            X:((Math.abs((offsetX.touche1 + offsetX.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100),
+            Y:((Math.abs((offsetY.touche1 + offsetY.touche2)/2)/(this.domElement.offsetWidth*this.scale))*100)
+          }
+          if(this.transformOrigin.X>100)
+          {
+            this.transformOrigin.X = 100;
+          }
+          if(this.transformOrigin.X<0)
+          {
+            this.transformOrigin.X = 0;
+          }
+          if(this.transformOrigin.Y>100)
+          {
+            this.transformOrigin.Y = 100;
+          }
+          if(this.transformOrigin.Y<0)
+          {
+            this.transformOrigin.Y= 0;
+          }
 
-      //     let coefScale = vT/this.vInit;
-      //     let scale = this.scaleInit * coefScale;
-      //     this.debug("Scale "+scale)
-      //     this.debug("this.transformOriginX"+this.transformOrigin.X);
-      //     this.debug("this.transformOriginY"+this.transformOrigin.Y);
-      //     this.zoom(e,scale);
-      // }
-      // if(e.touches.length == 1)
-      // {
-      //   this.etatJeDeplace=true;
-      //   this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
-      // }
+          let coefScale = vT/this.vInit;
+          let scale = this.scaleInit * coefScale;
+          this.debug("Scale "+scale)
+          this.debug("this.transformOriginX"+this.transformOrigin.X);
+          this.debug("this.transformOriginY"+this.transformOrigin.Y);
+          this.zoom(e,scale);
+      }
+      if(e.touches.length == 1)
+      {
+        this.etatJeDeplace=true;
+        this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
+      }
 
     })
     container.addEventListener("wheel", e=>{
@@ -424,7 +424,6 @@ class PlanDeSalle{
       {
         if(this.appuis[i].pointerId == e.pointerId)
         {
-          this.debug("******** DELETE *******")
           this.appuis.splice(i,1);
         }
       }
