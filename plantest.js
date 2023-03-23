@@ -15,7 +15,7 @@ class PlanDeSalle{
                       </div>`;
         globalContainer.insertAdjacentHTML("afterbegin", contenu );
       }
-      
+      this.svg = document.querySelector("#IMG_PLANSALLE");
       this.planDeSalle = this;
       this.mouseStartPosition = {x: 0, y: 0};
       this.mousePosition = {x: 0, y: 0};
@@ -30,7 +30,6 @@ class PlanDeSalle{
       this.calculHauteur();
   
       window.onresize = this.calculHauteur;
-  
       this.scale = 1;
       this.boolZoom = false;
       this.lastScale = 1;
@@ -61,7 +60,7 @@ class PlanDeSalle{
       this.prevDiff = -1;
       this.coeffGlisse = 0.70;
       this.scale = 1;
-  
+      this.echelleScale = (this.svg.width.baseVal.value)/10;
       this.domElement=document.querySelector("#IMG_PLANSALLE");
   
       this.premierAppui = {x:0,y:0};
@@ -75,7 +74,7 @@ class PlanDeSalle{
       this.sourisGlisseMax = 50;
       this.toleranceMouse = 5;
       this.toleranceTouch = 5;
-      this.svg = document.querySelector("#IMG_PLANSALLE");
+      
       this.scaleWheelDeltaY = 1;
   
       document.addEventListener("touchstart",(e)=>{
@@ -244,8 +243,8 @@ class PlanDeSalle{
         
         if((Math.abs(point.x-this.premierAppui.x)<this.toleranceMouse) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceMouse))
         {
-          let x = e.offsetX / svg.offsetWidth;
-          let y = e.offsetY / svg.offsetHeight;
+          let x = e.offsetX / this.svg.offsetWidth;
+          let y = e.offsetY / this.svg.offsetHeight;
           let data = { coefX:x , coefY:y };
           this.fire(data);
         }
@@ -341,16 +340,13 @@ class PlanDeSalle{
         if(e.wheelDeltaY < 0) // DZZOOM
         {
           scaleWheelDeltaY = scaleWheelDeltaY / 2;
-          // this.transformOrigin = {
-          //   X:50,
-          //   Y:50
-          // }
-          // this.domElement.style.transformOrigin = `${this.transformOrigin.X}% ${this.transformOrigin.Y}%` ;
           console.log("reset Transform Origin");
+          this.echelleScale = Math.abs(this.echelleScale);
         }
         else // ZOOM
         {
           scaleWheelDeltaY = scaleWheelDeltaY * 2;
+          this.echelleScale = -Math.abs(this.echelleScale);
         }
         if(scaleWheelDeltaY<0.5)
         {
@@ -581,9 +577,16 @@ class PlanDeSalle{
   
   zoom(e,scale)
   {
-    this.scale = scale;
-    if(this.scale < 0.1){ this.scale = 0.1;}
-    this.scaleDOM();
+    console.log("ZOOOM")
+    let viewBox = this.getViewBox(this.svg); // objViewBox
+    viewBox.width += this.echelleScale;
+    viewBox.height += this.echelleScale;
+    viewBox.x -= this.echelleScale/2;
+    viewBox.y -= this.echelleScale/2;
+    this.setViewBox(this.svg,viewBox);
+    // this.scale = scale;
+    // if(this.scale < 0.1){ this.scale = 0.1;}
+    // this.scaleDOM();
   }
   
   
@@ -606,12 +609,16 @@ class PlanDeSalle{
   
   defilementScroll()
   {
-    let SVGPos=this.svgPositionDonne();
-  
+    let SVGPos=this.getViewBox(this.svg);
+    console.log("DEFILEMENT")
+    // SVGPos = {
+    //   X : this.vecteur.X + SVGPos.x,
+    //   Y : this.vecteur.Y + SVGPos.y
+    // }
     SVGPos = {
-      X : this.vecteur.X + SVGPos.X,
-      Y : this.vecteur.Y + SVGPos.Y
-    }
+        X : SVGPos.x - this.vecteur.X,
+        Y : SVGPos.y - this.vecteur.Y
+      }
   
     this.tt = Date.now();
     let t = (this.tt-this.t1)/this.tempsGlisse;
@@ -628,9 +635,13 @@ class PlanDeSalle{
       this.myInterval = 0;
     }
   
-    SVGPos = this.limiteDeplacement(SVGPos);
-    this.svgPosition(SVGPos);
-    
+    // SVGPos = this.limiteDeplacement(SVGPos);
+    console.log("SVG POS",SVGPos);
+    let objViewBox = this.getViewBox(this.svg);
+    objViewBox.x = SVGPos.X;
+    objViewBox.y = SVGPos.Y;
+    // this.svgPosition(SVGPos);
+    this.setViewBox(this.svg,objViewBox);
     this.dernierePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.Y };
   }
   
