@@ -75,21 +75,19 @@ class PlanDeSalle{
     this.sourisGlisseMax = 50;
     this.toleranceMouse = 5;
     this.toleranceTouch = 5;
-
-    this.appuis=[];
     const svg = document.querySelector("#IMG_PLANSALLE");
     this.scaleWheelDeltaY = 1;
 
-    document.addEventListener("pointerdown",(e)=>{
-      if(this.appuis.length>1)
+    document.addEventListener("touchstart",(e)=>{
+      if(e.touches.length>1)
       {
         e.stopPropagation();
         e.preventDefault();
         this.debugL(" !touchemovedocument! ");
       }
     })
-    document.addEventListener("pointermove",(e)=>{
-      if(this.appuis.length>1)
+    document.addEventListener("touchmove",(e)=>{
+      if(e.touches.length>1)
       {
         e.stopPropagation();
         e.preventDefault();
@@ -158,15 +156,16 @@ class PlanDeSalle{
       this.etatJeDeplace = false;
     });
 
-    // document.addEventListener("pointerdown",(e)=>{
-    //     this.appuis.push(e);
-    //     e.stopPropagation();
-    //     e.preventDefault();
-    //     this.debugL(" !touchemovedocument! ");
-    
-    // })
-    document.addEventListener("pointermove",(e)=>{
-      if(this.appuis.length>1)
+    document.addEventListener("touchstart",(e)=>{
+      if(e.touches.length>1)
+      {
+        e.stopPropagation();
+        e.preventDefault();
+        this.debugL(" !touchemovedocument! ");
+      }
+    })
+    document.addEventListener("touchmove",(e)=>{
+      if(e.touches.length>1)
       {
         e.stopPropagation();
         e.preventDefault();
@@ -190,7 +189,7 @@ class PlanDeSalle{
       this.reset();
     });
 
-    document.querySelector("#PLAN-CENTRER").addEventListener("pointerdown",(e)=>{ 
+    document.querySelector("#PLAN-CENTRER").addEventListener("touchstart",(e)=>{ 
       this.reset();
     });
 
@@ -205,27 +204,25 @@ class PlanDeSalle{
       
     })
 
-    container.addEventListener("pointerdown",e=>{
+    svg.addEventListener("touchstart",e=>{
 
-      this.appuis.push(e);
       var rect = e.target.getBoundingClientRect();
-      var offsetX = e.pageX - rect.left;
-      var offsetY = e.pageY - rect.top;
+      var offsetX = e.targetTouches[0].pageX - rect.left;
+      var offsetY = e.targetTouches[0].pageY - rect.top;
       this.premierAppui = {
-        x:e.clientX,
-        y:e.clientY,
+        x:e.touches[0].clientX,
+        y:e.touches[0].clientY,
         offsetX : offsetX,
         offsetY : offsetY
       }
 
     })
 
-    svg.addEventListener("pointerup",e=>{
-      // pointerId
+    svg.addEventListener("touchend",e=>{
 
       let point = {
-        x : e.clientX,
-        y: e.clientY
+        x : e.changedTouches[0].clientX,
+        y: e.changedTouches[0].clientY
       }
 
       if((Math.abs(point.x-this.premierAppui.x)<this.toleranceTouch) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceTouch))
@@ -254,17 +251,17 @@ class PlanDeSalle{
       }
     })
     
-    container.addEventListener("pointerdown",e=>{
+    container.addEventListener("touchstart",e=>{
       
       e.stopPropagation();
       e.preventDefault(); 
       
-      if (this.appuis.length>1) {
+      if (e.touches.length>1) {
         this.etatJeDeplace=false;
-        this.curDiffInitial=this.norme2Points( {X:this.appuis[0].clientX,Y:this.appuis[0].clientY }, {X:this.appuis[1].clientX,Y:this.appuis[1].clientY } );
+        this.curDiffInitial=this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
       }
 
-      if (this.appuis.length==1) {
+      if (e.touches.length==1) {
           this.appuiEn(e,e.clientX,e.clientY)
       }
     })
@@ -274,41 +271,30 @@ class PlanDeSalle{
       return;
     })
     container.addEventListener("touchmove",(e)=>{
-      e.stopPropagation();
-      e.preventDefault(); // ??????????
-    })
-    container.addEventListener("pointermove",(e)=>{
 
       e.stopPropagation();
       e.preventDefault(); 
-      for(let i=0;i<this.appuis.length;i++)
+
+      if(e.touches.length > 1) // Plusieurs doigts simultanés
       {
-        if(this.appuis[i].pointerId == e.pointerId)
-        {
-          this.appuis[i] = e;
-        }
-      }
-      // this.debug("nb Appuis "+this.appuis.length);
-      if(this.appuis.length > 1) // Plusieurs doigts simultanés
-      {
-        this.debug("JE ZOOM");
           if(this.boolPremierScale)
           {
-            this.vInit =this.norme2Points( {X:this.appuis[0].clientX,Y:this.appuis[0].clientY }, {X:this.appuis[1].clientX,Y:this.appuis[1].clientY } );
+            this.vInit =this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
             this.scaleInit=this.scale;
             this.boolPremierScale = false;
           }
-          let vT = this.norme2Points( {X:this.appuis[0].clientX,Y:this.appuis[0].clientY }, {X:this.appuis[1].clientX,Y:this.appuis[1].clientY } );
+          let vT = this.norme2Points( {X:e.touches[0].clientX,Y:e.touches[0].clientY }, {X:e.touches[1].clientX,Y:e.touches[1].clientY } );
+          
           var rect = e.target.getBoundingClientRect();
 
           let offsetX = {
-            touche1:this.appuis[0].pageX - rect.left,
-            touche2:this.appuis[1].pageX - rect.left,
+            touche1:e.touches[0].pageX - rect.left,
+            touche2:e.touches[1].pageX - rect.left,
           }
 
           let offsetY = {
-            touche1:this.appuis[0].pageY - rect.top,
-            touche2:this.appuis[1].pageY - rect.top,
+            touche1:e.touches[0].pageY - rect.top,
+            touche2:e.touches[1].pageY - rect.top,
           }
 
           this.transformOrigin = {
@@ -334,15 +320,15 @@ class PlanDeSalle{
 
           let coefScale = vT/this.vInit;
           let scale = this.scaleInit * coefScale;
-          //this.debug("Scale "+scale)
-          //this.debug("this.transformOriginX"+this.transformOrigin.X);
-          //this.debug("this.transformOriginY"+this.transformOrigin.Y);
+          this.debug("Scale "+scale)
+          this.debug("this.transformOriginX"+this.transformOrigin.X);
+          this.debug("this.transformOriginY"+this.transformOrigin.Y);
           this.zoom(e,scale);
       }
-      if(this.appuis.length == 1)
+      if(e.touches.length == 1)
       {
         this.etatJeDeplace=true;
-        this.bougerEn(e,e.clientX , e.clientY);
+        this.bougerEn(e,e.touches[0].clientX , e.touches[0].clientY);
       }
 
     })
@@ -360,7 +346,7 @@ class PlanDeSalle{
         //   Y:50
         // }
         // this.domElement.style.transformOrigin = `${this.transformOrigin.X}% ${this.transformOrigin.Y}%` ;
-        //console.log("reset Transform Origin");
+        console.log("reset Transform Origin");
       }
       else // ZOOM
       {
@@ -424,16 +410,9 @@ class PlanDeSalle{
     });
     
 
-    container.addEventListener("pointerup",(e)=>{
+    container.addEventListener("touchend",(e)=>{
       e.stopPropagation();
       e.preventDefault(); 
-      for(let i = 0;i<this.appuis.length;i++)
-      {
-        if(this.appuis[i].pointerId == e.pointerId)
-        {
-          this.appuis.splice(i,1);
-        }
-      }
       this.boolPremierScale = true;
       this.boolPremierDeplacement = true;
       let norme = Math.sqrt((this.vecteur.X * this.vecteur.X)+(this.vecteur.Y * this.vecteur.Y)); // utiliser methode
@@ -479,7 +458,7 @@ calculHauteur(){
 
 
 appuiEn(e,x,y){
-    //this.debug("******** APPUI EN *******");
+    
     this.historiquePos[0]={
       X: x,
       Y: y,
@@ -498,7 +477,6 @@ appuiEn(e,x,y){
 
 bougerEn(event,x,y)
 {
-  //this.debug(" ********** BOUGER EN ********* X,Y " +x +" "+y)
   if(this.etatJeDeplace)
   {
     this.historiquePos[0]={
@@ -519,7 +497,6 @@ bougerEn(event,x,y)
     let posActuelle=this.svgPositionDonne();      
     posActuelle.X+=this.vecteur.X;
     posActuelle.Y+=this.vecteur.Y;
-    //console.log("*********** posActuelle **********",this.vecteur);
     posActuelle = this.limiteDeplacement(posActuelle);
     this.svgPosition(posActuelle);
 
@@ -537,8 +514,8 @@ limiteDeplacement(position)
   let chaTransformOrigin = style.getPropertyValue('transform-origin');
   let widthReel = Math.round(this.domElement.getBoundingClientRect().width);
   let heightReel = Math.round(this.domElement.getBoundingClientRect().height);
-  //console.log("********* WIDTHREEL **********",widthReel);
-  //console.log("********* HEIGHTREEL **********",heightReel);
+  console.log("********* WIDTHREEL **********",widthReel);
+  console.log("********* HEIGHTREEL **********",heightReel);
   let tabTransformOrigin = chaTransformOrigin.split(" ");
   let transformOrigin = "";
 
@@ -551,14 +528,14 @@ limiteDeplacement(position)
     X : this.arrondirMillieme(parseInt(transformOrigin.split(" ")[0],10)/this.domElement.offsetWidth*100),
     Y : this.arrondirMillieme(parseInt(transformOrigin.split(" ")[1],10)/this.domElement.offsetHeight*100)
   }
-  //console.log("objTransformOrigin",objTransformOrigin);
+  console.log("objTransformOrigin",objTransformOrigin);
 
   let theorieLimiteX = (((objTransformOrigin.X-50)/100)*(widthReel/2))+(widthReel/2);
   let theorieLimiteY = (((objTransformOrigin.Y-50)/100)*(heightReel/2))+(heightReel/2);
 
-  //console.log("posActuelle X",posActuelle.X);
-  //console.log("theorieLimiteX Gauche",theorieLimiteX);
-  //console.log("theorieLimiteX Droite",theorieLimiteX-widthReel);
+  console.log("posActuelle X",posActuelle.X);
+  console.log("theorieLimiteX Gauche",theorieLimiteX);
+  console.log("theorieLimiteX Droite",theorieLimiteX-widthReel);
 
   if(posActuelle.X>theorieLimiteX || posActuelle.X<theorieLimiteX-widthReel)
   {
@@ -569,7 +546,7 @@ limiteDeplacement(position)
     else{
       posActuelle.X = theorieLimiteX-widthReel;
     }
-    //console.log("*************** LIMITE X *************");
+    console.log("*************** LIMITE X *************");
     // posActuelle.X = theorieLimiteX * (Math.abs(posActuelle.X)/posActuelle.X);
   }
 
@@ -582,7 +559,7 @@ limiteDeplacement(position)
     else{
       posActuelle.Y=theorieLimiteY-heightReel
     }
-    //console.log("*************** LIMITE Y *************");
+    console.log("*************** LIMITE Y *************");
     // posActuelle.Y = theorieLimiteY * (Math.abs(posActuelle.Y)/posActuelle.Y);
   }
   return posActuelle;
@@ -664,7 +641,7 @@ scaleDOM(){
 
 setviewbox() // inutile ?
 {
-  //console.log("****** SET VIEW BOX");
+  console.log("****** SET VIEW BOX");
   var vp = {x: viewboxPosition.x ,  y:viewboxPosition.y};
   var vs = {x: viewboxSize.x * viewboxScale , y:  viewboxSize.y * viewboxScale};
   shape = document.getElementsByTagName("svg")[0];
@@ -675,7 +652,7 @@ setviewbox() // inutile ?
 
 mousemove(e) // debug
 {
-  //console.log("******** MOUS  MOVE");
+  console.log("******** MOUS  MOVE");
   mousePosition.x = e.offsetX;
   mousePosition.y = e.offsetY;
   
@@ -714,7 +691,7 @@ svgPositionDonne() {
                 X : this.domElement.offsetLeft, 
                 Y : this.domElement.offsetTop, 
               };
-  //console.log("svgPositionDonne",point);
+  console.log("svgPositionDonne",point);
   return point;
 }
 
