@@ -226,8 +226,8 @@ class PlanDeSalle{
   
         if((Math.abs(point.x-this.premierAppui.x)<this.toleranceTouch) && (Math.abs(point.y-this.premierAppui.y)<this.toleranceTouch))
         {
-          let x = (this.premierAppui.offsetX/this.scale) / svg.offsetWidth;
-          let y = (this.premierAppui.offsetY/this.scale) / svg.offsetHeight;
+          let x = (this.premierAppui.offsetX/this.scale) / this.svg.offsetWidth;
+          let y = (this.premierAppui.offsetY/this.scale) / this.svg.offsetHeight;
           let data = { coefX:x , coefY:y };
           this.fire(data);
           this.stopGlisse();
@@ -261,7 +261,7 @@ class PlanDeSalle{
         }
   
         if (e.touches.length==1) {
-            this.appuiEn(e,e.clientX,e.clientY)
+            this.appuiEn(e,e.touches[0].clientX,e.touches[0].clientY)
         }
       })
   
@@ -475,22 +475,29 @@ class PlanDeSalle{
     if(this.etatJeDeplace)
     {
       this.historiquePos[0]={
-        X : this.historiquePos[1].X ,
-        Y : this.historiquePos[1].Y
+        X : parseInt(this.historiquePos[1].X,10) ,
+        Y : parseInt(this.historiquePos[1].Y,10)
       }
+
       this.historiquePos[1]={
-        X : x,
-        Y : y
+        X : parseInt(x,10),
+        Y : parseInt(y,10)
       }
-  
+
+
+
       this.vecteur={
         X:this.historiquePos[1].X - this.historiquePos[0].X,
-        Y:this.historiquePos[1].Y - this.historiquePos[0].Y,
+        Y:this.historiquePos[1].Y - this.historiquePos[0].Y
       }
-      
       let viewBox = this.getViewBox(this.svg);
-      viewBox.x -= this.vecteur.X;
-      viewBox.y -= this.vecteur.Y;
+    //   console.log("viewBox 1",viewBox)
+    //   console.log("this.vecteurX",this.vecteur.X);
+    //   console.log("viewBoxX",viewBox.x);
+
+      viewBox.x = parseInt(viewBox.x - this.vecteur.X,10);
+      viewBox.y = parseInt(viewBox.y - this.vecteur.Y,10);
+
       this.setViewBox(this.svg,viewBox);
       //let posActuelle=this.svgPositionDonne();      
       //posActuelle.X+=this.vecteur.X;
@@ -583,7 +590,7 @@ class PlanDeSalle{
     viewBox.height += this.echelleScale;
     viewBox.x -= this.echelleScale/2;
     viewBox.y -= this.echelleScale/2;
-    this.setViewBox(this.svg,viewBox);
+    //this.setViewBox(this.svg,viewBox);
     // this.scale = scale;
     // if(this.scale < 0.1){ this.scale = 0.1;}
     // this.scaleDOM();
@@ -610,7 +617,7 @@ class PlanDeSalle{
   defilementScroll()
   {
     let SVGPos=this.getViewBox(this.svg);
-    console.log("DEFILEMENT")
+
     // SVGPos = {
     //   X : this.vecteur.X + SVGPos.x,
     //   Y : this.vecteur.Y + SVGPos.y
@@ -636,12 +643,12 @@ class PlanDeSalle{
     }
   
     // SVGPos = this.limiteDeplacement(SVGPos);
-    console.log("SVG POS",SVGPos);
+
     let objViewBox = this.getViewBox(this.svg);
     objViewBox.x = SVGPos.X;
     objViewBox.y = SVGPos.Y;
     // this.svgPosition(SVGPos);
-    this.setViewBox(this.svg,objViewBox);
+    // this.setViewBox(this.svg,objViewBox);
     this.dernierePositionSVG = { X:this.positionSVG.X , Y:this.positionSVG.Y };
   }
   
@@ -652,14 +659,14 @@ class PlanDeSalle{
     this.domElement.style.top = `0px`;
   }
   
-  setviewbox() // inutile ?
-  {
-    console.log("****** SET VIEW BOX");
-    var vp = {x: viewboxPosition.x ,  y:viewboxPosition.y};
-    var vs = {x: viewboxSize.x * viewboxScale , y:  viewboxSize.y * viewboxScale};
-    shape = document.getElementsByTagName("svg")[0];
-    shape.setAttribute("viewBox", vp.x + " " + vp.y + " " + vs.x + " " + vs.y);
-  }
+//   setviewbox() // inutile ?
+//   {
+//     console.log("****** SET VIEW BOX");
+//     var vp = {x: viewboxPosition.x ,  y:viewboxPosition.y};
+//     var vs = {x: viewboxSize.x * viewboxScale , y:  viewboxSize.y * viewboxScale};
+//     shape = document.getElementsByTagName("svg")[0];
+//     shape.setAttribute("viewBox", vp.x + " " + vp.y + " " + vs.x + " " + vs.y);
+//   }
   
   
   
@@ -674,7 +681,7 @@ class PlanDeSalle{
       viewboxPosition.x = viewboxStartPosition.x + (mouseStartPosition.x - e.pageX) * viewboxScale;
       viewboxPosition.y = viewboxStartPosition.y + (mouseStartPosition.y - e.pageY) * viewboxScale;
   
-      this.setviewbox();
+      //this.setviewbox();
     }
     
     var mpos = {x: mousePosition.x * viewboxScale, y: mousePosition.y * viewboxScale};
@@ -790,11 +797,13 @@ class PlanDeSalle{
             width : parseInt(viewBox[2],10),
             height : parseInt(viewBox[3],10)
         }
+        
         return objViewBox;
     }
 
     setViewBox(domSvg, objViewBox)
     {
+        console.log("SETVIEWBOX",objViewBox);
         let chaViewBox = `${objViewBox.x} ${objViewBox.y} ${objViewBox.width} ${objViewBox.height}`;
         domSvg.setAttribute("viewBox",chaViewBox);
         return;
